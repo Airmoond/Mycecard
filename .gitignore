@@ -4,3 +4,34 @@
 
 # Local export output
 /release/
+
+# Python model tools
+__pycache__/
+
+# Local isolated tool/optional dependency environments
+/.venv/
+/.experiment-context.json
+
+# Local planning, production notes and verification records
+/drafts/
+/docs/history/
+/docs/verification/
+/*开发计划.html
+/*开发计划.md
+/*开发完成记录.md
+/*复盘记录.md
+/架构重构计划.md
+/assets/ui/制作记录.md
+/audio/制作记录.md
+
+# Rebuildable audio intermediates
+/audio/preview/
+/audio/source/*.wav
+/audio/source/*.wav.import
+/audio/source/audio-validation.json
+/audio/source/playback-check.txt
+
+# Machine-specific caches
+.matplotlib-cache/
+.DS_Store
+Thumbs.db

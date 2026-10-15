@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://xjfqv667n43d"]
+
+[ext_resource type="Script" uid="uid://r84gdmwtul6d" path="res://combatants/enemies/enemy_definition.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://b1iqujddbs8dj" path="res://combatants/enemies/enemy_action_definition.gd" id="2_action"]
+[ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="3_effect"]
+[ext_resource type="Texture2D" uid="uid://dyvnms1aindyq" path="res://artworks/cave_crawler.png" id="4_portrait"]
+
+[sub_resource type="Resource" id="Effect_0_0"]
+script = ExtResource("3_effect")
+effect_type = 6
+amount = 2
+
+[sub_resource type="Resource" id="Effect_0_1"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 2
+
+[sub_resource type="Resource" id="Action_0"]
+script = ExtResource("2_action")
+action_id = "raging_strike"
+intent_text = "狂怒进击"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_0_0"), SubResource("Effect_0_1")])
+
+[resource]
+script = ExtResource("1_enemy")
+action_pattern = Array[ExtResource("2_action")]([SubResource("Action_0")])
+combatant_id = "ragebound_brute"
+display_name = "狂怒蛮兵"
+max_health = 84
+artwork = ExtResource("4_portrait")

@@ -1,0 +1,15 @@
+{
+  "godot": "4.6.1",
+  "python": "3.12.7",
+  "optional_audio": {
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "ffmpeg": "explicit executable or PATH"
+  },
+  "optional_plots": {
+    "matplotlib": "3.9.2"
+  },
+  "export_preset": "Windows Desktop",
+  "product": "Mycecard",
+  "ffmpeg_reference_version": "3.0.1"
+}

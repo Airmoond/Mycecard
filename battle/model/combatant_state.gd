@@ -5,6 +5,9 @@
 class_name CombatantState
 extends RefCounted
 
+## 只读的已执行结果，用于独立表现；不等待监听者或把动画结果写回规则。
+signal presentation_result(kind:StringName, amount:int)
+
 
 ## 当前运行时角色引用的静态角色定义资源。
 ##
@@ -156,6 +159,8 @@ func tick_statuses_at_round_end()->void:
 func gain_block(block_number:int)->void:
 	if block_number>=0:
 		current_block += block_number;
+		if block_number > 0:
+			presentation_result.emit(&"block_gain", block_number);
 
 
 ## 清空角色当前拥有的全部格挡。
@@ -203,6 +208,8 @@ func take_damage(damage_number:int)->int:
 		return 0;
 	var blocked_damage:int = mini(damage_number, current_block);
 	current_block -= blocked_damage;
+	if blocked_damage > 0:
+		presentation_result.emit(&"block_hit", blocked_damage);
 	return take_unblocked_damage(damage_number - blocked_damage);
 
 
@@ -211,6 +218,8 @@ func take_damage(damage_number:int)->int:
 func take_unblocked_damage(damage_number:int)->int:
 	var actual_hp_loss:int = mini(current_health, damage_number);
 	current_health -= actual_hp_loss;
+	if actual_hp_loss > 0:
+		presentation_result.emit(&"strike_hit", actual_hp_loss);
 	return actual_hp_loss;
 
 
@@ -219,6 +228,8 @@ func take_unblocked_damage(damage_number:int)->int:
 func lose_health(amount:int)->int:
 	var actual_loss:int = mini(current_health, amount);
 	current_health -= actual_loss;
+	if actual_loss > 0:
+		presentation_result.emit(&"health_loss", actual_loss);
 	return actual_loss;
 
 
@@ -227,13 +238,18 @@ func lose_health(amount:int)->int:
 func heal(amount:int)->int:
 	var actual_heal:int = mini(amount, max_health - current_health);
 	current_health += actual_heal;
+	if actual_heal > 0:
+		presentation_result.emit(&"heal_gain", actual_heal);
 	return actual_heal;
 
 
 ## 出牌入口已确认能完整减少且至少剩1点上限；当前生命只压到新上限。
 func lose_max_health(amount:int)->void:
+	var previous_health:int = current_health;
 	max_health -= amount;
 	current_health = mini(current_health, max_health);
+	if previous_health > current_health:
+		presentation_result.emit(&"health_loss", previous_health - current_health);
 
 
 ## 判断角色当前是否存活。

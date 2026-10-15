@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="UnexpectedEncounterDefinition" format=3]
+
+[ext_resource type="Script" path="res://run/encounter/unexpected_encounter_definition.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/ui/encounter-altar.png" id="2"]
+[ext_resource type="Script" path="res://run/encounter/unexpected_encounter_option_definition.gd" id="3_option"]
+
+[sub_resource type="Resource" id="Option_card"]
+script = ExtResource("3_option")
+option_id = "card"
+label = "献出8当前生命 · 从3张稀有或史诗卡牌中选择1张"
+result_text = "你献出了{health_cost}点生命，获得了「{card_name}」。"
+operation = 2
+health_cost = 8
+card_rarities = Array[int]([1, 2])
+disabled_reason = "需要至少9生命"
+
+[sub_resource type="Resource" id="Option_leave"]
+script = ExtResource("3_option")
+option_id = "leave"
+label = "离开 · 保留当前生命与牌组"
+result_text = "你绕过了此地，继续踏上旅途。"
+
+[resource]
+script = ExtResource("1")
+encounter_id = "blood_pact_altar"
+display_name = "血契祭坛"
+story = "石坛上的古老刻痕回应着你的心跳。献出少许鲜血，便能获得一项稀有或史诗技艺；你也可以拒绝这份契约。"
+artwork = ExtResource("2")
+options = Array[ExtResource("3_option")]([SubResource("Option_card"), SubResource("Option_leave")])
+kind = 1
+health_cost = 8

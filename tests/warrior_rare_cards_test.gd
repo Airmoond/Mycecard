@@ -17,6 +17,7 @@ func _run()->void:
 	_test_reward_to_next_battle();
 	await _test_card_text();
 	await process_frame;
+	await create_timer(0.5).timeout; # 仅等待已释放播放器的混音线程收尾。
 	print("战士正式稀有卡检查完成，失败数：%d" % _failures);
 	quit(0 if _failures == 0 else 1);
 
@@ -119,7 +120,7 @@ func _test_reward_to_next_battle()->void:
 		var definition:CardDefinition = _card(id);
 		var main:Node = load("res://main.tscn").instantiate();
 		var flow:GameFlowController = main.get_node("game_flow_controller");
-		flow.run_definition = flow.run_definition.duplicate();
+		flow.run_definition = load("res://tests/fixtures/linear_run.tres").duplicate();
 		flow.run_definition.character_definition = flow.run_definition.character_definition.duplicate();
 		# 缩小测试候选池，保证逐张验证实际卡牌；正式角色配置不变。
 		flow.run_definition.character_definition.reward_card_pool = [definition, _card("heavy_strike"), _card("lethal_blade"), _card("fortress")];
@@ -155,7 +156,7 @@ func _test_card_text()->void:
 	var views:Array[Control] = [];
 	for id in CARD_IDS:
 		var definition:CardDefinition = _card(id);
-		var reward:RewardCardView = load("res://run/reward/reward_card_view.tscn").instantiate();
+		var reward:CardChoiceView = load("res://ui/cards/card_choice_view.tscn").instantiate();
 		root.add_child(reward);
 		reward.setup(definition);
 		_expect(reward.card_definition == definition, "正式卡可显示为奖励卡");

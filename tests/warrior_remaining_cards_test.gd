@@ -20,6 +20,8 @@ func _run()->void:
 	await _test_draft_and_rewards();
 	await _test_text();
 	await process_frame;
+	# 驻留音乐停止后，混音线程需要完成OGG播放实例的异步释放。
+	await create_timer(0.5).timeout;
 	print("剩余战士草案卡检查完成，失败数：%d" % _failures);
 	quit(0 if _failures == 0 else 1);
 
@@ -38,7 +40,12 @@ func _controller(cards:Array[CardDefinition])->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(load("res://battle/data/encounters/ruin_guard_encounter.tres"), load("res://combatants/data/player.tres"), cards, 50, 50), "正式卡测试使用40生命的遗迹守卫");
+	# 使用独立40生命对手验证卡牌结算，不依赖正式Boss的平衡血量。
+	var encounter:EncounterDefinition = load("res://battle/data/encounters/ruin_guard_encounter.tres").duplicate();
+	var enemy:EnemyDefinition = encounter.enemy_definition.duplicate();
+	enemy.max_health = 40;
+	encounter.enemy_definition = enemy;
+	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), cards, 50, 50), "正式卡测试使用独立40生命对手");
 	return controller;
 
 
@@ -160,16 +167,45 @@ func _test_trade_wounds()->void:
 	controller.get_parent().queue_free();
 
 
+## 探测真实会话候选的固定种子，不改卡池或向RewardState注入候选。
+## 战斗抽牌使用独立随机流，纯会话探测与正式战斗得到同一奖励。
+func _reward_seed(definition:RunDefinition, target:CardDefinition, chosen:CardDefinition)->int:
+	for seed_value in range(128):
+		var probe:RunSession = RunSession.new();
+		if not probe.initialize(definition, seed_value):
+			break;
+		if not probe.choose_starting_card(probe.get_draft_candidates()[0]) or not probe.choose_starting_card(chosen) or not probe.choose_starting_card(probe.get_draft_candidates()[0]) or not probe.enter_node("goblin_battle"):
+			break;
+		var result:BattleResult = BattleResult.new();
+		result.battle_id = probe.state.active_battle_id;
+		result.node_id = probe.state.current_node_id;
+		result.victory = true;
+		result.player_health = probe.state.current_health;
+		result.player_max_health = probe.state.max_health;
+		if probe.submit_battle_result(result) and probe.state.reward_state.candidates.has(target):
+			return seed_value;
+	_expect(false, "固定种子探测必须覆盖待测卡牌的真实奖励候选：%s" % target.card_id);
+	return -1;
+
+
 func _test_draft_and_rewards()->void:
 	for id in NEW_IDS:
+		var target:CardDefinition = _card(id);
+		var chosen:CardDefinition = target if target.rarity == CardDefinition.CardRarity.EPIC else _card("blood_cloak");
+		var definition:RunDefinition = load("res://tests/fixtures/linear_run.tres");
+		var seed_value:int = _reward_seed(definition, target, chosen);
+		if seed_value < 0:
+			continue;
 		var main:Node = load("res://main.tscn").instantiate();
-		root.add_child(main);
 		var flow:GameFlowController = main.get_node("game_flow_controller");
+		# 固定线性测试配置只用于卡牌机制隔离；正式地图在branch_map_test验证。
+		flow.run_definition = definition;
+		flow.run_seed = seed_value;
+		root.add_child(main);
 		flow._start_new_run();
 		(flow.current_page as StartingDraftView)._card_views[0].pressed.emit();
 		var epic:StartingDraftView = flow.current_page as StartingDraftView;
 		_expect(epic.candidates.size() == 8 and epic.get_page_count() == 2, "正式史诗8张自动分两页");
-		var chosen:CardDefinition = _card(id) if _card(id).rarity == CardDefinition.CardRarity.EPIC else _card("blood_cloak");
 		epic._change_page(epic.candidates.find(chosen) / 6);
 		for view in epic._card_views:
 			if view.card_definition == chosen:
@@ -183,8 +219,11 @@ func _test_draft_and_rewards()->void:
 		controller.battle_state.enemy_state.take_unblocked_damage(100);
 		controller._check_battle_result();
 		var reward:RewardView = flow.current_page;
-		_expect(reward.setup([_card(id), _card("heavy_strike"), _card("double_strike")]), "新增非传说卡可以显示为奖励候选");
-		reward._reward_card_views[0].pressed.emit();
+		_expect(flow.run_state.reward_state.candidates.has(target) and reward.reward_options == flow.run_state.reward_state.candidates, "新增非传说卡显示为真实会话奖励候选");
+		for view:CardChoiceView in reward._reward_card_views:
+			if view.card_definition == target:
+				view.pressed.emit();
+				break;
 		_expect(flow.current_page is MapView and flow.run_state.owned_cards.back() == _card(id) and flow.run_state.owned_cards.size() == 10, "通过奖励组件加入真实牌组");
 		flow._handle_map_node_selected("rest_site");
 		flow._handle_map_node_selected("ruin_guard_boss");
@@ -202,7 +241,7 @@ func _test_text()->void:
 	var views:Array[Control] = [];
 	for id in NEW_IDS:
 		var definition:CardDefinition = _card(id);
-		var reward:RewardCardView = load("res://run/reward/reward_card_view.tscn").instantiate();
+		var reward:CardChoiceView = load("res://ui/cards/card_choice_view.tscn").instantiate();
 		root.add_child(reward);
 		reward.setup(definition);
 		views.append(reward);

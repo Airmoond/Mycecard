@@ -1,0 +1,33 @@
+{
+  "evaluation_date": "2026-10-03",
+  "enemies": [
+    "ironcrown_tyrant",
+    "calamity_hierophant"
+  ],
+  "reference_enemy": "ruin_guard",
+  "player_health": 50,
+  "player_max_health": 50,
+  "coarse_samples": 64,
+  "training_seed_start": 51000000,
+  "validation_samples": 256,
+  "validation_seed_start": 62000000,
+  "health_candidates": [
+    90,
+    100,
+    110,
+    120,
+    130
+  ],
+  "deck_labels": [
+    "基础6张",
+    "参考9张",
+    "随机合法开局"
+  ],
+  "reference_deck": [
+    "eternity",
+    "war_god_blessing",
+    "uppercut"
+  ],
+  "balance_intent": "以现有99血遗迹守卫为对照，观察基础/参考/随机开局牌组的胜率、余血、回合；Boss不套用普通敌人约80%的目标，也无100血上限",
+  "frozen_policy": "沿用意图贪心v1；同类牌组相同种子，校准只改复制资源生命，独立验证不改参数"
+}

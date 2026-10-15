@@ -1,0 +1,33 @@
+{
+  "evaluation_date": "2026-10-03",
+  "target_win_rate": 0.8,
+  "acceptance_band": [
+    0.75,
+    0.85
+  ],
+  "coarse_samples": 128,
+  "training_samples": 512,
+  "training_seed_start": 31000000,
+  "validation_samples": 1000,
+  "validation_seed_start": 42000000,
+  "player_health": 50,
+  "player_max_health": 50,
+  "deck": [
+    "strike",
+    "strike",
+    "strike",
+    "defend",
+    "defend",
+    "defend"
+  ],
+  "frozen_policy": "意图贪心v1（沿用既有评分策略，仅使用基础牌；不修改策略以迎合胜率）",
+  "enemies": [
+    "bulwark_sentinel",
+    "hexbound_acolyte",
+    "ragebound_brute"
+  ],
+  "growth_exception": "ragebound_brute持续每回合加2力量，用户明确允许突破1.8 E，无封顶",
+  "target_interpretation": "用户最新确认不必拘泥80%，接近即可；以75%～85%作本轮自动样本比较带，不把它视为人类胜率保证",
+  "normal_health_soft_cap": 100,
+  "health_constraint": "本轮三种普通敌人均不超过100生命；以格挡节奏、减益频率与攻击数字调节压力"
+}

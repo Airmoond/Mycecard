@@ -1,0 +1,112 @@
+[gd_resource type="Resource" script_class="MapDefinition" format=3]
+
+[ext_resource type="Script" path="res://run/map/data/map_node_definition.gd" id="1_node"]
+[ext_resource type="Script" path="res://run/map/data/map_definition.gd" id="2_map"]
+
+[sub_resource type="Resource" id="Resource_start"]
+script = ExtResource("1_node")
+node_id = "start"
+display_name = "冒险起点"
+node_type = 3
+map_position = Vector2(110, 300)
+next_node_ids = Array[String](["route_a_1", "route_b_1", "route_c_1"])
+
+[sub_resource type="Resource" id="Resource_route_a_1"]
+script = ExtResource("1_node")
+node_id = "route_a_1"
+display_name = "未知敌人"
+map_position = Vector2(310, 150)
+next_node_ids = Array[String](["route_a_2"])
+route_id = "a"
+random_encounter = true
+
+[sub_resource type="Resource" id="Resource_route_a_2"]
+script = ExtResource("1_node")
+node_id = "route_a_2"
+display_name = "未知敌人"
+map_position = Vector2(510, 150)
+next_node_ids = Array[String](["route_a_rest"])
+route_id = "a"
+random_encounter = true
+
+[sub_resource type="Resource" id="Resource_route_a_rest"]
+script = ExtResource("1_node")
+node_id = "route_a_rest"
+display_name = "篝火休整"
+node_type = 1
+map_position = Vector2(710, 150)
+next_node_ids = Array[String](["final_boss"])
+route_id = "a"
+heal_amount = 15
+
+[sub_resource type="Resource" id="Resource_route_b_1"]
+script = ExtResource("1_node")
+node_id = "route_b_1"
+display_name = "未知敌人"
+map_position = Vector2(310, 300)
+next_node_ids = Array[String](["route_b_2"])
+route_id = "b"
+random_encounter = true
+
+[sub_resource type="Resource" id="Resource_route_b_2"]
+script = ExtResource("1_node")
+node_id = "route_b_2"
+display_name = "未知敌人"
+map_position = Vector2(510, 300)
+next_node_ids = Array[String](["route_b_rest"])
+route_id = "b"
+random_encounter = true
+
+[sub_resource type="Resource" id="Resource_route_b_rest"]
+script = ExtResource("1_node")
+node_id = "route_b_rest"
+display_name = "篝火休整"
+node_type = 1
+map_position = Vector2(710, 300)
+next_node_ids = Array[String](["final_boss"])
+route_id = "b"
+heal_amount = 15
+
+[sub_resource type="Resource" id="Resource_route_c_1"]
+script = ExtResource("1_node")
+node_id = "route_c_1"
+display_name = "未知敌人"
+map_position = Vector2(310, 450)
+next_node_ids = Array[String](["route_c_2"])
+route_id = "c"
+random_encounter = true
+
+[sub_resource type="Resource" id="Resource_route_c_2"]
+script = ExtResource("1_node")
+node_id = "route_c_2"
+display_name = "未知敌人"
+map_position = Vector2(510, 450)
+next_node_ids = Array[String](["route_c_rest"])
+route_id = "c"
+random_encounter = true
+
+[sub_resource type="Resource" id="Resource_route_c_rest"]
+script = ExtResource("1_node")
+node_id = "route_c_rest"
+display_name = "篝火休整"
+node_type = 1
+map_position = Vector2(710, 450)
+next_node_ids = Array[String](["final_boss"])
+route_id = "c"
+heal_amount = 15
+
+[sub_resource type="Resource" id="Resource_final_boss"]
+script = ExtResource("1_node")
+node_id = "final_boss"
+display_name = "最终 Boss"
+node_type = 2
+map_position = Vector2(910, 300)
+random_encounter = true
+
+[resource]
+script = ExtResource("2_map")
+map_id = "phase5_legacy_map"
+nodes = Array[ExtResource("1_node")]([SubResource("Resource_start"), SubResource("Resource_route_a_1"), SubResource("Resource_route_a_2"), SubResource("Resource_route_a_rest"), SubResource("Resource_route_b_1"), SubResource("Resource_route_b_2"), SubResource("Resource_route_b_rest"), SubResource("Resource_route_c_1"), SubResource("Resource_route_c_2"), SubResource("Resource_route_c_rest"), SubResource("Resource_final_boss")])
+starting_node_ids = Array[String](["start"])
+is_branch_map = true
+metadata/_custom_type_script = "uid://ctubqmtrc3o3i"

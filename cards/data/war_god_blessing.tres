@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="1_card"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="2_effect"]
+[ext_resource type="Texture2D" uid="uid://7o5ggdekm7bc" path="res://assets/images/war_god_blessing.png" id="4_artwork"]
 
 [sub_resource type="Resource" id="EnhanceWeapon"]
 script = ExtResource("2_effect")
@@ -13,8 +14,10 @@ durability_bonus = 2
 script = ExtResource("1_card")
 card_id = "war_god_blessing"
 card_name = "战神祝福"
-description = "使你的武器获得+8/+2。"
+description = "消耗。使你的武器获得+8/+2。"
 card_type = 1
 rarity = 2
+exhausts_on_play = true
 base_energy_cost = 1
 effects = Array[ExtResource("2_effect")]([SubResource("EnhanceWeapon")])
+artwork = ExtResource("4_artwork")

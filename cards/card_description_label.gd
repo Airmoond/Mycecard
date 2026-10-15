@@ -7,6 +7,14 @@ extends RichTextLabel
 
 func _ready()->void:
 	resized.connect(_fit_text);
+	_fit_text.call_deferred();
+
+
+## 浏览与手牌的显示尺寸改变时，从对应基准字号重新拟合全部文字。
+func set_base_font_size(value:int)->void:
+	_base_font_size = value;
+	if is_node_ready():
+		_fit_text();
 
 
 func set_description(value:String)->void:

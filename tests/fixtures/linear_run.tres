@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RunDefinition" format=3]
+
+[ext_resource type="Script" path="res://run/data/run_definition.gd" id="1_run"]
+[ext_resource type="Resource" path="res://characters/data/warrior.tres" id="2_character"]
+[ext_resource type="Resource" path="res://tests/fixtures/linear_map.tres" id="3_map"]
+
+[resource]
+script = ExtResource("1_run")
+run_id = "linear_test_run"
+reward_selection_count = 1
+character_definition = ExtResource("2_character")
+map_definition = ExtResource("3_map")

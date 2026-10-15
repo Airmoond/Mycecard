@@ -123,7 +123,7 @@ func _test_target_and_damage_category()->void:
 
 
 func _test_reward_description()->void:
-	var view:RewardCardView = load("res://run/reward/reward_card_view.tscn").instantiate();
+	var view:CardChoiceView = load("res://ui/cards/card_choice_view.tscn").instantiate();
 	root.add_child(view);
 	view.setup(load("res://cards/data/attack_and_block.tres"));
 	_expect(view.card_definition == load("res://cards/data/attack_and_block.tres"), "奖励卡应正常绑定");

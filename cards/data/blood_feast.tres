@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="1_card"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="2_effect"]
+[ext_resource type="Texture2D" uid="uid://cacc326u27cjm" path="res://assets/images/blood_feast-v2.png" id="4_artwork"]
 
 [sub_resource type="Resource" id="Damage"]
 script = ExtResource("2_effect")
@@ -18,3 +19,4 @@ rarity = 3
 exhausts_on_play = true
 base_energy_cost = 2
 effects = Array[ExtResource("2_effect")]([SubResource("Damage")])
+artwork = ExtResource("4_artwork")

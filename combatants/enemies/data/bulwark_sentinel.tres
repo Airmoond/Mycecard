@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://dpjibq46yyt3n"]
+
+[ext_resource type="Script" uid="uid://r84gdmwtul6d" path="res://combatants/enemies/enemy_definition.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://b1iqujddbs8dj" path="res://combatants/enemies/enemy_action_definition.gd" id="2_action"]
+[ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="3_effect"]
+[ext_resource type="Texture2D" uid="uid://dyvnms1aindyq" path="res://artworks/cave_crawler.png" id="4_portrait"]
+
+[sub_resource type="Resource" id="Effect_chip_0"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 2
+
+[sub_resource type="Resource" id="Effect_0_0"]
+script = ExtResource("3_effect")
+effect_type = 1
+amount = 7
+
+[sub_resource type="Resource" id="Action_0"]
+script = ExtResource("2_action")
+action_id = "guard_1"
+intent_text = "架盾"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_chip_0"), SubResource("Effect_0_0")])
+
+[sub_resource type="Resource" id="Effect_chip_1"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 3
+
+[sub_resource type="Resource" id="Effect_1_0"]
+script = ExtResource("3_effect")
+effect_type = 1
+amount = 14
+
+[sub_resource type="Resource" id="Action_1"]
+script = ExtResource("2_action")
+action_id = "guard_2"
+intent_text = "固守"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_chip_1"), SubResource("Effect_1_0")])
+
+[sub_resource type="Resource" id="Effect_chip_2"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 3
+
+[sub_resource type="Resource" id="Effect_2_0"]
+script = ExtResource("3_effect")
+effect_type = 1
+amount = 14
+
+[sub_resource type="Resource" id="Action_2"]
+script = ExtResource("2_action")
+action_id = "guard_3"
+intent_text = "蓄势"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_chip_2"), SubResource("Effect_2_0")])
+
+[sub_resource type="Resource" id="Effect_3_0"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 21
+
+[sub_resource type="Resource" id="Action_3"]
+script = ExtResource("2_action")
+action_id = "crushing_blow"
+intent_text = "蓄力重击"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_3_0")])
+
+[resource]
+script = ExtResource("1_enemy")
+action_pattern = Array[ExtResource("2_action")]([SubResource("Action_0"), SubResource("Action_1"), SubResource("Action_2"), SubResource("Action_3")])
+combatant_id = "bulwark_sentinel"
+display_name = "铁壁哨卫"
+max_health = 100
+artwork = ExtResource("4_portrait")

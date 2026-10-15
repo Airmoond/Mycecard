@@ -1,0 +1,2422 @@
+{
+  "model_version": "0.1",
+  "evaluation_date": "2026-10-03",
+  "cards_count": 29,
+  "parameters": {
+    "model_version": "0.1",
+    "evaluation_date": "2026-10-03",
+    "damage_per_unit": 6,
+    "block_per_unit": 5,
+    "draw_value": 0.5,
+    "healing_value": 0.3,
+    "health_loss_cost": 0.25,
+    "max_health_capacity_cost": 0.6,
+    "future_discount": 0.85,
+    "enhancement_reference": {
+      "attack": 3,
+      "remaining_durability": 1
+    },
+    "scenarios": [
+      {
+        "id": "short",
+        "name": "短战",
+        "turns": 1,
+        "attack_segments_per_turn": 1,
+        "outgoing_after_card": 6,
+        "incoming_attack": 6,
+        "draw_realization": 0.5,
+        "energy_realization": 0.5,
+        "future_block_utilization": 0.5,
+        "new_carry_block_per_turn": 0,
+        "current_block": 0,
+        "missing_health": 0,
+        "enemy_health": 40,
+        "enemy_block": 0,
+        "forgone_later_draw": 2,
+        "later_attack_cards": 0
+      },
+      {
+        "id": "standard",
+        "name": "标准局面",
+        "turns": 3,
+        "attack_segments_per_turn": 2,
+        "outgoing_after_card": 12,
+        "incoming_attack": 9,
+        "draw_realization": 1,
+        "energy_realization": 1,
+        "future_block_utilization": 0.8,
+        "new_carry_block_per_turn": 3,
+        "current_block": 10,
+        "missing_health": 6,
+        "enemy_health": 40,
+        "enemy_block": 0,
+        "forgone_later_draw": 1,
+        "later_attack_cards": 2
+      },
+      {
+        "id": "long",
+        "name": "长战配合",
+        "turns": 5,
+        "attack_segments_per_turn": 3,
+        "outgoing_after_card": 18,
+        "incoming_attack": 12,
+        "draw_realization": 1,
+        "energy_realization": 1,
+        "future_block_utilization": 1,
+        "new_carry_block_per_turn": 6,
+        "current_block": 20,
+        "missing_health": 10,
+        "enemy_health": 40,
+        "enemy_block": 0,
+        "forgone_later_draw": 0,
+        "later_attack_cards": 4
+      }
+    ]
+  },
+  "resource_hashes": {
+    "battle/actions/attack_damage_resolver.gd": "ed819067d759e958188c50259937eea828ba7a4280516a172b46d5f3a36689c0",
+    "battle/actions/combat_effect_definition.gd": "feeeca9ad82d930da59baf29acd0c68e2e3d82043b20f6afcee433d06360eb6f",
+    "battle/model/battle_state.gd": "8ade784a702d70be0cff1eedb8991b0dd4305e11e567458d7c77c5cdd34f1190",
+    "battle/model/combatant_state.gd": "a0a315bbf442067e1a9b19c28c559f32f9d2a3be203b2f1c7852e03cf0250731",
+    "battle/powers/data/blood_cloak.tres": "d7357bd287d0580f527071efe57ca32190efc929357e165a9ecab75c4b1adaf6",
+    "battle/powers/data/retain_block.tres": "25651cd66018f48fc6ed9999223a36c1b4109392aa7981849e99073a195ea18d",
+    "battle/powers/power_definition.gd": "95862bea21a90c832e31b203fc8aad58f7aee59cd424922f7857fa4fc469ef8b",
+    "battle/weapons/weapon_definition.gd": "4789ba126b37c62b6e3359a9b65eb5bbddb01eb9c6a00fa05a4c0b4f6a22ceb5",
+    "cards/card_definition.gd": "c8b1e96e53ad927ff17d087725563bf5296d7da4085d7577857b1dbb9b1780e2",
+    "cards/data/ancient_ritual.tres": "6466be687a1373b06dcbe9071e7db2b8325447392d60674e163aad180d91b294",
+    "cards/data/attack_and_block.tres": "48e577d51d09bec580f46f1f4a7b468b813142f649fbfedbb6867660312da996",
+    "cards/data/battle_trance.tres": "5b6e2eb6916dde9b2b2fa9a02364924fe14757ac7c112cb794fbc5a53d8dd13b",
+    "cards/data/blood_cloak.tres": "02326bb31b0f7c1d7a1c5af9077f9c89c750203523978d43cae8d96c7c25026c",
+    "cards/data/blood_feast.tres": "ea4ecd40d71a06defb1d226c45dae3762ff3850b27053dc664f2328b282b2542",
+    "cards/data/blood_sacrifice.tres": "804263acf85c163df3adc92e0c49225d490071bcedc0f92362282fa010079063",
+    "cards/data/bloodthirsty_sword.tres": "9ae31ff110ff1d7879490d6239986cd13b2c139c88f021dd59fe7c652a8899e7",
+    "cards/data/defend.tres": "95f1e06c0cb220b01501db604e092897b458e7792291d147efac87602cd805c5",
+    "cards/data/double_strike.tres": "651399f70fc037bfc71a50288b9b799acdf1334178d593c177ea11531227e3e6",
+    "cards/data/endless_power.tres": "ced9414eec2364ff5ad8aabbb231d78fc21bac3c749a171ffc2cc75c173d59d1",
+    "cards/data/eternity.tres": "36ea966020094f435f7a26abe46f1e99ee53ad54532f07fa5c38ea8230e5edbe",
+    "cards/data/fortress.tres": "e31d6248432d31bf4e32fec4c7307556761c166b41e20561dcda44f178b738dc",
+    "cards/data/heavy_strike.tres": "dfb5c537d59801c3065054703c313348d0c3db3cbc5642c6d8911c71d0b7954b",
+    "cards/data/intimidate.tres": "2511f35a37af49d64502fa852ccc28b494244df913d5bac611d4c352bebd6a60",
+    "cards/data/iron_wave.tres": "e525c058d3b58272cdf2fd7687f20c036ad5d492b8fe11d24821caa7563cc476",
+    "cards/data/lethal_blade.tres": "fe2000e880eced559a89aa25bd40e5c1f408660ff66f0cc26a257f2daca8935d",
+    "cards/data/open_wound.tres": "92a30d87e7cc7bcfeef1c4935df6e68255f2a8cd9ec46a42d5687fb07f3d794a",
+    "cards/data/overpower.tres": "3447397697a81fd9be82e7d9fe4eef996cfcedda2f53d5ab4af49da644ad4278",
+    "cards/data/pommel_strike.tres": "2229875249663becdfbc4a89b7689b8d6d60baaa60e47458c82ae66716df1cf8",
+    "cards/data/shield_slam.tres": "8c3ae8be2e9fa0216d51bcb1611499dd72dee189365ad54c2b4e03a8f9bbf7a3",
+    "cards/data/shrug_it_off.tres": "d80eba8b8790cb84fbb415ae0b8a90dcf38b2714432b8bd518d23d5a94ef20c0",
+    "cards/data/strength_power.tres": "c1a4365b7182ab0abbf72660220ddfddeb8320b9777ff0dbcd5a2681f02c8e60",
+    "cards/data/strike.tres": "9d0ce5822d893cbe24829fc0b7053cd24baa5a7d690a23a4bf2d5e361ec9dc04",
+    "cards/data/tactical_defense.tres": "5ca3858d542684a8532ccabfcc3afb8ad24cb217f4a75a33c614696294f6a06b",
+    "cards/data/technical_fighting.tres": "5096865ba7d2b28fd0bf25a949ef69db565f9f777d6a9b65716e30dae1a19a5f",
+    "cards/data/thorns.tres": "9a1c66f5b0fe53160a27708bf486edd1f39713fe918a9e1ea26340950e0425d8",
+    "cards/data/trade_wounds.tres": "9f4d211cfaabd5ebcad47ecf54b923a35ae1e96cc7fdc47cd517d3d8a21da0cc",
+    "cards/data/uppercut.tres": "4b3f6c4987ab68002afdeaee87cdd481f1cc6b8d6ff17fe058cf8e3445b50f91",
+    "cards/data/war_god_blessing.tres": "1d3ae0819889b92ab7b6ee054a169d98bac7f93060c755abb73740ca1134e75d",
+    "characters/data/warrior.tres": "fdac604dc004fb512642054439cf4fa93998789094495625f2cec0a49d6eadd9"
+  },
+  "results": [
+    {
+      "card": {
+        "id": "ancient_ritual",
+        "name": "古代仪典",
+        "description": "消耗。获得3点能量。",
+        "cost": 1,
+        "type": 1,
+        "rarity": 1,
+        "exhaust": true,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/ancient_ritual.tres",
+        "effects": [
+          {
+            "effect_type": 3,
+            "amount": 3,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.5,
+          "net": 0.5,
+          "efficiency": 1.5,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "获得能量（费用在净值中另扣）",
+              "value": 1.5
+            }
+          ]
+        },
+        "standard": {
+          "value": 3,
+          "net": 2,
+          "efficiency": 3.0,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "获得能量（费用在净值中另扣）",
+              "value": 3
+            }
+          ]
+        },
+        "long": {
+          "value": 3,
+          "net": 2,
+          "efficiency": 3.0,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "获得能量（费用在净值中另扣）",
+              "value": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "attack_and_block",
+        "name": "防守反击",
+        "description": "获得3点格挡，然后造成{damage_1}点伤害",
+        "cost": 1,
+        "type": 0,
+        "rarity": 0,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/attack_and_block.tres",
+        "effects": [
+          {
+            "effect_type": 1,
+            "amount": 3,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"1_sik7p\")",
+            "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+          },
+          {
+            "effect_type": 0,
+            "amount": 4,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"1_sik7p\")",
+            "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.2666666666666666,
+          "net": 0.2666666666666666,
+          "efficiency": 1.2666666666666666,
+          "raw_direct": 1.2666666666666666,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 0.6
+            },
+            {
+              "label": "攻击伤害",
+              "value": 0.6666666666666666
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.2666666666666666,
+          "net": 0.2666666666666666,
+          "efficiency": 1.2666666666666666,
+          "raw_direct": 1.2666666666666666,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 0.6
+            },
+            {
+              "label": "攻击伤害",
+              "value": 0.6666666666666666
+            }
+          ]
+        },
+        "long": {
+          "value": 1.2666666666666666,
+          "net": 0.2666666666666666,
+          "efficiency": 1.2666666666666666,
+          "raw_direct": 1.2666666666666666,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 0.6
+            },
+            {
+              "label": "攻击伤害",
+              "value": 0.6666666666666666
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "battle_trance",
+        "name": "背水一战",
+        "description": "抽3张牌。本回合你不能再抽牌。",
+        "cost": 0,
+        "type": 1,
+        "rarity": 1,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/battle_trance.tres",
+        "effects": [
+          {
+            "effect_type": 2,
+            "amount": 3,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 10,
+            "amount": 0,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 0.25,
+          "net": 0.25,
+          "efficiency": null,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "抽牌选择价值",
+              "value": 0.75
+            },
+            {
+              "label": "禁抽导致的后续抽牌损失",
+              "value": -0.5
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.0,
+          "net": 1.0,
+          "efficiency": null,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "抽牌选择价值",
+              "value": 1.5
+            },
+            {
+              "label": "禁抽导致的后续抽牌损失",
+              "value": -0.5
+            }
+          ]
+        },
+        "long": {
+          "value": 1.5,
+          "net": 1.5,
+          "efficiency": null,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "抽牌选择价值",
+              "value": 1.5
+            },
+            {
+              "label": "禁抽导致的后续抽牌损失",
+              "value": 0.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "blood_cloak",
+        "name": "血红披风",
+        "description": "每个玩家回合开始时，失去1生命值，获得10点格挡。",
+        "cost": 1,
+        "type": 2,
+        "rarity": 2,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/blood_cloak.tres",
+        "effects": [
+          {
+            "effect_type": 9,
+            "amount": 0,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")",
+            "power_definition": "ExtResource(\"3_power\")",
+            "power": {
+              "script": "ExtResource(\"1_power\")",
+              "power_type": 1,
+              "display_name": "血红披风",
+              "description": "从下个自身回合开始，每回合先失去1生命，再获得10格挡。每份独立触发；失血致死后停止后续效果。",
+              "health_loss": 1,
+              "block_gain": 10
+            }
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 0.0,
+          "net": -1.0,
+          "efficiency": 0.0,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "从下回合开始的格挡减失血",
+              "value": 0.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 2.122875,
+          "net": 1.122875,
+          "efficiency": 2.122875,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "从下回合开始的格挡减失血",
+              "value": 2.122875
+            }
+          ]
+        },
+        "long": {
+          "value": 4.7401046875,
+          "net": 3.7401046874999997,
+          "efficiency": 4.7401046875,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "从下回合开始的格挡减失血",
+              "value": 4.7401046875
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "blood_feast",
+        "name": "鲜血狂宴",
+        "description": "消耗。造成{damage_0}点伤害，并回复等同于伤害量的生命值。",
+        "cost": 2,
+        "type": 0,
+        "rarity": 3,
+        "exhaust": true,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/blood_feast.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 10,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": true,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.6666666666666667,
+          "net": -0.33333333333333326,
+          "efficiency": 0.8333333333333334,
+          "raw_direct": 1.6666666666666667,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.6666666666666667
+            },
+            {
+              "label": "实际治疗 0 点",
+              "value": 0.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 3.466666666666667,
+          "net": 1.4666666666666668,
+          "efficiency": 1.7333333333333334,
+          "raw_direct": 1.6666666666666667,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.6666666666666667
+            },
+            {
+              "label": "实际治疗 6 点",
+              "value": 1.7999999999999998
+            }
+          ]
+        },
+        "long": {
+          "value": 4.666666666666667,
+          "net": 2.666666666666667,
+          "efficiency": 2.3333333333333335,
+          "raw_direct": 1.6666666666666667,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.6666666666666667
+            },
+            {
+              "label": "实际治疗 10 点",
+              "value": 3.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "blood_sacrifice",
+        "name": "血祭",
+        "description": "消耗1点最大生命值。获得14点格挡。",
+        "cost": 1,
+        "type": 1,
+        "rarity": 2,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/blood_sacrifice.tres",
+        "effects": [
+          {
+            "effect_type": 11,
+            "amount": 1,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 1,
+            "amount": 14,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.9499999999999997,
+          "net": 0.9499999999999997,
+          "efficiency": 1.9499999999999997,
+          "raw_direct": 2.8,
+          "terms": [
+            {
+              "label": "本局最大生命容量代价",
+              "value": -0.6
+            },
+            {
+              "label": "最大生命降低导致的当前生命压低",
+              "value": -0.25
+            },
+            {
+              "label": "即时格挡",
+              "value": 2.8
+            }
+          ]
+        },
+        "standard": {
+          "value": 2.1999999999999997,
+          "net": 1.1999999999999997,
+          "efficiency": 2.1999999999999997,
+          "raw_direct": 2.8,
+          "terms": [
+            {
+              "label": "本局最大生命容量代价",
+              "value": -0.6
+            },
+            {
+              "label": "最大生命降低导致的当前生命压低",
+              "value": 0.0
+            },
+            {
+              "label": "即时格挡",
+              "value": 2.8
+            }
+          ]
+        },
+        "long": {
+          "value": 2.1999999999999997,
+          "net": 1.1999999999999997,
+          "efficiency": 2.1999999999999997,
+          "raw_direct": 2.8,
+          "terms": [
+            {
+              "label": "本局最大生命容量代价",
+              "value": -0.6
+            },
+            {
+              "label": "最大生命降低导致的当前生命压低",
+              "value": 0.0
+            },
+            {
+              "label": "即时格挡",
+              "value": 2.8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "bloodthirsty_sword",
+        "name": "嗜血长剑",
+        "description": "8攻击力/3耐久度\n每当使用该武器攻击敌人时，获得1点力量，抽1张牌。",
+        "cost": 2,
+        "type": 3,
+        "rarity": 2,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/bloodthirsty_sword.tres",
+        "effects": [],
+        "weapon": {
+          "base_attack": 8,
+          "base_max_durability": 3,
+          "break_destination": 0,
+          "ignores_block": false,
+          "strength_on_attack": 1,
+          "draw_on_attack": 1,
+          "script": "ExtResource(\"2_weapon\")"
+        }
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.75,
+          "net": -0.25,
+          "efficiency": 0.875,
+          "raw_direct": 1.3333333333333333,
+          "terms": [
+            {
+              "label": "首个装备周期 1 次武器伤害（含本武器先前触发的力量）",
+              "value": 1.3333333333333333
+            },
+            {
+              "label": "武器攻击抽牌",
+              "value": 0.25
+            },
+            {
+              "label": "武器触发力量对后续其他攻击的增量",
+              "value": 0.16666666666666666
+            }
+          ]
+        },
+        "standard": {
+          "value": 6.7212499999999995,
+          "net": 4.7212499999999995,
+          "efficiency": 3.3606249999999998,
+          "raw_direct": 1.3333333333333333,
+          "terms": [
+            {
+              "label": "首个装备周期 3 次武器伤害（含本武器先前触发的力量）",
+              "value": 3.8125
+            },
+            {
+              "label": "武器攻击抽牌",
+              "value": 1.28625
+            },
+            {
+              "label": "武器触发力量对后续其他攻击的增量",
+              "value": 1.6224999999999998
+            }
+          ]
+        },
+        "long": {
+          "value": 9.236696875,
+          "net": 7.236696875,
+          "efficiency": 4.6183484375,
+          "raw_direct": 1.3333333333333333,
+          "terms": [
+            {
+              "label": "首个装备周期 3 次武器伤害（含本武器先前触发的力量）",
+              "value": 3.8125
+            },
+            {
+              "label": "武器攻击抽牌",
+              "value": 1.28625
+            },
+            {
+              "label": "武器触发力量对后续其他攻击的增量",
+              "value": 4.137946875
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "defend",
+        "name": "防御",
+        "description": "获得5点格挡。",
+        "cost": 1,
+        "type": 1,
+        "rarity": 0,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/defend.tres",
+        "effects": [
+          {
+            "effect_type": 1,
+            "amount": 5,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_ai3yl\")",
+            "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.0,
+          "net": 0.0,
+          "efficiency": 1.0,
+          "raw_direct": 1.0,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 1.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.0,
+          "net": 0.0,
+          "efficiency": 1.0,
+          "raw_direct": 1.0,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 1.0
+            }
+          ]
+        },
+        "long": {
+          "value": 1.0,
+          "net": 0.0,
+          "efficiency": 1.0,
+          "raw_direct": 1.0,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 1.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "double_strike",
+        "name": "双重打击",
+        "description": "造成{damage_0}点伤害2次。",
+        "cost": 1,
+        "type": 0,
+        "rarity": 0,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/double_strike.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 5,
+            "target_type": 1,
+            "repeat_count": 2,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"1_mdf6x\")",
+            "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.6666666666666667,
+          "net": 0.6666666666666667,
+          "efficiency": 1.6666666666666667,
+          "raw_direct": 1.6666666666666667,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.6666666666666667
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.6666666666666667,
+          "net": 0.6666666666666667,
+          "efficiency": 1.6666666666666667,
+          "raw_direct": 1.6666666666666667,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.6666666666666667
+            }
+          ]
+        },
+        "long": {
+          "value": 1.6666666666666667,
+          "net": 0.6666666666666667,
+          "efficiency": 1.6666666666666667,
+          "raw_direct": 1.6666666666666667,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.6666666666666667
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "endless_power",
+        "name": "无尽之力",
+        "description": "消耗。造成{damage_0}点伤害。在本回合的剩余时间内，你每打出一张攻击牌，就回复1点能量。",
+        "cost": 0,
+        "type": 0,
+        "rarity": 3,
+        "exhaust": true,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/endless_power.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 6,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 12,
+            "amount": 1,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.0,
+          "net": 1.0,
+          "efficiency": null,
+          "raw_direct": 1.0,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.0
+            },
+            {
+              "label": "随后攻击牌回能，不包括本牌与武器攻击",
+              "value": 0.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 3.0,
+          "net": 3.0,
+          "efficiency": null,
+          "raw_direct": 1.0,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.0
+            },
+            {
+              "label": "随后攻击牌回能，不包括本牌与武器攻击",
+              "value": 2
+            }
+          ]
+        },
+        "long": {
+          "value": 5.0,
+          "net": 5.0,
+          "efficiency": null,
+          "raw_direct": 1.0,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.0
+            },
+            {
+              "label": "随后攻击牌回能，不包括本牌与武器攻击",
+              "value": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "eternity",
+        "name": "永恒",
+        "description": "攻击力3/耐久度3\n固有。保留。该武器损坏时，改为将其移入你的手牌，并保留所有强化。",
+        "cost": 1,
+        "type": 3,
+        "rarity": 3,
+        "exhaust": false,
+        "innate": true,
+        "retain": true,
+        "source": "cards/data/eternity.tres",
+        "effects": [],
+        "weapon": {
+          "base_attack": 3,
+          "base_max_durability": 3,
+          "break_destination": 1,
+          "ignores_block": false,
+          "strength_on_attack": 0,
+          "draw_on_attack": 0,
+          "script": "ExtResource(\"2_weapon\")"
+        }
+      },
+      "scenarios": {
+        "short": {
+          "value": 0.5,
+          "net": -0.5,
+          "efficiency": 0.5,
+          "raw_direct": 0.5,
+          "terms": [
+            {
+              "label": "首个装备周期 1 次武器伤害（含本武器先前触发的力量）",
+              "value": 0.5
+            },
+            {
+              "label": "武器攻击抽牌",
+              "value": 0.0
+            },
+            {
+              "label": "武器触发力量对后续其他攻击的增量",
+              "value": 0.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.28625,
+          "net": 0.2862499999999999,
+          "efficiency": 1.28625,
+          "raw_direct": 0.5,
+          "terms": [
+            {
+              "label": "首个装备周期 3 次武器伤害（含本武器先前触发的力量）",
+              "value": 1.28625
+            },
+            {
+              "label": "武器攻击抽牌",
+              "value": 0.0
+            },
+            {
+              "label": "武器触发力量对后续其他攻击的增量",
+              "value": 0.0
+            }
+          ]
+        },
+        "long": {
+          "value": 1.28625,
+          "net": 0.2862499999999999,
+          "efficiency": 1.28625,
+          "raw_direct": 0.5,
+          "terms": [
+            {
+              "label": "首个装备周期 3 次武器伤害（含本武器先前触发的力量）",
+              "value": 1.28625
+            },
+            {
+              "label": "武器攻击抽牌",
+              "value": 0.0
+            },
+            {
+              "label": "武器触发力量对后续其他攻击的增量",
+              "value": 0.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "fortress",
+        "name": "坚城",
+        "description": "在本局对战的剩余时间内，你的格挡不会在回合开始时消失。",
+        "cost": 2,
+        "type": 2,
+        "rarity": 3,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/fortress.tres",
+        "effects": [
+          {
+            "effect_type": 9,
+            "amount": 0,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")",
+            "power_definition": "ExtResource(\"3_power\")",
+            "power": {
+              "script": "ExtResource(\"1_power\")",
+              "display_name": "坚城",
+              "description": "本场战斗中，回合开始时不再自动清空格挡。重复施加不叠加。"
+            }
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 0.0,
+          "net": -2.0,
+          "efficiency": 0.0,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "保留后确实被使用的新增格挡",
+              "value": 0.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 0.7548,
+          "net": -1.2452,
+          "efficiency": 0.3774,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "保留后确实被使用的新增格挡",
+              "value": 0.7548
+            }
+          ]
+        },
+        "long": {
+          "value": 3.2503575,
+          "net": 1.2503574999999998,
+          "efficiency": 1.62517875,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "保留后确实被使用的新增格挡",
+              "value": 3.2503575
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "heavy_strike",
+        "name": "重击",
+        "description": "造成{damage_0}点伤害",
+        "cost": 2,
+        "type": 0,
+        "rarity": 0,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/heavy_strike.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 12,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"1_lytiv\")",
+            "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 2.0,
+          "net": 0.0,
+          "efficiency": 1.0,
+          "raw_direct": 2.0,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 2.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 2.0,
+          "net": 0.0,
+          "efficiency": 1.0,
+          "raw_direct": 2.0,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 2.0
+            }
+          ]
+        },
+        "long": {
+          "value": 2.0,
+          "net": 0.0,
+          "efficiency": 1.0,
+          "raw_direct": 2.0,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 2.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "intimidate",
+        "name": "颤栗",
+        "description": "消耗。给予3层易伤。",
+        "cost": 1,
+        "type": 1,
+        "rarity": 0,
+        "exhaust": true,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/intimidate.tres",
+        "effects": [
+          {
+            "effect_type": 8,
+            "amount": 3,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 0.5,
+          "net": -0.5,
+          "efficiency": 0.5,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 0.5
+            }
+          ]
+        },
+        "standard": {
+          "value": 2.5725,
+          "net": 1.5724999999999998,
+          "efficiency": 2.5725,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 2.5725
+            }
+          ]
+        },
+        "long": {
+          "value": 3.8587499999999992,
+          "net": 2.8587499999999992,
+          "efficiency": 3.8587499999999992,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 3.8587499999999992
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "iron_wave",
+        "name": "铁斩波",
+        "description": "造成{damage_0}点伤害。获得5点格挡。",
+        "cost": 1,
+        "type": 0,
+        "rarity": 0,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/iron_wave.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 5,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 1,
+            "amount": 5,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.8333333333333335,
+          "net": 0.8333333333333335,
+          "efficiency": 1.8333333333333335,
+          "raw_direct": 1.8333333333333335,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 0.8333333333333334
+            },
+            {
+              "label": "即时格挡",
+              "value": 1.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.8333333333333335,
+          "net": 0.8333333333333335,
+          "efficiency": 1.8333333333333335,
+          "raw_direct": 1.8333333333333335,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 0.8333333333333334
+            },
+            {
+              "label": "即时格挡",
+              "value": 1.0
+            }
+          ]
+        },
+        "long": {
+          "value": 1.8333333333333335,
+          "net": 0.8333333333333335,
+          "efficiency": 1.8333333333333335,
+          "raw_direct": 1.8333333333333335,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 0.8333333333333334
+            },
+            {
+              "label": "即时格挡",
+              "value": 1.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "lethal_blade",
+        "name": "致命之刃",
+        "description": "15攻击力/2耐久度\n该武器的攻击无视敌人的格挡。",
+        "cost": 3,
+        "type": 3,
+        "rarity": 2,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/lethal_blade.tres",
+        "effects": [],
+        "weapon": {
+          "base_attack": 15,
+          "base_max_durability": 2,
+          "break_destination": 0,
+          "ignores_block": true,
+          "strength_on_attack": 0,
+          "draw_on_attack": 0,
+          "script": "ExtResource(\"2_weapon\")"
+        }
+      },
+      "scenarios": {
+        "short": {
+          "value": 2.5,
+          "net": -0.5,
+          "efficiency": 0.8333333333333334,
+          "raw_direct": 2.5,
+          "terms": [
+            {
+              "label": "首个装备周期 1 次武器伤害（含本武器先前触发的力量）",
+              "value": 2.5
+            },
+            {
+              "label": "武器攻击抽牌",
+              "value": 0.0
+            },
+            {
+              "label": "武器触发力量对后续其他攻击的增量",
+              "value": 0.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 4.625,
+          "net": 1.625,
+          "efficiency": 1.5416666666666667,
+          "raw_direct": 2.5,
+          "terms": [
+            {
+              "label": "首个装备周期 2 次武器伤害（含本武器先前触发的力量）",
+              "value": 4.625
+            },
+            {
+              "label": "武器攻击抽牌",
+              "value": 0.0
+            },
+            {
+              "label": "武器触发力量对后续其他攻击的增量",
+              "value": 0.0
+            }
+          ]
+        },
+        "long": {
+          "value": 4.625,
+          "net": 1.625,
+          "efficiency": 1.5416666666666667,
+          "raw_direct": 2.5,
+          "terms": [
+            {
+              "label": "首个装备周期 2 次武器伤害（含本武器先前触发的力量）",
+              "value": 4.625
+            },
+            {
+              "label": "武器攻击抽牌",
+              "value": 0.0
+            },
+            {
+              "label": "武器触发力量对后续其他攻击的增量",
+              "value": 0.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "open_wound",
+        "name": "开放性伤口",
+        "description": "造成{damage_0}点伤害。给予2层易伤。",
+        "cost": 2,
+        "type": 0,
+        "rarity": 1,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/open_wound.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 8,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 8,
+            "amount": 2,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.8333333333333333,
+          "net": -0.16666666666666674,
+          "efficiency": 0.9166666666666666,
+          "raw_direct": 1.3333333333333333,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.3333333333333333
+            },
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 0.5
+            }
+          ]
+        },
+        "standard": {
+          "value": 3.1833333333333336,
+          "net": 1.1833333333333336,
+          "efficiency": 1.5916666666666668,
+          "raw_direct": 1.3333333333333333,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.3333333333333333
+            },
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 1.8500000000000003
+            }
+          ]
+        },
+        "long": {
+          "value": 4.108333333333333,
+          "net": 2.1083333333333334,
+          "efficiency": 2.0541666666666667,
+          "raw_direct": 1.3333333333333333,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.3333333333333333
+            },
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 2.7750000000000004
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "overpower",
+        "name": "力量碾压",
+        "description": "造成{damage_0}点伤害。",
+        "cost": 3,
+        "type": 0,
+        "rarity": 2,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/overpower.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 32,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 5.333333333333333,
+          "net": 2.333333333333333,
+          "efficiency": 1.7777777777777777,
+          "raw_direct": 5.333333333333333,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 5.333333333333333
+            }
+          ]
+        },
+        "standard": {
+          "value": 5.333333333333333,
+          "net": 2.333333333333333,
+          "efficiency": 1.7777777777777777,
+          "raw_direct": 5.333333333333333,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 5.333333333333333
+            }
+          ]
+        },
+        "long": {
+          "value": 5.333333333333333,
+          "net": 2.333333333333333,
+          "efficiency": 1.7777777777777777,
+          "raw_direct": 5.333333333333333,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 5.333333333333333
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "pommel_strike",
+        "name": "剑柄打击",
+        "description": "造成{damage_0}点伤害。抽1张牌。",
+        "cost": 1,
+        "type": 0,
+        "rarity": 0,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/pommel_strike.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 9,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 2,
+            "amount": 1,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.75,
+          "net": 0.75,
+          "efficiency": 1.75,
+          "raw_direct": 1.5,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.5
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 0.25
+            }
+          ]
+        },
+        "standard": {
+          "value": 2.0,
+          "net": 1.0,
+          "efficiency": 2.0,
+          "raw_direct": 1.5,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.5
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 0.5
+            }
+          ]
+        },
+        "long": {
+          "value": 2.0,
+          "net": 1.0,
+          "efficiency": 2.0,
+          "raw_direct": 1.5,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.5
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 0.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "shield_slam",
+        "name": "盾牌猛击",
+        "description": "造成等同于你当前格挡值的伤害。\n（当前造成{damage_0}点伤害）",
+        "cost": 1,
+        "type": 0,
+        "rarity": 2,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/shield_slam.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 0,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 1,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 0.0,
+          "net": -1.0,
+          "efficiency": 0.0,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "按已有格挡造成伤害",
+              "value": 0.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.6666666666666667,
+          "net": 0.6666666666666667,
+          "efficiency": 1.6666666666666667,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "按已有格挡造成伤害",
+              "value": 1.6666666666666667
+            }
+          ]
+        },
+        "long": {
+          "value": 3.3333333333333335,
+          "net": 2.3333333333333335,
+          "efficiency": 3.3333333333333335,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "按已有格挡造成伤害",
+              "value": 3.3333333333333335
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "shrug_it_off",
+        "name": "耸肩无视",
+        "description": "获得8点格挡。抽1张牌。",
+        "cost": 1,
+        "type": 1,
+        "rarity": 0,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/shrug_it_off.tres",
+        "effects": [
+          {
+            "effect_type": 1,
+            "amount": 8,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 2,
+            "amount": 1,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.85,
+          "net": 0.8500000000000001,
+          "efficiency": 1.85,
+          "raw_direct": 1.6,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 1.6
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 0.25
+            }
+          ]
+        },
+        "standard": {
+          "value": 2.1,
+          "net": 1.1,
+          "efficiency": 2.1,
+          "raw_direct": 1.6,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 1.6
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 0.5
+            }
+          ]
+        },
+        "long": {
+          "value": 2.1,
+          "net": 1.1,
+          "efficiency": 2.1,
+          "raw_direct": 1.6,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 1.6
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 0.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "strength_power",
+        "name": "力量！！！",
+        "description": "获得2点力量。",
+        "cost": 1,
+        "type": 2,
+        "rarity": 1,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/strength_power.tres",
+        "effects": [
+          {
+            "effect_type": 6,
+            "amount": 2,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 0.3333333333333333,
+          "net": -0.6666666666666667,
+          "efficiency": 0.3333333333333333,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "力量对后续攻击段的增量",
+              "value": 0.3333333333333333
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.7149999999999999,
+          "net": 0.7149999999999999,
+          "efficiency": 1.7149999999999999,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "力量对后续攻击段的增量",
+              "value": 1.7149999999999999
+            }
+          ]
+        },
+        "long": {
+          "value": 3.70863125,
+          "net": 2.70863125,
+          "efficiency": 3.70863125,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "力量对后续攻击段的增量",
+              "value": 3.70863125
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "strike",
+        "name": "打击",
+        "description": "造成{damage_0}点伤害",
+        "cost": 1,
+        "type": 0,
+        "rarity": 0,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/strike.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 6,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_gwnax\")",
+            "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.0,
+          "net": 0.0,
+          "efficiency": 1.0,
+          "raw_direct": 1.0,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.0,
+          "net": 0.0,
+          "efficiency": 1.0,
+          "raw_direct": 1.0,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.0
+            }
+          ]
+        },
+        "long": {
+          "value": 1.0,
+          "net": 0.0,
+          "efficiency": 1.0,
+          "raw_direct": 1.0,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 1.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "tactical_defense",
+        "name": "战术防御",
+        "description": "获得3点格挡，然后抽1张牌",
+        "cost": 1,
+        "type": 1,
+        "rarity": 0,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/tactical_defense.tres",
+        "effects": [
+          {
+            "effect_type": 1,
+            "amount": 3,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"1_o3kt1\")",
+            "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+          },
+          {
+            "effect_type": 2,
+            "amount": 1,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"1_o3kt1\")",
+            "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 0.85,
+          "net": -0.15000000000000002,
+          "efficiency": 0.85,
+          "raw_direct": 0.6,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 0.6
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 0.25
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.1,
+          "net": 0.10000000000000009,
+          "efficiency": 1.1,
+          "raw_direct": 0.6,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 0.6
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 0.5
+            }
+          ]
+        },
+        "long": {
+          "value": 1.1,
+          "net": 0.10000000000000009,
+          "efficiency": 1.1,
+          "raw_direct": 0.6,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 0.6
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 0.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "technical_fighting",
+        "name": "技巧型格斗",
+        "description": "消耗。给予2层虚弱。抽3张牌。",
+        "cost": 1,
+        "type": 1,
+        "rarity": 2,
+        "exhaust": true,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/technical_fighting.tres",
+        "effects": [
+          {
+            "effect_type": 7,
+            "amount": 2,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 2,
+            "amount": 3,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.15,
+          "net": 0.1499999999999999,
+          "efficiency": 1.15,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "虚弱避免的攻击伤害",
+              "value": 0.4
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 0.75
+            }
+          ]
+        },
+        "standard": {
+          "value": 2.6100000000000003,
+          "net": 1.6100000000000003,
+          "efficiency": 2.6100000000000003,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "虚弱避免的攻击伤害",
+              "value": 1.11
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 1.5
+            }
+          ]
+        },
+        "long": {
+          "value": 2.6100000000000003,
+          "net": 1.6100000000000003,
+          "efficiency": 2.6100000000000003,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "虚弱避免的攻击伤害",
+              "value": 1.11
+            },
+            {
+              "label": "抽牌选择价值",
+              "value": 1.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "thorns",
+        "name": "荆棘",
+        "description": "获得7点格挡。给予1层易伤。",
+        "cost": 1,
+        "type": 1,
+        "rarity": 1,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/thorns.tres",
+        "effects": [
+          {
+            "effect_type": 1,
+            "amount": 7,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 8,
+            "amount": 1,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.9,
+          "net": 0.8999999999999999,
+          "efficiency": 1.9,
+          "raw_direct": 1.4,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 1.4
+            },
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 0.5
+            }
+          ]
+        },
+        "standard": {
+          "value": 2.4,
+          "net": 1.4,
+          "efficiency": 2.4,
+          "raw_direct": 1.4,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 1.4
+            },
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 1.0
+            }
+          ]
+        },
+        "long": {
+          "value": 2.9,
+          "net": 1.9,
+          "efficiency": 2.9,
+          "raw_direct": 1.4,
+          "terms": [
+            {
+              "label": "即时格挡",
+              "value": 1.4
+            },
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 1.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "trade_wounds",
+        "name": "以伤换伤",
+        "description": "失去1点生命。造成{damage_1}点伤害。",
+        "cost": 1,
+        "type": 1,
+        "rarity": 0,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/trade_wounds.tres",
+        "effects": [
+          {
+            "effect_type": 5,
+            "amount": 1,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 0,
+            "amount": 12,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.75,
+          "net": 0.75,
+          "efficiency": 1.75,
+          "raw_direct": 2.0,
+          "terms": [
+            {
+              "label": "直接失血代价",
+              "value": -0.25
+            },
+            {
+              "label": "攻击伤害",
+              "value": 2.0
+            }
+          ]
+        },
+        "standard": {
+          "value": 1.75,
+          "net": 0.75,
+          "efficiency": 1.75,
+          "raw_direct": 2.0,
+          "terms": [
+            {
+              "label": "直接失血代价",
+              "value": -0.25
+            },
+            {
+              "label": "攻击伤害",
+              "value": 2.0
+            }
+          ]
+        },
+        "long": {
+          "value": 1.75,
+          "net": 0.75,
+          "efficiency": 1.75,
+          "raw_direct": 2.0,
+          "terms": [
+            {
+              "label": "直接失血代价",
+              "value": -0.25
+            },
+            {
+              "label": "攻击伤害",
+              "value": 2.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "uppercut",
+        "name": "上勾拳！",
+        "description": "造成{damage_0}点伤害。给予1层易伤。给予1层虚弱。",
+        "cost": 2,
+        "type": 0,
+        "rarity": 1,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/uppercut.tres",
+        "effects": [
+          {
+            "effect_type": 0,
+            "amount": 13,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 8,
+            "amount": 1,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          },
+          {
+            "effect_type": 7,
+            "amount": 1,
+            "target_type": 1,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 0,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 3.0666666666666664,
+          "net": 1.0666666666666664,
+          "efficiency": 1.5333333333333332,
+          "raw_direct": 2.1666666666666665,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 2.1666666666666665
+            },
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 0.5
+            },
+            {
+              "label": "虚弱避免的攻击伤害",
+              "value": 0.4
+            }
+          ]
+        },
+        "standard": {
+          "value": 3.7666666666666666,
+          "net": 1.7666666666666666,
+          "efficiency": 1.8833333333333333,
+          "raw_direct": 2.1666666666666665,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 2.1666666666666665
+            },
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 1.0
+            },
+            {
+              "label": "虚弱避免的攻击伤害",
+              "value": 0.6
+            }
+          ]
+        },
+        "long": {
+          "value": 4.266666666666667,
+          "net": 2.2666666666666666,
+          "efficiency": 2.1333333333333333,
+          "raw_direct": 2.1666666666666665,
+          "terms": [
+            {
+              "label": "攻击伤害",
+              "value": 2.1666666666666665
+            },
+            {
+              "label": "易伤对施加后攻击的增量",
+              "value": 1.5
+            },
+            {
+              "label": "虚弱避免的攻击伤害",
+              "value": 0.6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "card": {
+        "id": "war_god_blessing",
+        "name": "战神祝福",
+        "description": "使你的武器获得+8/+2。",
+        "cost": 1,
+        "type": 1,
+        "rarity": 2,
+        "exhaust": false,
+        "innate": false,
+        "retain": false,
+        "source": "cards/data/war_god_blessing.tres",
+        "effects": [
+          {
+            "effect_type": 4,
+            "amount": 8,
+            "target_type": 0,
+            "repeat_count": 1,
+            "damage_source": 0,
+            "heals_from_damage": false,
+            "durability_bonus": 2,
+            "script": "ExtResource(\"2_effect\")"
+          }
+        ],
+        "weapon": null
+      },
+      "scenarios": {
+        "short": {
+          "value": 1.3333333333333333,
+          "net": 0.33333333333333326,
+          "efficiency": 1.3333333333333333,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "强化相对原武器的增量，不重复计原武器",
+              "value": 1.3333333333333333
+            }
+          ]
+        },
+        "standard": {
+          "value": 4.21625,
+          "net": 3.2162499999999996,
+          "efficiency": 4.21625,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "强化相对原武器的增量，不重复计原武器",
+              "value": 4.21625
+            }
+          ]
+        },
+        "long": {
+          "value": 4.21625,
+          "net": 3.2162499999999996,
+          "efficiency": 4.21625,
+          "raw_direct": 0.0,
+          "terms": [
+            {
+              "label": "强化相对原武器的增量，不重复计原武器",
+              "value": 4.21625
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

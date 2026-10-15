@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="1_card"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="1_i6j3t"]
 [ext_resource type="Script" uid="uid://j62orvc63hae" path="res://battle/weapons/weapon_definition.gd" id="2_weapon"]
+[ext_resource type="Texture2D" uid="uid://d0krnllxlwyyb" path="res://assets/images/bloodthirsty_sword.png" id="4_artwork"]
 
 [sub_resource type="Resource" id="Weapon"]
 script = ExtResource("2_weapon")
@@ -21,3 +22,4 @@ card_type = 3
 rarity = 2
 weapon_definition = SubResource("Weapon")
 base_energy_cost = 2
+artwork = ExtResource("4_artwork")

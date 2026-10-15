@@ -18,6 +18,7 @@ func _run()->void:
 	_test_endless_power();
 	await _test_card_text();
 	await process_frame;
+	await create_timer(0.5).timeout; # 仅等待测试退出时的混音线程释放。
 	print("战士正式传说卡检查完成，失败数：%d" % _failures);
 	quit(0 if _failures == 0 else 1);
 
@@ -36,7 +37,20 @@ func _controller(cards:Array[CardDefinition])->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), cards, 50, 50), "正式传说卡测试战斗应启动");
+	# 固定6伤害测试对手，保证观察完整武器周期，避免依赖正式敌人的平衡数值。
+	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate();
+	var enemy:EnemyDefinition = encounter.enemy_definition.duplicate();
+	var damage:CombatEffectDefinition = CombatEffectDefinition.new();
+	damage.effect_type = CombatEffectDefinition.EffectType.DAMAGE;
+	damage.target_type = CombatEffectDefinition.TargetType.OPPONENT;
+	damage.amount = 6;
+	var action:EnemyActionDefinition = EnemyActionDefinition.new();
+	action.action_id = "test_attack_6";
+	action.intent_text = "测试攻击";
+	action.effects = [damage];
+	enemy.action_pattern = [action];
+	encounter.enemy_definition = enemy;
+	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), cards, 50, 50), "正式传说卡测试战斗应启动");
 	return controller;
 
 
@@ -80,6 +94,8 @@ func _test_catalog_and_rewards()->void:
 	var main:Node = load("res://main.tscn").instantiate();
 	root.add_child(main);
 	var flow:GameFlowController = main.get_node("game_flow_controller");
+	# 固定线性测试配置只用于卡牌机制隔离；正式地图在branch_map_test验证。
+	flow.run_definition = load("res://tests/fixtures/linear_run.tres");
 	flow._start_new_run();
 	for _round in range(3):
 		(flow.current_page as StartingDraftView)._card_views[0].pressed.emit();
@@ -193,7 +209,7 @@ func _test_card_text()->void:
 	var views:Array[Control] = [];
 	for id in CARD_IDS:
 		var definition:CardDefinition = _card(id);
-		var reward:RewardCardView = load("res://run/reward/reward_card_view.tscn").instantiate();
+		var reward:CardChoiceView = load("res://ui/cards/card_choice_view.tscn").instantiate();
 		root.add_child(reward);
 		reward.setup(definition);
 		_expect(reward.card_definition == definition, "传说卡可由候选卡组件显示");

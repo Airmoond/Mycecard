@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://ceko11y76c41m"]
+
+[ext_resource type="Script" uid="uid://r84gdmwtul6d" path="res://combatants/enemies/enemy_definition.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://b1iqujddbs8dj" path="res://combatants/enemies/enemy_action_definition.gd" id="2_action"]
+[ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="3_effect"]
+[ext_resource type="Texture2D" uid="uid://vo35thrtuask" path="res://artworks/ruin_guard.png" id="4_portrait"]
+
+[sub_resource type="Resource" id="Effect_0_0"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 8
+
+[sub_resource type="Resource" id="Effect_0_1"]
+script = ExtResource("3_effect")
+effect_type = 1
+amount = 6
+
+[sub_resource type="Resource" id="Action_0"]
+script = ExtResource("2_action")
+action_id = "iron_guard"
+intent_text = "铁冠盾击"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_0_0"), SubResource("Effect_0_1")])
+
+[sub_resource type="Resource" id="Effect_1_0"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 7
+repeat_count = 3
+
+[sub_resource type="Resource" id="Action_1"]
+script = ExtResource("2_action")
+action_id = "triple_slash"
+intent_text = "三连斩"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1_0")])
+
+[sub_resource type="Resource" id="Effect_2_0"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 12
+
+[sub_resource type="Resource" id="Effect_2_1"]
+script = ExtResource("3_effect")
+effect_type = 1
+amount = 3
+
+[sub_resource type="Resource" id="Action_2"]
+script = ExtResource("2_action")
+action_id = "armored_cleave"
+intent_text = "覆甲重斩"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_2_0"), SubResource("Effect_2_1")])
+
+[sub_resource type="Resource" id="Effect_3_0"]
+script = ExtResource("3_effect")
+effect_type = 1
+amount = 13
+
+[sub_resource type="Resource" id="Action_3"]
+script = ExtResource("2_action")
+action_id = "rally_guard"
+intent_text = "整顿战阵"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_3_0")])
+
+[resource]
+script = ExtResource("1_enemy")
+action_pattern = Array[ExtResource("2_action")]([SubResource("Action_0"), SubResource("Action_1"), SubResource("Action_2"), SubResource("Action_3")])
+combatant_id = "ironcrown_tyrant"
+display_name = "铁冠暴君"
+max_health = 110
+artwork = ExtResource("4_portrait")

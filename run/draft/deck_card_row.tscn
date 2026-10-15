@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [sub_resource type="StyleBoxFlat" id="Row"]
-bg_color = Color(0.12, 0.16, 0.21, 0.95)
+bg_color = Color(0.25, 0.17, 0.095, 0.95)
 content_margin_left = 14.0
 content_margin_right = 14.0
 content_margin_top = 7.0
@@ -15,7 +15,7 @@ corner_radius_bottom_right = 5
 custom_minimum_size = Vector2(0, 34)
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.88, 0.9, 0.94, 1)
+theme_override_colors/font_color = Color(0.93, 0.85, 0.70, 1)
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("Row")
 text = "卡牌名称"

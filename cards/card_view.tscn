@@ -4,22 +4,22 @@
 [ext_resource type="PackedScene" path="res://cards/card_face.tscn" id="2_face"]
 
 [node name="card_view" type="Control" unique_id=2071968896]
+custom_minimum_size = Vector2(180, 252)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 140.0
-offset_bottom = 200.0
+offset_right = 180.0
+offset_bottom = 252.0
+size_flags_vertical = 8
 mouse_default_cursor_shape = 2
 script = ExtResource("1_view")
 
 [node name="card_background" type="Panel" parent="." unique_id=462553162]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+visible = false
+layout_mode = 0
+offset_right = 180.0
+offset_bottom = 252.0
 mouse_filter = 2
 metadata/_edit_lock_ = true
 
-[node name="card_face" parent="." instance=ExtResource("2_face")]
-layout_mode = 1
+[node name="card_face" parent="." unique_id=69137746 instance=ExtResource("2_face")]
+layout_mode = 0

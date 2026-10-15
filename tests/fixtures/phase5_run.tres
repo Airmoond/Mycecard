@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="RunDefinition" format=3]
+
+[ext_resource type="Script" path="res://run/data/run_definition.gd" id="1_run"]
+[ext_resource type="Resource" path="res://characters/data/warrior.tres" id="2_character"]
+[ext_resource type="Resource" path="res://tests/fixtures/phase5_map.tres" id="3_map"]
+[ext_resource type="Script" path="res://battle/data/encounter_definition.gd" id="4_encounter"]
+[ext_resource type="Resource" path="res://battle/data/encounters/cave_crawler_encounter.tres" id="5_goblin"]
+[ext_resource type="Resource" path="res://battle/data/encounters/bulwark_sentinel_encounter.tres" id="6_sentinel"]
+[ext_resource type="Resource" path="res://battle/data/encounters/hexbound_acolyte_encounter.tres" id="7_acolyte"]
+[ext_resource type="Resource" path="res://battle/data/encounters/ragebound_brute_encounter.tres" id="8_brute"]
+[ext_resource type="Resource" path="res://battle/data/encounters/ruin_guard_encounter.tres" id="9_guard"]
+[ext_resource type="Resource" path="res://battle/data/encounters/ironcrown_tyrant_encounter.tres" id="10_tyrant"]
+[ext_resource type="Resource" path="res://battle/data/encounters/calamity_hierophant_encounter.tres" id="11_hierophant"]
+[ext_resource type="Script" path="res://collections/collection_definition.gd" id="12_collection"]
+[ext_resource type="Resource" path="res://collections/data/copper_fang.tres" id="13_fang"]
+[ext_resource type="Resource" path="res://collections/data/oathguard_emblem.tres" id="14_emblem"]
+[ext_resource type="Resource" path="res://collections/data/ember_chalice.tres" id="15_chalice"]
+[ext_resource type="Script" path="res://run/encounter/unexpected_encounter_definition.gd" id="16_event"]
+[ext_resource type="Resource" path="res://run/encounter/data/ember_camp.tres" id="17_camp"]
+[ext_resource type="Resource" path="res://run/encounter/data/blood_pact_altar.tres" id="18_altar"]
+[ext_resource type="Resource" path="res://run/encounter/data/forgetting_spring.tres" id="19_spring"]
+
+[resource]
+script = ExtResource("1_run")
+run_id = "phase5_legacy_run"
+reward_selection_count = 1
+character_definition = ExtResource("2_character")
+map_definition = ExtResource("3_map")
+normal_encounter_pool = Array[ExtResource("4_encounter")]([ExtResource("5_goblin"), ExtResource("6_sentinel"), ExtResource("7_acolyte"), ExtResource("8_brute")])
+boss_encounter_pool = Array[ExtResource("4_encounter")]([ExtResource("9_guard"), ExtResource("10_tyrant"), ExtResource("11_hierophant")])
+collection_pool = Array[ExtResource("12_collection")]([ExtResource("13_fang"), ExtResource("14_emblem"), ExtResource("15_chalice")])
+collection_option_count = 3
+unexpected_encounter_pool = Array[ExtResource("16_event")]([ExtResource("17_camp"), ExtResource("18_altar"), ExtResource("19_spring")])
+metadata/_custom_type_script = "uid://mvsccx3x0y6g"

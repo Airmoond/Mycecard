@@ -2,111 +2,181 @@
 
 [ext_resource type="Script" path="res://cards/card_face.gd" id="1_face"]
 [ext_resource type="Script" path="res://cards/card_description_label.gd" id="2_description"]
+[ext_resource type="Texture2D" path="res://assets/ui/card-frame.png" id="3_frame"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r16dr"]
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.31761202, 0.88663423, 0.9769295, 1)
+[sub_resource type="StyleBoxFlat" id="Transparent"]
+bg_color = Color(0, 0, 0, 0)
+border_color = Color(0.7, 0.6, 0.4, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cuaw8"]
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.24924722, 0.8907638, 0.99184376, 1)
+[sub_resource type="StyleBoxFlat" id="Paper"]
+bg_color = Color(0.91, 0.83, 0.66, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_467wm"]
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.18638605, 0.9083509, 0.90540904, 1)
+[sub_resource type="StyleBoxFlat" id="Name"]
+bg_color = Color(0.27, 0.18, 0.1, 1)
+border_color = Color(0.77, 0.64, 0.4, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u3yia"]
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.47065133, 0.87077624, 0.9378754, 1)
+[sub_resource type="StyleBoxFlat" id="Cost"]
+bg_color = Color(0.07, 0.38, 0.65, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.74, 0.62, 0.38, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_left = 22
+corner_radius_bottom_right = 22
+shadow_color = Color(0, 0.04, 0.1, 0.55)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="Type"]
+bg_color = Color(0.29, 0.2, 0.12, 1)
+
+[sub_resource type="SystemFont" id="BodyFont"]
+font_names = PackedStringArray("Microsoft YaHei", "sans-serif")
+
+[sub_resource type="SystemFont" id="TitleFont"]
+font_names = PackedStringArray("KaiTi", "STKaiti", "Microsoft YaHei")
 
 [node name="card_face" type="Control"]
-custom_minimum_size = Vector2(140, 200)
+custom_minimum_size = Vector2(180, 252)
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 180.0
+offset_bottom = 252.0
 mouse_filter = 2
 script = ExtResource("1_face")
 
-[node name="cost_label" type="Label" parent="." unique_id=85122010]
+[node name="paper" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 24.0
-offset_bottom = 29.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_r16dr")
-text = "1"
-horizontal_alignment = 1
-vertical_alignment = 1
+offset_left = 17.0
+offset_top = 145.0
+offset_right = 163.0
+offset_bottom = 234.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Paper")
 
-[node name="name_label" type="Label" parent="." unique_id=408577470]
+[node name="artwork" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 30.0
-offset_top = 2.0
-offset_right = 110.0
-offset_bottom = 29.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_cuaw8")
-text = "名称"
-horizontal_alignment = 1
-
-[node name="artwork" type="TextureRect" parent="." unique_id=1387413338]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 37.0
-offset_right = 132.0
-offset_bottom = 117.0
+offset_left = 18.0
+offset_top = 23.0
+offset_right = 162.0
+offset_bottom = 146.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 6
 
-[node name="description_label" type="RichTextLabel" parent="." unique_id=1124283368]
+[node name="missing_art" type="Label" parent="."]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 123.0
-offset_right = 132.0
-offset_bottom = 174.0
+offset_left = 22.0
+offset_top = 65.0
+offset_right = 158.0
+offset_bottom = 103.0
 mouse_filter = 2
+theme_override_colors/font_color = Color(0.74, 0.64, 0.44, 1)
+theme_override_styles/normal = SubResource("Transparent")
+theme_override_font_sizes/font_size = 11
+text = "原画待补"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="frame" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 180.0
+offset_bottom = 252.0
+mouse_filter = 2
+texture = ExtResource("3_frame")
+expand_mode = 1
+stretch_mode = 0
+
+[node name="name_label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 135.0
+offset_right = 169.0
+offset_bottom = 160.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.97, 0.89, 0.72, 1)
+theme_override_fonts/font = SubResource("TitleFont")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("Name")
+text = "名称"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="description_label" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 170.0
+offset_right = 154.0
+offset_bottom = 221.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_fonts/normal_font = SubResource("BodyFont")
 theme_override_font_sizes/normal_font_size = 12
-theme_override_styles/normal = SubResource("StyleBoxFlat_467wm")
+theme_override_styles/normal = SubResource("Transparent")
 script = ExtResource("2_description")
 text = "卡牌效果"
 scroll_active = false
 horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 0
 
-[node name="cardtype_label" type="Label" parent="." unique_id=1823029263]
+[node name="cardtype_label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 51.0
-offset_top = 176.0
-offset_right = 91.0
-offset_bottom = 192.0
-theme_override_font_sizes/font_size = 8
-theme_override_styles/normal = SubResource("StyleBoxFlat_u3yia")
+offset_left = 55.0
+offset_top = 232.0
+offset_right = 125.0
+offset_bottom = 247.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.88, 0.77, 0.59, 1)
+theme_override_fonts/font = SubResource("TitleFont")
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("Type")
 text = "类型"
 horizontal_alignment = 1
-vertical_alignment = 2
+vertical_alignment = 1
 
-[node name="expansion_type_label" type="Label" parent="." unique_id=1243021648]
+[node name="rarity_gem" type="Polygon2D" parent="."]
+position = Vector2(90, 162)
+polygon = PackedVector2Array(0, -5, 5, -1, 3, 6, -3, 6, -5, -1)
+color = Color(0.85, 0.79, 0.68, 1)
+
+[node name="cost_stone" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 114.0
-offset_top = 2.0
-offset_right = 136.0
-offset_bottom = 29.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_r16dr")
+offset_left = -4.0
+offset_top = -2.0
+offset_right = 39.0
+offset_bottom = 44.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Cost")
+
+[node name="cost_label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -4.0
+offset_top = -2.0
+offset_right = 39.0
+offset_bottom = 44.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.98, 0.99, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.01, 0.1, 0.23, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = SubResource("TitleFont")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("Transparent")
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="expansion_type_label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 145.0
+offset_top = 227.0
+offset_right = 159.0
+offset_bottom = 241.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.54, 0.4, 0.23, 1)
+theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("Transparent")
 text = "标"
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -68,7 +68,7 @@ func _test_all_descriptions()->void:
 	var views:Array[Control] = [];
 	for definition in definitions:
 		var hand:CardView = _hand(definition);
-		var reward:RewardCardView = load("res://run/reward/reward_card_view.tscn").instantiate();
+		var reward:CardChoiceView = load("res://ui/cards/card_choice_view.tscn").instantiate();
 		root.add_child(reward);
 		reward.setup(definition);
 		views.append_array([hand, reward]);
@@ -124,7 +124,7 @@ func _test_shared_face_and_input()->void:
 	var definition:CardDefinition = _card("strike");
 	var hand:CardView = _hand(definition);
 	hand.position = Vector2(20, 20);
-	var reward:RewardCardView = load("res://run/reward/reward_card_view.tscn").instantiate();
+	var reward:CardChoiceView = load("res://ui/cards/card_choice_view.tscn").instantiate();
 	root.add_child(reward);
 	reward.position = Vector2(200, 20);
 	reward.setup(definition);
@@ -138,7 +138,7 @@ func _test_shared_face_and_input()->void:
 	var hand_selected:Array[CardInstance] = [];
 	var reward_selected:Array[CardDefinition] = [];
 	hand.card_selected.connect(func(card:CardInstance)->void: hand_selected.append(card));
-	reward.reward_card_selected.connect(func(card:CardDefinition)->void: reward_selected.append(card));
+	reward.card_selected.connect(func(card:CardDefinition)->void: reward_selected.append(card));
 	await process_frame;
 	# 分别点击费用、名称、插画、描述、类型和扩展包区域。
 	var points:Array[Vector2] = [Vector2(10, 10), Vector2(60, 10), Vector2(70, 70), Vector2(70, 145), Vector2(70, 184), Vector2(125, 10)];

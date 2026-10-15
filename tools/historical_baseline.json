@@ -1,0 +1,477 @@
+{
+  "schema": 1,
+  "registered_utc": "2026-10-06T07:54:01.281942+00:00",
+  "conditions": "phase5 legacy experiments; reference topology battle-battle-rest; current v0.6 gameplay is a separate condition",
+  "source_snapshot_available": "The local refactor snapshot contains the working tree at registration. Older experiment inputs are identified by their original source SHA values.",
+  "files": {
+    "卡牌标准模型/全卡牌量化评估.md": {
+      "sha256": "84716a2b610f8e8d5864605831928b63f679f831a1cba4953c28a2ab2da41100",
+      "bytes": 22086
+    },
+    "卡牌标准模型/模型参数.json": {
+      "sha256": "ff9ed3c7e70712cb979cbbe80d2337f70f96f13843ed95456b44eac0f56631bb",
+      "bytes": 1471
+    },
+    "卡牌标准模型/评估数据.json": {
+      "sha256": "fc489789818ef24d85f7f2fc88a74d6b404b529d5cd5f82414ca3a84aa0e87b2",
+      "bytes": 69504
+    },
+    "敌人标准模型/实验前评估数据.json": {
+      "sha256": "bac54b254be0b229d8d036ae403aa05de8bfa6114730174df266430257edde2e",
+      "bytes": 19215
+    },
+    "敌人标准模型/当前敌人量化评估.md": {
+      "sha256": "57df000a5f777bbc6f5a90a7f7d7f68c7121e2553f08963accec04f68d525998",
+      "bytes": 19569
+    },
+    "敌人标准模型/模型参数.json": {
+      "sha256": "7cbe30efa88ebe8459ffa42e848900ef0c1509d32bbcccd4b36ef92aaf01f2ad",
+      "bytes": 1785
+    },
+    "敌人标准模型/第一轮配置/评估数据.json": {
+      "sha256": "a2d01dccdbba47295adc685aa8029188d70d592cfac61beaf73ab8f47e0ea1e3",
+      "bytes": 19133
+    },
+    "敌人标准模型/评估数据.json": {
+      "sha256": "bf350e665929dc0dca72101c98f54e9733c3407ca3098f32c0b905bee611d958",
+      "bytes": 457530
+    },
+    "综合数值模型/Boss实验/Boss评估数据.json": {
+      "sha256": "219c73637b82ebfac9415a26701ad19870f488a4de82f914523234a8c6aee882",
+      "bytes": 19950
+    },
+    "综合数值模型/Boss实验/两种Boss设计.md": {
+      "sha256": "360ccc9809a23ecc74814ffd6d86c082b7e8e844d5dce6c7d73e3bc9af022fb7",
+      "bytes": 7225
+    },
+    "综合数值模型/Boss实验/生命对照数据.json": {
+      "sha256": "9f191ce796b09370124f4e33f4999dd8968a2d4b9e0b61470e54e9a6b57baaa9",
+      "bytes": 2600287
+    },
+    "综合数值模型/Boss实验/生命对照数据_高压初版.json": {
+      "sha256": "4bee50c06dc9ab181bcf8434f53d1cc6307423ce38528e1d6c14cb3f58fc2e41",
+      "bytes": 2444394
+    },
+    "综合数值模型/Boss实验/评估参数.json": {
+      "sha256": "7cd54ebca67b812e3b14b92ef5bcbf23ae547fbc94f39dafd8d26cba02662631",
+      "bytes": 912
+    },
+    "综合数值模型/Boss实验/验证数据.json": {
+      "sha256": "5d8006439c172d3c9bb4c689d621d88a7ad3f5f956cbf5111f7659d8a6f2d332",
+      "bytes": 2895330
+    },
+    "综合数值模型/原始战斗数据.json": {
+      "sha256": "1684d4f799d233b83a3e1267380d06befe08e795b41021bd81a603f3f2cca195",
+      "bytes": 6736292
+    },
+    "综合数值模型/新敌人实验/三种普通敌人设计.md": {
+      "sha256": "0dcc92c25be1559a0538e8f60ed98ee0a034614b0d793fb0a9a16fcdfa928099",
+      "bytes": 5929
+    },
+    "综合数值模型/新敌人实验/新敌人评估数据.json": {
+      "sha256": "281ba942aeb3fdf2d859afbc6dd4600262f4740fdeb3d47c345bee4dc4c69c09",
+      "bytes": 16752
+    },
+    "综合数值模型/新敌人实验/校准参数.json": {
+      "sha256": "60b604e319303edc023567edd92ab4ec47651050453f499f9ceb1fc7f2273da9",
+      "bytes": 1094
+    },
+    "综合数值模型/新敌人实验/训练数据.json": {
+      "sha256": "c5f95c1d7370919a0416841c75eeeff0c44f7a1809add52b390b53a82e92aaef",
+      "bytes": 13257
+    },
+    "综合数值模型/新敌人实验/训练数据_100血初测.json": {
+      "sha256": "9fc9144a48bb6b53cb2abb767a03c67cdf1c83278a8cb8e5d31c508100a649b8",
+      "bytes": 18069
+    },
+    "综合数值模型/新敌人实验/训练数据_三咒击台阶.json": {
+      "sha256": "34ca344d8ae2c3231902b44cef1282fd53baf8f49b4b7ebbf44e17eccfb09f85",
+      "bytes": 13616
+    },
+    "综合数值模型/新敌人实验/训练数据_五咒击台阶.json": {
+      "sha256": "bfc572eeba1fa80714e84d353f0886089a16337b7e21bfba43eb39ef9b618047",
+      "bytes": 13377
+    },
+    "综合数值模型/新敌人实验/训练数据_交替减益粗测.json": {
+      "sha256": "e1405f8cf607b74645108a601687851b4bb561384b1a1bae5e237b3c532fddb5",
+      "bytes": 15351
+    },
+    "综合数值模型/新敌人实验/训练数据_初版.json": {
+      "sha256": "112a18be9f0c5545038071b9d71f850ee805a96c44965090c971a802a19c1a5c",
+      "bytes": 37083
+    },
+    "综合数值模型/新敌人实验/训练数据_单咒击台阶.json": {
+      "sha256": "7203000cb5fe90ab937470a2d46205c872dc8d5c0564eac13d469f52f08f7dc2",
+      "bytes": 18164
+    },
+    "综合数值模型/新敌人实验/训练数据_双咒击初测.json": {
+      "sha256": "4ec7b1c851474e27d991ab2ab5db21ab79af43641d8a02826d92ac569691be87",
+      "bytes": 17511
+    },
+    "综合数值模型/新敌人实验/训练数据_高生命方案.json": {
+      "sha256": "02ccac75b756f2ea1b550aa1699111da2c436fb47f5493c3d980df06659a6c0e",
+      "bytes": 101987
+    },
+    "综合数值模型/新敌人实验/验证数据.json": {
+      "sha256": "94190f649205444b93b8ce159131f27632aa94220e6fbcf80e93cb894893453a",
+      "bytes": 2429782
+    },
+    "综合数值模型/综合评估数据.json": {
+      "sha256": "3fe11dc32735f22faf6ddc85d959ecc58b8b2c1bc4bd01ed892380dd71ca2d78",
+      "bytes": 114813
+    },
+    "综合数值模型/综合量化评估.md": {
+      "sha256": "30831e743f50daa27bc6fcd8533c0843763c6b260f51f3eaa74f51522c310466",
+      "bytes": 12572
+    },
+    "综合数值模型/藏品实验/三件藏品实测评估.md": {
+      "sha256": "ec44a0b954666e0b138023b4ff7a2c4503aae536216f73c4459eb7ebfb8be94d",
+      "bytes": 9044
+    },
+    "综合数值模型/藏品实验/原始藏品数据.json": {
+      "sha256": "189d1a9d7089156efc4f403f9a4c77d90b7d94f4334491d204cd9fcfd9852048",
+      "bytes": 7299383
+    },
+    "综合数值模型/藏品实验/藏品评估数据.json": {
+      "sha256": "82449133f90c973955f00f147bd72aec1091168a5fe877cc90ee51daf6170a68",
+      "bytes": 29057
+    },
+    "综合数值模型/藏品实验/评估参数.json": {
+      "sha256": "b4c0c5ddd699725dd89360ddb69c30dd43b4412297789010017d6075c9e12438",
+      "bytes": 645
+    },
+    "综合数值模型/血量对照.png": {
+      "sha256": "c53fa0eb81c974ceaa3de6f25c41a802ef68ea3bb0f40e8887fdb851367a3985",
+      "bytes": 221198
+    },
+    "综合数值模型/评估参数.json": {
+      "sha256": "a2415e7ff313f14884ee1dc878e846071e1f4fc1891378c5191281d6041bbbb9",
+      "bytes": 640
+    }
+  },
+  "source_status": {
+    "综合数值模型/原始战斗数据.json": {
+      "recorded_sources": 97,
+      "mismatches_at_registration": 57,
+      "mismatch_paths": [
+        "battle/battle_controller.gd",
+        "battle/model/battle_state.gd",
+        "battle/model/combatant_state.gd",
+        "cards/card_description_label.gd",
+        "cards/card_face.gd",
+        "cards/card_view.gd",
+        "cards/data/ancient_ritual.tres",
+        "cards/data/attack_and_block.tres",
+        "cards/data/battle_trance.tres",
+        "cards/data/blood_cloak.tres",
+        "cards/data/blood_feast.tres",
+        "cards/data/blood_sacrifice.tres",
+        "cards/data/bloodthirsty_sword.tres",
+        "cards/data/defend.tres",
+        "cards/data/double_strike.tres",
+        "cards/data/endless_power.tres",
+        "cards/data/eternity.tres",
+        "cards/data/fortress.tres",
+        "cards/data/heavy_strike.tres",
+        "cards/data/intimidate.tres",
+        "cards/data/iron_wave.tres",
+        "cards/data/lethal_blade.tres",
+        "cards/data/open_wound.tres",
+        "cards/data/overpower.tres",
+        "cards/data/pommel_strike.tres",
+        "cards/data/shield_slam.tres",
+        "cards/data/shrug_it_off.tres",
+        "cards/data/strength_power.tres",
+        "cards/data/strike.tres",
+        "cards/data/tactical_defense.tres",
+        "cards/data/technical_fighting.tres",
+        "cards/data/thorns.tres",
+        "cards/data/trade_wounds.tres",
+        "cards/data/uppercut.tres",
+        "cards/data/war_god_blessing.tres",
+        "combatants/combatant_view.gd",
+        "combatants/enemies/data/bulwark_sentinel.tres",
+        "combatants/enemies/data/calamity_hierophant.tres",
+        "combatants/enemies/data/cave_crawler.tres",
+        "combatants/enemies/data/hexbound_acolyte.tres",
+        "combatants/enemies/data/ironcrown_tyrant.tres",
+        "combatants/enemies/data/ragebound_brute.tres",
+        "combatants/enemies/data/ruin_guard.tres",
+        "run/collection/collection_choice_view.gd",
+        "run/data/default_run.tres",
+        "run/data/run_definition.gd",
+        "run/draft/starting_draft_view.gd",
+        "run/game_flow_controller.gd",
+        "run/map/data/first_map.tres",
+        "run/map/data/map_definition.gd",
+        "run/map/data/map_node_definition.gd",
+        "run/map/map_view.gd",
+        "run/model/run_state.gd",
+        "run/reward/card_pool_sampler.gd",
+        "run/reward/reward_card_view.gd",
+        "run/reward/reward_view.gd",
+        "run/screens/main_menu.gd"
+      ],
+      "interpretation": "Historical source bytes differ; retained data is not a current-source claim. Original SHA fields remain untouched."
+    },
+    "综合数值模型/藏品实验/原始藏品数据.json": {
+      "recorded_sources": 97,
+      "mismatches_at_registration": 57,
+      "mismatch_paths": [
+        "battle/battle_controller.gd",
+        "battle/model/battle_state.gd",
+        "battle/model/combatant_state.gd",
+        "cards/card_description_label.gd",
+        "cards/card_face.gd",
+        "cards/card_view.gd",
+        "cards/data/ancient_ritual.tres",
+        "cards/data/attack_and_block.tres",
+        "cards/data/battle_trance.tres",
+        "cards/data/blood_cloak.tres",
+        "cards/data/blood_feast.tres",
+        "cards/data/blood_sacrifice.tres",
+        "cards/data/bloodthirsty_sword.tres",
+        "cards/data/defend.tres",
+        "cards/data/double_strike.tres",
+        "cards/data/endless_power.tres",
+        "cards/data/eternity.tres",
+        "cards/data/fortress.tres",
+        "cards/data/heavy_strike.tres",
+        "cards/data/intimidate.tres",
+        "cards/data/iron_wave.tres",
+        "cards/data/lethal_blade.tres",
+        "cards/data/open_wound.tres",
+        "cards/data/overpower.tres",
+        "cards/data/pommel_strike.tres",
+        "cards/data/shield_slam.tres",
+        "cards/data/shrug_it_off.tres",
+        "cards/data/strength_power.tres",
+        "cards/data/strike.tres",
+        "cards/data/tactical_defense.tres",
+        "cards/data/technical_fighting.tres",
+        "cards/data/thorns.tres",
+        "cards/data/trade_wounds.tres",
+        "cards/data/uppercut.tres",
+        "cards/data/war_god_blessing.tres",
+        "combatants/combatant_view.gd",
+        "combatants/enemies/data/bulwark_sentinel.tres",
+        "combatants/enemies/data/calamity_hierophant.tres",
+        "combatants/enemies/data/cave_crawler.tres",
+        "combatants/enemies/data/hexbound_acolyte.tres",
+        "combatants/enemies/data/ironcrown_tyrant.tres",
+        "combatants/enemies/data/ragebound_brute.tres",
+        "combatants/enemies/data/ruin_guard.tres",
+        "run/collection/collection_choice_view.gd",
+        "run/data/default_run.tres",
+        "run/data/run_definition.gd",
+        "run/draft/starting_draft_view.gd",
+        "run/game_flow_controller.gd",
+        "run/map/data/first_map.tres",
+        "run/map/data/map_definition.gd",
+        "run/map/data/map_node_definition.gd",
+        "run/map/map_view.gd",
+        "run/model/run_state.gd",
+        "run/reward/card_pool_sampler.gd",
+        "run/reward/reward_card_view.gd",
+        "run/reward/reward_view.gd",
+        "run/screens/main_menu.gd"
+      ],
+      "interpretation": "Historical source bytes differ; retained data is not a current-source claim. Original SHA fields remain untouched."
+    },
+    "综合数值模型/新敌人实验/验证数据.json": {
+      "recorded_sources": 97,
+      "mismatches_at_registration": 57,
+      "mismatch_paths": [
+        "battle/battle_controller.gd",
+        "battle/model/battle_state.gd",
+        "battle/model/combatant_state.gd",
+        "cards/card_description_label.gd",
+        "cards/card_face.gd",
+        "cards/card_view.gd",
+        "cards/data/ancient_ritual.tres",
+        "cards/data/attack_and_block.tres",
+        "cards/data/battle_trance.tres",
+        "cards/data/blood_cloak.tres",
+        "cards/data/blood_feast.tres",
+        "cards/data/blood_sacrifice.tres",
+        "cards/data/bloodthirsty_sword.tres",
+        "cards/data/defend.tres",
+        "cards/data/double_strike.tres",
+        "cards/data/endless_power.tres",
+        "cards/data/eternity.tres",
+        "cards/data/fortress.tres",
+        "cards/data/heavy_strike.tres",
+        "cards/data/intimidate.tres",
+        "cards/data/iron_wave.tres",
+        "cards/data/lethal_blade.tres",
+        "cards/data/open_wound.tres",
+        "cards/data/overpower.tres",
+        "cards/data/pommel_strike.tres",
+        "cards/data/shield_slam.tres",
+        "cards/data/shrug_it_off.tres",
+        "cards/data/strength_power.tres",
+        "cards/data/strike.tres",
+        "cards/data/tactical_defense.tres",
+        "cards/data/technical_fighting.tres",
+        "cards/data/thorns.tres",
+        "cards/data/trade_wounds.tres",
+        "cards/data/uppercut.tres",
+        "cards/data/war_god_blessing.tres",
+        "combatants/combatant_view.gd",
+        "combatants/enemies/data/bulwark_sentinel.tres",
+        "combatants/enemies/data/calamity_hierophant.tres",
+        "combatants/enemies/data/cave_crawler.tres",
+        "combatants/enemies/data/hexbound_acolyte.tres",
+        "combatants/enemies/data/ironcrown_tyrant.tres",
+        "combatants/enemies/data/ragebound_brute.tres",
+        "combatants/enemies/data/ruin_guard.tres",
+        "run/collection/collection_choice_view.gd",
+        "run/data/default_run.tres",
+        "run/data/run_definition.gd",
+        "run/draft/starting_draft_view.gd",
+        "run/game_flow_controller.gd",
+        "run/map/data/first_map.tres",
+        "run/map/data/map_definition.gd",
+        "run/map/data/map_node_definition.gd",
+        "run/map/map_view.gd",
+        "run/model/run_state.gd",
+        "run/reward/card_pool_sampler.gd",
+        "run/reward/reward_card_view.gd",
+        "run/reward/reward_view.gd",
+        "run/screens/main_menu.gd"
+      ],
+      "interpretation": "Historical source bytes differ; retained data is not a current-source claim. Original SHA fields remain untouched."
+    },
+    "综合数值模型/Boss实验/验证数据.json": {
+      "recorded_sources": 97,
+      "mismatches_at_registration": 57,
+      "mismatch_paths": [
+        "battle/battle_controller.gd",
+        "battle/model/battle_state.gd",
+        "battle/model/combatant_state.gd",
+        "cards/card_description_label.gd",
+        "cards/card_face.gd",
+        "cards/card_view.gd",
+        "cards/data/ancient_ritual.tres",
+        "cards/data/attack_and_block.tres",
+        "cards/data/battle_trance.tres",
+        "cards/data/blood_cloak.tres",
+        "cards/data/blood_feast.tres",
+        "cards/data/blood_sacrifice.tres",
+        "cards/data/bloodthirsty_sword.tres",
+        "cards/data/defend.tres",
+        "cards/data/double_strike.tres",
+        "cards/data/endless_power.tres",
+        "cards/data/eternity.tres",
+        "cards/data/fortress.tres",
+        "cards/data/heavy_strike.tres",
+        "cards/data/intimidate.tres",
+        "cards/data/iron_wave.tres",
+        "cards/data/lethal_blade.tres",
+        "cards/data/open_wound.tres",
+        "cards/data/overpower.tres",
+        "cards/data/pommel_strike.tres",
+        "cards/data/shield_slam.tres",
+        "cards/data/shrug_it_off.tres",
+        "cards/data/strength_power.tres",
+        "cards/data/strike.tres",
+        "cards/data/tactical_defense.tres",
+        "cards/data/technical_fighting.tres",
+        "cards/data/thorns.tres",
+        "cards/data/trade_wounds.tres",
+        "cards/data/uppercut.tres",
+        "cards/data/war_god_blessing.tres",
+        "combatants/combatant_view.gd",
+        "combatants/enemies/data/bulwark_sentinel.tres",
+        "combatants/enemies/data/calamity_hierophant.tres",
+        "combatants/enemies/data/cave_crawler.tres",
+        "combatants/enemies/data/hexbound_acolyte.tres",
+        "combatants/enemies/data/ironcrown_tyrant.tres",
+        "combatants/enemies/data/ragebound_brute.tres",
+        "combatants/enemies/data/ruin_guard.tres",
+        "run/collection/collection_choice_view.gd",
+        "run/data/default_run.tres",
+        "run/data/run_definition.gd",
+        "run/draft/starting_draft_view.gd",
+        "run/game_flow_controller.gd",
+        "run/map/data/first_map.tres",
+        "run/map/data/map_definition.gd",
+        "run/map/data/map_node_definition.gd",
+        "run/map/map_view.gd",
+        "run/model/run_state.gd",
+        "run/reward/card_pool_sampler.gd",
+        "run/reward/reward_card_view.gd",
+        "run/reward/reward_view.gd",
+        "run/screens/main_menu.gd"
+      ],
+      "interpretation": "Historical source bytes differ; retained data is not a current-source claim. Original SHA fields remain untouched."
+    },
+    "综合数值模型/Boss实验/生命对照数据.json": {
+      "recorded_sources": 97,
+      "mismatches_at_registration": 57,
+      "mismatch_paths": [
+        "battle/battle_controller.gd",
+        "battle/model/battle_state.gd",
+        "battle/model/combatant_state.gd",
+        "cards/card_description_label.gd",
+        "cards/card_face.gd",
+        "cards/card_view.gd",
+        "cards/data/ancient_ritual.tres",
+        "cards/data/attack_and_block.tres",
+        "cards/data/battle_trance.tres",
+        "cards/data/blood_cloak.tres",
+        "cards/data/blood_feast.tres",
+        "cards/data/blood_sacrifice.tres",
+        "cards/data/bloodthirsty_sword.tres",
+        "cards/data/defend.tres",
+        "cards/data/double_strike.tres",
+        "cards/data/endless_power.tres",
+        "cards/data/eternity.tres",
+        "cards/data/fortress.tres",
+        "cards/data/heavy_strike.tres",
+        "cards/data/intimidate.tres",
+        "cards/data/iron_wave.tres",
+        "cards/data/lethal_blade.tres",
+        "cards/data/open_wound.tres",
+        "cards/data/overpower.tres",
+        "cards/data/pommel_strike.tres",
+        "cards/data/shield_slam.tres",
+        "cards/data/shrug_it_off.tres",
+        "cards/data/strength_power.tres",
+        "cards/data/strike.tres",
+        "cards/data/tactical_defense.tres",
+        "cards/data/technical_fighting.tres",
+        "cards/data/thorns.tres",
+        "cards/data/trade_wounds.tres",
+        "cards/data/uppercut.tres",
+        "cards/data/war_god_blessing.tres",
+        "combatants/combatant_view.gd",
+        "combatants/enemies/data/bulwark_sentinel.tres",
+        "combatants/enemies/data/calamity_hierophant.tres",
+        "combatants/enemies/data/cave_crawler.tres",
+        "combatants/enemies/data/hexbound_acolyte.tres",
+        "combatants/enemies/data/ironcrown_tyrant.tres",
+        "combatants/enemies/data/ragebound_brute.tres",
+        "combatants/enemies/data/ruin_guard.tres",
+        "run/collection/collection_choice_view.gd",
+        "run/data/default_run.tres",
+        "run/data/run_definition.gd",
+        "run/draft/starting_draft_view.gd",
+        "run/game_flow_controller.gd",
+        "run/map/data/first_map.tres",
+        "run/map/data/map_definition.gd",
+        "run/map/data/map_node_definition.gd",
+        "run/map/map_view.gd",
+        "run/model/run_state.gd",
+        "run/reward/card_pool_sampler.gd",
+        "run/reward/reward_card_view.gd",
+        "run/reward/reward_view.gd",
+        "run/screens/main_menu.gd"
+      ],
+      "interpretation": "Historical source bytes differ; retained data is not a current-source claim. Original SHA fields remain untouched."
+    }
+  },
+  "excluded_environment_files": {
+    "综合数值模型/.matplotlib-cache/fontlist-v390.json": "Machine-specific matplotlib font cache; not an evaluation input or result."
+  }
+}

@@ -1,0 +1,10352 @@
+[
+  {
+    "bpm": 84,
+    "beat": 0,
+    "midi": 38,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 0.0,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 0.08,
+    "midi": 53,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 0.16,
+    "midi": 57,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 0.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 0.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 1.0,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 1.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 2.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 2.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 3.0,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 3.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 0.03,
+    "midi": 81,
+    "beats": 1.4,
+    "instrument": "bell",
+    "gain": 0.038,
+    "pan": 0.5
+  },
+  {
+    "bpm": 84,
+    "beat": 4,
+    "midi": 36,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 4.0,
+    "midi": 48,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 4.08,
+    "midi": 52,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 4.16,
+    "midi": 55,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 4.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 4.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 5.0,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 5.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 6.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 6.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 7.0,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 7.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 8,
+    "midi": 31,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 8.0,
+    "midi": 43,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 8.08,
+    "midi": 47,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 8.16,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 8.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 8.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 9.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 9.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 10.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 10.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 11.0,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 11.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 12,
+    "midi": 38,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 12.0,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 12.08,
+    "midi": 53,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 12.16,
+    "midi": 57,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 12.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 12.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 13.0,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 13.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 14.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 14.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 15.0,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 15.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 16,
+    "midi": 33,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 16.0,
+    "midi": 45,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 16.08,
+    "midi": 48,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 16.16,
+    "midi": 52,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 16.0,
+    "midi": 57,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 16.5,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 17.0,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 17.5,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 18.0,
+    "midi": 57,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 18.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 19.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 19.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 16.03,
+    "midi": 76,
+    "beats": 1.4,
+    "instrument": "bell",
+    "gain": 0.038,
+    "pan": 0.5
+  },
+  {
+    "bpm": 84,
+    "beat": 20,
+    "midi": 31,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 20.0,
+    "midi": 43,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 20.08,
+    "midi": 47,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 20.16,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 20.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 20.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 21.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 21.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 22.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 22.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 23.0,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 23.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 24,
+    "midi": 36,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 24.0,
+    "midi": 48,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 24.08,
+    "midi": 52,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 24.16,
+    "midi": 55,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 24.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 24.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 25.0,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 25.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 26.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 26.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 27.0,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 27.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 28,
+    "midi": 38,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 28.0,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 28.08,
+    "midi": 53,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 28.16,
+    "midi": 57,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.0282,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 28.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 28.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 29.0,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 29.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 30.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 30.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 31.0,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 31.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.072,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 32,
+    "midi": 38,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 32.0,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 32.08,
+    "midi": 53,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 32.16,
+    "midi": 57,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 32.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 32.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 33.0,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 33.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 34.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 34.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 35.0,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 35.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 32.1,
+    "midi": 62,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 33.1,
+    "midi": 65,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 34.1,
+    "midi": 69,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 35.1,
+    "midi": 67,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 32.03,
+    "midi": 81,
+    "beats": 1.4,
+    "instrument": "bell",
+    "gain": 0.038,
+    "pan": 0.5
+  },
+  {
+    "bpm": 84,
+    "beat": 36,
+    "midi": 36,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 36.0,
+    "midi": 48,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 36.08,
+    "midi": 52,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 36.16,
+    "midi": 55,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 36.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 36.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 37.0,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 37.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 38.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 38.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 39.0,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 39.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 36.1,
+    "midi": 64,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 37.1,
+    "midi": 67,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 38.1,
+    "midi": 72,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 39.1,
+    "midi": 67,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 40,
+    "midi": 31,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 40.0,
+    "midi": 43,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 40.08,
+    "midi": 47,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 40.16,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 40.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 40.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 41.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 41.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 42.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 42.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 43.0,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 43.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 40.1,
+    "midi": 67,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 41.1,
+    "midi": 71,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 42.1,
+    "midi": 69,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 43.1,
+    "midi": 67,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 44,
+    "midi": 38,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 44.0,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 44.08,
+    "midi": 53,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 44.16,
+    "midi": 57,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 44.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 44.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 45.0,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 45.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 46.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 46.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 47.0,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 47.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 44.1,
+    "midi": 65,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 45.1,
+    "midi": 64,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 46.1,
+    "midi": 62,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 47.1,
+    "midi": 69,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 48,
+    "midi": 33,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 48.0,
+    "midi": 45,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 48.08,
+    "midi": 48,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 48.16,
+    "midi": 52,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 48.0,
+    "midi": 57,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 48.5,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 49.0,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 49.5,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 50.0,
+    "midi": 57,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 50.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 51.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 51.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 48.1,
+    "midi": 69,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 49.1,
+    "midi": 72,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 50.1,
+    "midi": 71,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 51.1,
+    "midi": 69,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 48.03,
+    "midi": 76,
+    "beats": 1.4,
+    "instrument": "bell",
+    "gain": 0.038,
+    "pan": 0.5
+  },
+  {
+    "bpm": 84,
+    "beat": 52,
+    "midi": 31,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 52.0,
+    "midi": 43,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 52.08,
+    "midi": 47,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 52.16,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 52.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 52.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 53.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 53.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 54.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 54.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 55.0,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 55.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 52.1,
+    "midi": 67,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 53.1,
+    "midi": 69,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 54.1,
+    "midi": 71,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 55.1,
+    "midi": 67,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 56,
+    "midi": 36,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 56.0,
+    "midi": 48,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 56.08,
+    "midi": 52,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 56.16,
+    "midi": 55,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 56.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 56.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 57.0,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 57.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 58.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 58.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 59.0,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 59.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 56.1,
+    "midi": 64,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 57.1,
+    "midi": 67,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 58.1,
+    "midi": 65,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 59.1,
+    "midi": 64,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 60,
+    "midi": 38,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 60.0,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 60.08,
+    "midi": 53,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 60.16,
+    "midi": 57,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.047,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 60.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 60.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 61.0,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 61.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 62.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 62.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 63.0,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 63.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.12,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 60.1,
+    "midi": 65,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 61.1,
+    "midi": 64,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 62.1,
+    "midi": 62,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 63.1,
+    "midi": 62,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.09,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 64,
+    "midi": 38,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 64.0,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 64.08,
+    "midi": 53,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 64.16,
+    "midi": 57,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 64.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 64.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 65.0,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 65.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 66.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 66.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 67.0,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 67.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 64.1,
+    "midi": 62,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 65.1,
+    "midi": 65,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 66.1,
+    "midi": 69,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 67.1,
+    "midi": 67,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 64.03,
+    "midi": 81,
+    "beats": 1.4,
+    "instrument": "bell",
+    "gain": 0.038,
+    "pan": 0.5
+  },
+  {
+    "bpm": 84,
+    "beat": 68,
+    "midi": 36,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 68.0,
+    "midi": 48,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 68.08,
+    "midi": 52,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 68.16,
+    "midi": 55,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 68.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 68.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 69.0,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 69.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 70.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 70.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 71.0,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 71.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 68.1,
+    "midi": 64,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 69.1,
+    "midi": 67,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 70.1,
+    "midi": 72,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 71.1,
+    "midi": 67,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 72,
+    "midi": 31,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 72.0,
+    "midi": 43,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 72.08,
+    "midi": 47,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 72.16,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 72.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 72.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 73.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 73.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 74.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 74.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 75.0,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 75.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 72.1,
+    "midi": 79,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 73.1,
+    "midi": 83,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 74.1,
+    "midi": 81,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 75.1,
+    "midi": 79,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 76,
+    "midi": 38,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 76.0,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 76.08,
+    "midi": 53,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 76.16,
+    "midi": 57,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 76.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 76.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 77.0,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 77.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 78.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 78.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 79.0,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 79.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 76.1,
+    "midi": 77,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 77.1,
+    "midi": 76,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 78.1,
+    "midi": 74,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 79.1,
+    "midi": 81,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 80,
+    "midi": 33,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 80.0,
+    "midi": 45,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 80.08,
+    "midi": 48,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 80.16,
+    "midi": 52,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 80.0,
+    "midi": 57,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 80.5,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 81.0,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 81.5,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 82.0,
+    "midi": 57,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 82.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 83.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 83.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 80.1,
+    "midi": 69,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 81.1,
+    "midi": 72,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 82.1,
+    "midi": 71,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 83.1,
+    "midi": 69,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 80.03,
+    "midi": 76,
+    "beats": 1.4,
+    "instrument": "bell",
+    "gain": 0.038,
+    "pan": 0.5
+  },
+  {
+    "bpm": 84,
+    "beat": 84,
+    "midi": 31,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 84.0,
+    "midi": 43,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 84.08,
+    "midi": 47,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 84.16,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 84.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 84.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 85.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 85.5,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 86.0,
+    "midi": 55,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 86.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 87.0,
+    "midi": 59,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 87.5,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 84.1,
+    "midi": 67,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 85.1,
+    "midi": 69,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 86.1,
+    "midi": 71,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 87.1,
+    "midi": 67,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 88,
+    "midi": 36,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 88.0,
+    "midi": 48,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 88.08,
+    "midi": 52,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 88.16,
+    "midi": 55,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 88.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 88.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 89.0,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 89.5,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 90.0,
+    "midi": 60,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 90.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 91.0,
+    "midi": 64,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 91.5,
+    "midi": 67,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 88.1,
+    "midi": 64,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 89.1,
+    "midi": 67,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 90.1,
+    "midi": 65,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 91.1,
+    "midi": 64,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 92,
+    "midi": 38,
+    "beats": 3.95,
+    "instrument": "bass",
+    "gain": 0.14,
+    "pan": 0
+  },
+  {
+    "bpm": 84,
+    "beat": 92.0,
+    "midi": 50,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": -0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 92.08,
+    "midi": 53,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.0
+  },
+  {
+    "bpm": 84,
+    "beat": 92.16,
+    "midi": 57,
+    "beats": 4.25,
+    "instrument": "strings",
+    "gain": 0.039009999999999996,
+    "pan": 0.38
+  },
+  {
+    "bpm": 84,
+    "beat": 92.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 92.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 93.0,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 93.5,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 94.0,
+    "midi": 62,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 94.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 95.0,
+    "midi": 65,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 95.5,
+    "midi": 69,
+    "beats": 1.0,
+    "instrument": "lute",
+    "gain": 0.0996,
+    "pan": -0.3
+  },
+  {
+    "bpm": 84,
+    "beat": 92.1,
+    "midi": 65,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 93.1,
+    "midi": 64,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 94.1,
+    "midi": 62,
+    "beats": 0.76,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 84,
+    "beat": 95.1,
+    "midi": 62,
+    "beats": 1.18,
+    "instrument": "flute",
+    "gain": 0.07469999999999999,
+    "pan": 0.35
+  },
+  {
+    "bpm": 112,
+    "beat": 0.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 0.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 0.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 0.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 1.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 1.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 1.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 1.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 2.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 2.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 2.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 2.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 3.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 3.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 3.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 3.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 0,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 0,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 0,
+    "midi": 57,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 0,
+    "midi": 69,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 2,
+    "midi": 69,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 4.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 4.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 4.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 4.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 5.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 5.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 5.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 5.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 6.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 6.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 6.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 6.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 7.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 7.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 7.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 7.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 4,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 4,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 4,
+    "midi": 57,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 4,
+    "midi": 69,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 6,
+    "midi": 69,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 8.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 8.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 8.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 8.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 9.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 9.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 9.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 9.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 10.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 10.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 10.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 10.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 11.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 11.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 11.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 11.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 8,
+    "midi": 46,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 8,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 8,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 8,
+    "midi": 65,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 10,
+    "midi": 65,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 12.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 12.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 12.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 12.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 13.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 13.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 13.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 13.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 14.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 14.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 14.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 14.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 15.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 15.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 15.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 15.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 12,
+    "midi": 46,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 12,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 12,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 12,
+    "midi": 65,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 14,
+    "midi": 65,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 16.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 16.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 16.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 16.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 17.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 17.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 17.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 17.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 18.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 18.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 18.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 18.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 19.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 19.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 19.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 19.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 16,
+    "midi": 48,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 16,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 16,
+    "midi": 55,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 16,
+    "midi": 67,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 18,
+    "midi": 67,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 20.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 20.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 20.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 20.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 21.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 21.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 21.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 21.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 22.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 22.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 22.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 22.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 23.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 23.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 23.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 23.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 20,
+    "midi": 48,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 20,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 20,
+    "midi": 55,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 20,
+    "midi": 67,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 22,
+    "midi": 67,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 24.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 24.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 24.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 24.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 25.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 25.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 25.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 25.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 26.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 26.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 26.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 26.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 27.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 27.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 27.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 27.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 24,
+    "midi": 45,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 24,
+    "midi": 49,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 24,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 24,
+    "midi": 64,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 26,
+    "midi": 64,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 28.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 28.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 28.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 28.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 29.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 29.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 29.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 29.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 30.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 30.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 30.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 30.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 31.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 31.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 31.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.07919999999999999,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 31.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.03384,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 28,
+    "midi": 45,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 28,
+    "midi": 49,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 28,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 28,
+    "midi": 64,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 30,
+    "midi": 64,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 32.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 32.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 32.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 32.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 33.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 33.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 33.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 33.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 34.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 34.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 34.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 34.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 35.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 35.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 35.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 35.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 32,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 32,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 32,
+    "midi": 57,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 32.0,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 32.5,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 33.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 33.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 34.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 34.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 35.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 35.5,
+    "midi": 62,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 36.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 36.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 36.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 36.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 37.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 37.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 37.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 37.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 38.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 38.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 38.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 38.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 39.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 39.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 39.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 39.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 36,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 36,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 36,
+    "midi": 57,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 36.0,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 36.5,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 37.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 37.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 38.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 38.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 39.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 39.5,
+    "midi": 62,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 40.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 40.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 40.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 40.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 41.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 41.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 41.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 41.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 42.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 42.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 42.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 42.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 43.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 43.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 43.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 43.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 40,
+    "midi": 46,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 40,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 40,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 40.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 40.5,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 41.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 41.5,
+    "midi": 70,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 42.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 42.5,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 43.0,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 43.5,
+    "midi": 65,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 44.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 44.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 44.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 44.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 45.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 45.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 45.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 45.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 46.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 46.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 46.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 46.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 47.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 47.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 47.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 47.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 44,
+    "midi": 46,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 44,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 44,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 44.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 44.5,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 45.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 45.5,
+    "midi": 70,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 46.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 46.5,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 47.0,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 47.5,
+    "midi": 65,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 48.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 48.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 48.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 48.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 49.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 49.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 49.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 49.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 50.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 50.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 50.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 50.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 51.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 51.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 51.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 51.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 48,
+    "midi": 48,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 48,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 48,
+    "midi": 55,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 48.0,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 48.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 49.0,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 49.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 50.0,
+    "midi": 72,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 50.5,
+    "midi": 70,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 51.0,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 51.5,
+    "midi": 64,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 52.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 52.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 52.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 52.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 53.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 53.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 53.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 53.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 54.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 54.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 54.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 54.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 55.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 55.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 55.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 55.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 52,
+    "midi": 48,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 52,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 52,
+    "midi": 55,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 52.0,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 52.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 53.0,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 53.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 54.0,
+    "midi": 72,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 54.5,
+    "midi": 70,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 55.0,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 55.5,
+    "midi": 64,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 56.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 56.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 56.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 56.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 57.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 57.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 57.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 57.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 58.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 58.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 58.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 58.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 59.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 59.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 59.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 59.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 56,
+    "midi": 45,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 56,
+    "midi": 49,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 56,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 56.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 56.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 57.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 57.5,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 58.0,
+    "midi": 61,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 58.5,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 59.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 59.5,
+    "midi": 61,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 60.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 60.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 60.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 60.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 61.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 61.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 61.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 61.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 62.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 62.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 62.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 62.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 63.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 63.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 63.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.11,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 63.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.047,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 60,
+    "midi": 45,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 60,
+    "midi": 49,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 60,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 60.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 60.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 61.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 61.5,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 62.0,
+    "midi": 61,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 62.5,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 63.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 63.5,
+    "midi": 61,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.04,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 64.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 64.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 64.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 64.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 65.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 65.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 65.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 65.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 66.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 66.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 66.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 66.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 67.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 67.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 67.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 67.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 64,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 64,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 64,
+    "midi": 57,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 64.0,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 64.5,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 65.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 65.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 66.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 66.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 67.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 67.5,
+    "midi": 62,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 68.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 68.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 68.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 68.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 69.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 69.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 69.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 69.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 70.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 70.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 70.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 70.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 71.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 71.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 71.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 71.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 68,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 68,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 68,
+    "midi": 57,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 68,
+    "midi": 69,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 70,
+    "midi": 69,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 72.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 72.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 72.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 72.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 73.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 73.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 73.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 73.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 74.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 74.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 74.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 74.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 75.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 75.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 75.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 75.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 72,
+    "midi": 46,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 72,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 72,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 72.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 72.5,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 73.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 73.5,
+    "midi": 70,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 74.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 74.5,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 75.0,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 75.5,
+    "midi": 65,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 76.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 76.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 76.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 76.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 77.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 77.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 77.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 77.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 78.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 78.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 78.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 78.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 79.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 79.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 79.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 79.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 76,
+    "midi": 46,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 76,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 76,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 76,
+    "midi": 65,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 78,
+    "midi": 65,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 80.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 80.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 80.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 80.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 81.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 81.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 81.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 81.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 82.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 82.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 82.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 82.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 83.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 83.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 83.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 83.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 80,
+    "midi": 48,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 80,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 80,
+    "midi": 55,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 80.0,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 80.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 81.0,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 81.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 82.0,
+    "midi": 72,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 82.5,
+    "midi": 70,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 83.0,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 83.5,
+    "midi": 64,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 84.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 84.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 84.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 84.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 85.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 85.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 85.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 85.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 86.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 86.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 86.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 86.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 87.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 87.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 87.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 87.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 84,
+    "midi": 48,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 84,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 84,
+    "midi": 55,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 84,
+    "midi": 67,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 86,
+    "midi": 67,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 88.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 88.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 88.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 88.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 89.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 89.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 89.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 89.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 90.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 90.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 90.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 90.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 91.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 91.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 91.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 91.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 88,
+    "midi": 45,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 88,
+    "midi": 49,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 88,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 88.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 88.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 89.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 89.5,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 90.0,
+    "midi": 61,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 90.5,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 91.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 91.5,
+    "midi": 61,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.032,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 92.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 92.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 92.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 92.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 93.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 93.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 93.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 93.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 94.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 94.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 94.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 94.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 95.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 95.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 95.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.08800000000000001,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 95.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.0376,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 92,
+    "midi": 45,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 92,
+    "midi": 49,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 92,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 92,
+    "midi": 64,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 94,
+    "midi": 64,
+    "beats": 1.35,
+    "instrument": "flute",
+    "gain": 0.04,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 96.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 96.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 96.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 96.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 97.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 97.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 97.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 97.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 98.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 98.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 98.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 98.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 99.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 99.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 99.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 99.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 96,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 96,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 96,
+    "midi": 57,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 96.0,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 96.5,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 97.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 97.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 98.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 98.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 99.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 99.5,
+    "midi": 62,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 100.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 100.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 100.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 100.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 101.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 101.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 101.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 101.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 102.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 102.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 102.5,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 102.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 103.0,
+    "midi": 38,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 103.0,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 103.5,
+    "midi": 50,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 103.5,
+    "midi": 69,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 100,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 100,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 100,
+    "midi": 57,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 100.0,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 100.5,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 101.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 101.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 102.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 102.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 103.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 103.5,
+    "midi": 62,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 104.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 104.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 104.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 104.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 105.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 105.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 105.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 105.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 106.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 106.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 106.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 106.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 107.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 107.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 107.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 107.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 104,
+    "midi": 46,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 104,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 104,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 104.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 104.5,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 105.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 105.5,
+    "midi": 70,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 106.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 106.5,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 107.0,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 107.5,
+    "midi": 65,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 108.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 108.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 108.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 108.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 109.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 109.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 109.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 109.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 110.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 110.0,
+    "midi": 58,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 110.5,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 110.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 111.0,
+    "midi": 34,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 111.0,
+    "midi": 62,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 111.5,
+    "midi": 46,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 111.5,
+    "midi": 65,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 108,
+    "midi": 46,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 108,
+    "midi": 50,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 108,
+    "midi": 53,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 108.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 108.5,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 109.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 109.5,
+    "midi": 70,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 110.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 110.5,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 111.0,
+    "midi": 62,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 111.5,
+    "midi": 65,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 112.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 112.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 112.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 112.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 113.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 113.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 113.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 113.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 114.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 114.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 114.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 114.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 115.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 115.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 115.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 115.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 112,
+    "midi": 48,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 112,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 112,
+    "midi": 55,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 112.0,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 112.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 113.0,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 113.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 114.0,
+    "midi": 72,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 114.5,
+    "midi": 70,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 115.0,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 115.5,
+    "midi": 64,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 116.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 116.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 116.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 116.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 117.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 117.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 117.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 117.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 118.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 118.0,
+    "midi": 60,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 118.5,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 118.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 119.0,
+    "midi": 36,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 119.0,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 119.5,
+    "midi": 48,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 119.5,
+    "midi": 67,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 116,
+    "midi": 48,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 116,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 116,
+    "midi": 55,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 116.0,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 116.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 117.0,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 117.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 118.0,
+    "midi": 72,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 118.5,
+    "midi": 70,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 119.0,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 119.5,
+    "midi": 64,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 120.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 120.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 120.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 120.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 121.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 121.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 121.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 121.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 122.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 122.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 122.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 122.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 123.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 123.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 123.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 123.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 120,
+    "midi": 45,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 120,
+    "midi": 49,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 120,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 120.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 120.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 121.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 121.5,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 122.0,
+    "midi": 61,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 122.5,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 123.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 123.5,
+    "midi": 61,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 124.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 124.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 124.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 124.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 125.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 125.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 125.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 125.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 126.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 126.0,
+    "midi": 57,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 126.5,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 126.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 127.0,
+    "midi": 33,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 127.0,
+    "midi": 61,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 127.5,
+    "midi": 45,
+    "beats": 0.43,
+    "instrument": "strings",
+    "gain": 0.1056,
+    "pan": -0.26
+  },
+  {
+    "bpm": 112,
+    "beat": 127.5,
+    "midi": 64,
+    "beats": 0.6,
+    "instrument": "lute",
+    "gain": 0.04512,
+    "pan": 0.36
+  },
+  {
+    "bpm": 112,
+    "beat": 124,
+    "midi": 45,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": -0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 124,
+    "midi": 49,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.0
+  },
+  {
+    "bpm": 112,
+    "beat": 124,
+    "midi": 52,
+    "beats": 2.7,
+    "instrument": "strings",
+    "gain": 0.045,
+    "pan": 0.25
+  },
+  {
+    "bpm": 112,
+    "beat": 124.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 124.5,
+    "midi": 67,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 125.0,
+    "midi": 65,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 125.5,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 126.0,
+    "midi": 61,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 126.5,
+    "midi": 64,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 127.0,
+    "midi": 69,
+    "beats": 0.4,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  },
+  {
+    "bpm": 112,
+    "beat": 127.5,
+    "midi": 61,
+    "beats": 0.7,
+    "instrument": "brass",
+    "gain": 0.0384,
+    "pan": 0.14
+  }
+]

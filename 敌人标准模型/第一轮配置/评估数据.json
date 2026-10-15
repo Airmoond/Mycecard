@@ -1,0 +1,591 @@
+{
+  "model_version": "0.2",
+  "date": "2026-10-03",
+  "parameters": {
+    "model_version": "0.2",
+    "evaluation_date": "2026-10-03",
+    "damage_per_enemy_turn": 12,
+    "block_per_enemy_turn": 10,
+    "future_discount": 0.85,
+    "enemy_healing_per_health": 0.15,
+    "initial_player_health": 50,
+    "reference_windows": [
+      3,
+      6
+    ],
+    "design_targets": {
+      "normal": {
+        "opening_value": 1.0,
+        "maximum_value": 2.5
+      },
+      "boss": {
+        "opening_value": 1.5,
+        "maximum_value": 3.5
+      },
+      "growth_required": false,
+      "ceiling_scope": "敌人自身基础状态下的完整行动价值D/12+B/10；成长允许但不是必需"
+    },
+    "player_profiles": [
+      {
+        "id": "defensive",
+        "name": "防御优先",
+        "attack": 6,
+        "block": 10
+      },
+      {
+        "id": "balanced",
+        "name": "攻防均衡",
+        "attack": 12,
+        "block": 5
+      },
+      {
+        "id": "aggressive",
+        "name": "全力进攻",
+        "attack": 18,
+        "block": 0
+      }
+    ],
+    "maximum_reference_rounds": 100
+  },
+  "enemy_count": 2,
+  "results": [
+    {
+      "enemy": {
+        "id": "cave_crawler",
+        "name": "哥布林战士",
+        "health": 30,
+        "role": "普通敌人",
+        "source": "combatants/enemies/data/cave_crawler.tres",
+        "actions": [
+          {
+            "id": "attack_12",
+            "name": "攻击",
+            "effects": [
+              {
+                "effect_type": 0,
+                "amount": 12,
+                "repeat_count": 1,
+                "target_type": 1,
+                "damage_source": 0,
+                "is_attack_damage": true,
+                "script": "ExtResource(\"2_pgocy\")",
+                "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+              }
+            ],
+            "damage": 12,
+            "block": 0,
+            "value": 1.0,
+            "segments": 1
+          },
+          {
+            "id": "attack_16",
+            "name": "重击",
+            "effects": [
+              {
+                "effect_type": 0,
+                "amount": 16,
+                "repeat_count": 1,
+                "target_type": 1,
+                "damage_source": 0,
+                "is_attack_damage": true,
+                "script": "ExtResource(\"2_pgocy\")",
+                "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+              }
+            ],
+            "damage": 16,
+            "block": 0,
+            "value": 1.3333333333333333,
+            "segments": 1
+          }
+        ]
+      },
+      "cycle_total": 2.333333333333333,
+      "cycle_average": 1.1666666666666665,
+      "cycle_damage": 28,
+      "cycle_block_supply": 0,
+      "opening_value": 1.0,
+      "peak_action_value": 1.3333333333333333,
+      "peak_damage": 16,
+      "reference_windows": {
+        "3": {
+          "total_value": 3.333333333333333,
+          "average_value": 1.111111111111111,
+          "damage": 40,
+          "block_supply": 0
+        },
+        "6": {
+          "total_value": 7.0,
+          "average_value": 1.1666666666666667,
+          "damage": 84,
+          "block_supply": 0
+        }
+      },
+      "player_profiles": [
+        {
+          "profile": {
+            "id": "defensive",
+            "name": "防御优先",
+            "attack": 6,
+            "block": 10
+          },
+          "outcome": "玩家胜利",
+          "player_rounds": 5,
+          "successful_enemy_turns": 4,
+          "player_health_loss": 16,
+          "effective_enemy_block": 0,
+          "player_health_remaining": 34,
+          "turns": [
+            {
+              "round": 1,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 24,
+              "enemy_action": "attack_12",
+              "player_health_loss": 2,
+              "player_health_after_enemy": 48
+            },
+            {
+              "round": 2,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 18,
+              "enemy_action": "attack_16",
+              "player_health_loss": 6,
+              "player_health_after_enemy": 42
+            },
+            {
+              "round": 3,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 12,
+              "enemy_action": "attack_12",
+              "player_health_loss": 2,
+              "player_health_after_enemy": 40
+            },
+            {
+              "round": 4,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 6,
+              "enemy_action": "attack_16",
+              "player_health_loss": 6,
+              "player_health_after_enemy": 34
+            },
+            {
+              "round": 5,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 0,
+              "enemy_action": null,
+              "player_health_loss": 0
+            }
+          ]
+        },
+        {
+          "profile": {
+            "id": "balanced",
+            "name": "攻防均衡",
+            "attack": 12,
+            "block": 5
+          },
+          "outcome": "玩家胜利",
+          "player_rounds": 3,
+          "successful_enemy_turns": 2,
+          "player_health_loss": 18,
+          "effective_enemy_block": 0,
+          "player_health_remaining": 32,
+          "turns": [
+            {
+              "round": 1,
+              "player_damage": 12,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 18,
+              "enemy_action": "attack_12",
+              "player_health_loss": 7,
+              "player_health_after_enemy": 43
+            },
+            {
+              "round": 2,
+              "player_damage": 12,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 6,
+              "enemy_action": "attack_16",
+              "player_health_loss": 11,
+              "player_health_after_enemy": 32
+            },
+            {
+              "round": 3,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 0,
+              "enemy_action": null,
+              "player_health_loss": 0
+            }
+          ]
+        },
+        {
+          "profile": {
+            "id": "aggressive",
+            "name": "全力进攻",
+            "attack": 18,
+            "block": 0
+          },
+          "outcome": "玩家胜利",
+          "player_rounds": 2,
+          "successful_enemy_turns": 1,
+          "player_health_loss": 12,
+          "effective_enemy_block": 0,
+          "player_health_remaining": 38,
+          "turns": [
+            {
+              "round": 1,
+              "player_damage": 18,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 12,
+              "enemy_action": "attack_12",
+              "player_health_loss": 12,
+              "player_health_after_enemy": 38
+            },
+            {
+              "round": 2,
+              "player_damage": 12,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 0,
+              "enemy_action": null,
+              "player_health_loss": 0
+            }
+          ]
+        }
+      ],
+      "design_check": {
+        "opening_target": 1.0,
+        "maximum_allowed": 2.5,
+        "opening_matches": true,
+        "peak_within_limit": true
+      }
+    },
+    {
+      "enemy": {
+        "id": "ruin_guard",
+        "name": "遗迹守卫",
+        "health": 40,
+        "role": "Boss",
+        "source": "combatants/enemies/data/ruin_guard.tres",
+        "actions": [
+          {
+            "id": "block_15",
+            "name": "防御",
+            "effects": [
+              {
+                "effect_type": 1,
+                "amount": 15,
+                "repeat_count": 1,
+                "target_type": 0,
+                "damage_source": 0,
+                "is_attack_damage": true,
+                "script": "ExtResource(\"2_bksn5\")",
+                "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+              }
+            ],
+            "damage": 0,
+            "block": 15,
+            "value": 1.5,
+            "segments": 0
+          },
+          {
+            "id": "attack_9_x2",
+            "name": "连续攻击",
+            "effects": [
+              {
+                "effect_type": 0,
+                "amount": 9,
+                "repeat_count": 2,
+                "target_type": 1,
+                "damage_source": 0,
+                "is_attack_damage": true,
+                "script": "ExtResource(\"2_bksn5\")",
+                "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+              }
+            ],
+            "damage": 18,
+            "block": 0,
+            "value": 1.5,
+            "segments": 2
+          },
+          {
+            "id": "attack_24",
+            "name": "重击",
+            "effects": [
+              {
+                "effect_type": 0,
+                "amount": 24,
+                "repeat_count": 1,
+                "target_type": 1,
+                "damage_source": 0,
+                "is_attack_damage": true,
+                "script": "ExtResource(\"2_bksn5\")",
+                "metadata/_custom_type_script": "uid://c07wl5mo5epjy"
+              }
+            ],
+            "damage": 24,
+            "block": 0,
+            "value": 2.0,
+            "segments": 1
+          }
+        ]
+      },
+      "cycle_total": 5.0,
+      "cycle_average": 1.6666666666666667,
+      "cycle_damage": 42,
+      "cycle_block_supply": 15,
+      "opening_value": 1.5,
+      "peak_action_value": 2.0,
+      "peak_damage": 24,
+      "reference_windows": {
+        "3": {
+          "total_value": 5.0,
+          "average_value": 1.6666666666666667,
+          "damage": 42,
+          "block_supply": 15
+        },
+        "6": {
+          "total_value": 10.0,
+          "average_value": 1.6666666666666667,
+          "damage": 84,
+          "block_supply": 30
+        }
+      },
+      "player_profiles": [
+        {
+          "profile": {
+            "id": "defensive",
+            "name": "防御优先",
+            "attack": 6,
+            "block": 10
+          },
+          "outcome": "玩家失败",
+          "player_rounds": 8,
+          "successful_enemy_turns": 8,
+          "player_health_loss": 50,
+          "effective_enemy_block": 18,
+          "player_health_remaining": 0,
+          "turns": [
+            {
+              "round": 1,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 34,
+              "enemy_action": "block_15",
+              "player_health_loss": 0,
+              "player_health_after_enemy": 50
+            },
+            {
+              "round": 2,
+              "player_damage": 0,
+              "enemy_block_absorbed": 6,
+              "enemy_health_after_player": 34,
+              "enemy_action": "attack_9_x2",
+              "player_health_loss": 8,
+              "player_health_after_enemy": 42
+            },
+            {
+              "round": 3,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 28,
+              "enemy_action": "attack_24",
+              "player_health_loss": 14,
+              "player_health_after_enemy": 28
+            },
+            {
+              "round": 4,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 22,
+              "enemy_action": "block_15",
+              "player_health_loss": 0,
+              "player_health_after_enemy": 28
+            },
+            {
+              "round": 5,
+              "player_damage": 0,
+              "enemy_block_absorbed": 6,
+              "enemy_health_after_player": 22,
+              "enemy_action": "attack_9_x2",
+              "player_health_loss": 8,
+              "player_health_after_enemy": 20
+            },
+            {
+              "round": 6,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 16,
+              "enemy_action": "attack_24",
+              "player_health_loss": 14,
+              "player_health_after_enemy": 6
+            },
+            {
+              "round": 7,
+              "player_damage": 6,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 10,
+              "enemy_action": "block_15",
+              "player_health_loss": 0,
+              "player_health_after_enemy": 6
+            },
+            {
+              "round": 8,
+              "player_damage": 0,
+              "enemy_block_absorbed": 6,
+              "enemy_health_after_player": 10,
+              "enemy_action": "attack_9_x2",
+              "player_health_loss": 6,
+              "player_health_after_enemy": 0
+            }
+          ]
+        },
+        {
+          "profile": {
+            "id": "balanced",
+            "name": "攻防均衡",
+            "attack": 12,
+            "block": 5
+          },
+          "outcome": "玩家胜利",
+          "player_rounds": 6,
+          "successful_enemy_turns": 5,
+          "player_health_loss": 45,
+          "effective_enemy_block": 24,
+          "player_health_remaining": 5,
+          "turns": [
+            {
+              "round": 1,
+              "player_damage": 12,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 28,
+              "enemy_action": "block_15",
+              "player_health_loss": 0,
+              "player_health_after_enemy": 50
+            },
+            {
+              "round": 2,
+              "player_damage": 0,
+              "enemy_block_absorbed": 12,
+              "enemy_health_after_player": 28,
+              "enemy_action": "attack_9_x2",
+              "player_health_loss": 13,
+              "player_health_after_enemy": 37
+            },
+            {
+              "round": 3,
+              "player_damage": 12,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 16,
+              "enemy_action": "attack_24",
+              "player_health_loss": 19,
+              "player_health_after_enemy": 18
+            },
+            {
+              "round": 4,
+              "player_damage": 12,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 4,
+              "enemy_action": "block_15",
+              "player_health_loss": 0,
+              "player_health_after_enemy": 18
+            },
+            {
+              "round": 5,
+              "player_damage": 0,
+              "enemy_block_absorbed": 12,
+              "enemy_health_after_player": 4,
+              "enemy_action": "attack_9_x2",
+              "player_health_loss": 13,
+              "player_health_after_enemy": 5
+            },
+            {
+              "round": 6,
+              "player_damage": 4,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 0,
+              "enemy_action": null,
+              "player_health_loss": 0
+            }
+          ]
+        },
+        {
+          "profile": {
+            "id": "aggressive",
+            "name": "全力进攻",
+            "attack": 18,
+            "block": 0
+          },
+          "outcome": "玩家胜利",
+          "player_rounds": 4,
+          "successful_enemy_turns": 3,
+          "player_health_loss": 42,
+          "effective_enemy_block": 15,
+          "player_health_remaining": 8,
+          "turns": [
+            {
+              "round": 1,
+              "player_damage": 18,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 22,
+              "enemy_action": "block_15",
+              "player_health_loss": 0,
+              "player_health_after_enemy": 50
+            },
+            {
+              "round": 2,
+              "player_damage": 3,
+              "enemy_block_absorbed": 15,
+              "enemy_health_after_player": 19,
+              "enemy_action": "attack_9_x2",
+              "player_health_loss": 18,
+              "player_health_after_enemy": 32
+            },
+            {
+              "round": 3,
+              "player_damage": 18,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 1,
+              "enemy_action": "attack_24",
+              "player_health_loss": 24,
+              "player_health_after_enemy": 8
+            },
+            {
+              "round": 4,
+              "player_damage": 1,
+              "enemy_block_absorbed": 0,
+              "enemy_health_after_player": 0,
+              "enemy_action": null,
+              "player_health_loss": 0
+            }
+          ]
+        }
+      ],
+      "design_check": {
+        "opening_target": 1.5,
+        "maximum_allowed": 3.5,
+        "opening_matches": true,
+        "peak_within_limit": true
+      }
+    }
+  ],
+  "resource_hashes": {
+    "battle/actions/attack_damage_resolver.gd": "ed819067d759e958188c50259937eea828ba7a4280516a172b46d5f3a36689c0",
+    "battle/actions/combat_effect_definition.gd": "feeeca9ad82d930da59baf29acd0c68e2e3d82043b20f6afcee433d06360eb6f",
+    "battle/battle_controller.gd": "b8d81afc8c8f0a3c2dd0867b9fff15f0d738091b36ffd9e5d458c168b58ca9e1",
+    "battle/data/encounter_definition.gd": "81928ac7a71b2db8a4201713afd41fb0aefce2623c964dc2a0cb620090c423cc",
+    "battle/data/encounters/cave_crawler_encounter.tres": "8849ed27586421fc4e9bf4ad20216f023f2f1cf158e63286682fb642b2fc9e01",
+    "battle/data/encounters/ruin_guard_encounter.tres": "c0a5ea854b37a98147145bec5d0fa4980edf2dee698c0d7be24c9e2ce70f57f8",
+    "battle/model/combatant_state.gd": "a0a315bbf442067e1a9b19c28c559f32f9d2a3be203b2f1c7852e03cf0250731",
+    "battle/model/enemy_state.gd": "42469759a76cdcdace377c7825cc71e8eccab16ddc6820ebcbd1cdc8e1726802",
+    "combatants/enemies/data/cave_crawler.tres": "272f195e6f3c0560dde2b598080c4b094b4bc3b69b1399afda4e02cb834f43bd",
+    "combatants/enemies/data/ruin_guard.tres": "220e59460b9d5ef73d6b746494c0cebad38f952990fdf6db1350595881fb0a01",
+    "combatants/enemies/enemy_action_definition.gd": "d238e26cb0243821672154635b4d28301afdedebff5bdf58a1a6fb3e213d0289",
+    "combatants/enemies/enemy_definition.gd": "998e740ea67c651e2347f8c9c92487c3f3798fb77fdacdc834aa49cbe5e23b3c",
+    "run/map/data/first_map.tres": "b51d835faf895dcaade97e56f0aaacc0e526ece73ba4aa3cf54a01c3e3c42bde"
+  }
+}

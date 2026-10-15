@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CardDefinition" format=3 uid="uid://d4dsmwtcj1p3m"]
 
-[ext_resource type="Texture2D" uid="uid://qx5fdb460qei" path="res://assets/images/tactical_defense.png" id="1_eppxx"]
+[ext_resource type="Texture2D" uid="uid://cejr4rmrr8wk5" path="res://assets/images/tactical_defense-v2.png" id="1_eppxx"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="1_o3kt1"]
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="2_eppxx"]
 

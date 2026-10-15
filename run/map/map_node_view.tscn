@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dwygree6knwv8" path="res://run/map/map_node_view.gd" id="1_fo3iw"]
 
 [node name="map_node_view" type="Control" unique_id=59141312]
-custom_minimum_size = Vector2(170, 90)
+custom_minimum_size = Vector2(145, 86)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_fo3iw")
@@ -16,7 +16,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 disabled = true
 text = "地图节点"
 autowrap_mode = 3

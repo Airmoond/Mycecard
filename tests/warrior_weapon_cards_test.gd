@@ -17,6 +17,7 @@ func _run()->void:
 	_test_reward_to_battle();
 	await _test_card_text();
 	await process_frame;
+	await create_timer(0.5).timeout; # 仅等待测试退出时的混音线程释放。
 	print("战士正式武器卡检查完成，失败数：%d" % _failures);
 	quit(0 if _failures == 0 else 1);
 
@@ -62,7 +63,7 @@ func _test_catalog()->void:
 		var card:CardDefinition = _card(CARD_IDS[index]);
 		_expect(card.card_id == CARD_IDS[index] and card.card_name == names[index] and card.base_energy_cost == costs[index], "卡名、ID与费用符合草案");
 		_expect(character.reward_card_pool.has(card) and card.rarity == CardDefinition.CardRarity.EPIC and not card.is_invalid(), "正式史诗资源已入池");
-		_expect(not card.exhausts_on_play and not card.is_innate and not card.retains_on_turn_end, "不附加打出消耗、固有或保留");
+		_expect(card.exhausts_on_play == (CARD_IDS[index] == "war_god_blessing") and not card.is_innate and not card.retains_on_turn_end, "祝福打出消耗，两把武器不附加打出消耗、固有或保留");
 		_expect(card.card_type == (CardDefinition.CardType.WEAPON if index < 2 else CardDefinition.CardType.SKILL), "两把武器与一张技能类型正确");
 		if index < 2:
 			_expect(card.effects.is_empty() and card.weapon_definition.break_destination == WeaponDefinition.BreakDestination.EXHAUST, "武器无装备附加效果，损坏消耗");
@@ -101,7 +102,7 @@ func _test_blessing_and_replacement()->void:
 	controller._on_card_selected(sword);
 	controller._on_weapon_attack_requested();
 	controller._on_card_selected(blessing);
-	_expect(state.current_available_energy == 0 and state.discard_pile.has(blessing), "祝福支付1费并正常弃置");
+	_expect(state.current_available_energy == 0 and state.exhaust_pile.has(blessing) and not state.discard_pile.has(blessing), "祝福支付1费后消耗");
 	_expect(sword.weapon.current_attack == 16 and sword.weapon.current_durability == 4 and sword.weapon.max_durability == 5, "受损武器2/3变4/5，攻击8变16");
 	_expect(not state.weapon_attack_available, "强化不刷新武器攻击机会");
 	state.gain_energy(3);
@@ -137,7 +138,7 @@ func _test_blade_break()->void:
 func _test_reward_to_battle()->void:
 	var main:Node = load("res://main.tscn").instantiate();
 	var flow:GameFlowController = main.get_node("game_flow_controller");
-	flow.run_definition = flow.run_definition.duplicate();
+	flow.run_definition = load("res://tests/fixtures/linear_run.tres").duplicate();
 	flow.run_definition.character_definition = flow.run_definition.character_definition.duplicate();
 	# 测试保留可配置多轮奖励，四张非传说全部展示；另配齐开局稀有度。
 	flow.run_definition.character_definition.reward_card_pool = [_card(CARD_IDS[0]), _card(CARD_IDS[1]), _card(CARD_IDS[2]), _card("battle_trance"), _card("fortress")];
@@ -162,10 +163,11 @@ func _test_reward_to_battle()->void:
 	flow._handle_map_node_selected("ruin_guard_boss");
 	controller = flow.current_page.get_node("battle_controller");
 	var state:BattleState = controller.battle_state;
+	var enemy_health_before:int = state.enemy_state.current_health;
 	controller._on_card_selected(_put_in_hand(state, "bloodthirsty_sword"));
 	controller._on_card_selected(_put_in_hand(state, "war_god_blessing"));
 	controller.hand_area.get_node("weapon_attack").pressed.emit();
-	_expect(state.enemy_state.current_health == 24 and state.player_state.strength == 1 and state.equipped_weapon.weapon.current_durability == 4, "奖励武器与祝福进入Boss战，按16伤害结算并触发");
+	_expect(state.enemy_state.current_health == enemy_health_before - 16 and state.player_state.strength == 1 and state.equipped_weapon.weapon.current_durability == 4, "奖励武器与祝福进入Boss战，按16伤害结算并触发");
 	_expect(flow.run_state.owned_cards.size() == 12 and not state.is_invalid_battle(), "配置三轮奖励后牌组真实持有12张，战斗牌区守恒");
 	_expect(load("res://characters/data/warrior.tres").reward_card_pool.size() == 27, "测试池不污染正式卡池");
 	main.queue_free();
@@ -175,7 +177,7 @@ func _test_card_text()->void:
 	var views:Array[Control] = [];
 	for id in CARD_IDS:
 		var definition:CardDefinition = _card(id);
-		var reward:RewardCardView = load("res://run/reward/reward_card_view.tscn").instantiate();
+		var reward:CardChoiceView = load("res://ui/cards/card_choice_view.tscn").instantiate();
 		root.add_child(reward);
 		reward.setup(definition);
 		_expect(reward.card_definition == definition, "新卡可显示为奖励");

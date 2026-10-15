@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://chtvhsmhnklag"]
+
+[ext_resource type="Script" uid="uid://b1iqujddbs8dj" path="res://combatants/enemies/enemy_action_definition.gd" id="1_s51oh"]
+[ext_resource type="Script" uid="uid://r84gdmwtul6d" path="res://combatants/enemies/enemy_definition.gd" id="2_4y0dt"]
+[ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="2_bksn5"]
+[ext_resource type="Texture2D" uid="uid://vo35thrtuask" path="res://artworks/ruin_guard.png" id="3_bm76f"]
+
+[sub_resource type="Resource" id="Resource_hag4w"]
+script = ExtResource("2_bksn5")
+effect_type = 1
+amount = 8
+metadata/_custom_type_script = "uid://c07wl5mo5epjy"
+
+[sub_resource type="Resource" id="Resource_phdsu"]
+script = ExtResource("1_s51oh")
+action_id = "block_8"
+intent_text = "防御"
+effects = Array[ExtResource("2_bksn5")]([SubResource("Resource_hag4w")])
+metadata/_custom_type_script = "uid://b1iqujddbs8dj"
+
+[sub_resource type="Resource" id="Resource_bksn5"]
+script = ExtResource("2_bksn5")
+target_type = 1
+amount = 3
+repeat_count = 2
+metadata/_custom_type_script = "uid://c07wl5mo5epjy"
+
+[sub_resource type="Resource" id="Resource_bm76f"]
+script = ExtResource("1_s51oh")
+action_id = "attack_3_x2"
+intent_text = "连续攻击"
+effects = Array[ExtResource("2_bksn5")]([SubResource("Resource_bksn5")])
+metadata/_custom_type_script = "uid://b1iqujddbs8dj"
+
+[sub_resource type="Resource" id="Resource_ykhih"]
+script = ExtResource("2_bksn5")
+target_type = 1
+amount = 12
+metadata/_custom_type_script = "uid://c07wl5mo5epjy"
+
+[sub_resource type="Resource" id="Resource_6fc1v"]
+script = ExtResource("1_s51oh")
+action_id = "attack_12"
+intent_text = "重击"
+effects = Array[ExtResource("2_bksn5")]([SubResource("Resource_ykhih")])
+metadata/_custom_type_script = "uid://b1iqujddbs8dj"
+
+[resource]
+script = ExtResource("2_4y0dt")
+action_pattern = Array[ExtResource("1_s51oh")]([SubResource("Resource_phdsu"), SubResource("Resource_bm76f"), SubResource("Resource_6fc1v")])
+combatant_id = "ruin_guard"
+display_name = "遗迹守卫"
+max_health = 40
+artwork = ExtResource("3_bm76f")
+metadata/_custom_type_script = "uid://r84gdmwtul6d"

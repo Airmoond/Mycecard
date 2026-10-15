@@ -67,9 +67,9 @@ func _ready()->void:
 ## 它只更新界面，不改变RunState.status，也不决定下一局使用哪份RunDefinition。
 func setup(victory:bool)->void:
 	if victory:#流程控制器报告当前整局已经取得胜利
-		result_label.text = VICTORY_TEXT;#显示用户指定的胜利结算文字
+		result_label.text = VICTORY_TEXT;#显示胜利结算文字
 	else:#false表示玩家已经在本局冒险中失败
-		result_label.text = DEFEAT_TEXT;#显示用户指定的失败结算文字
+		result_label.text = DEFEAT_TEXT;#显示失败结算文字
 
 	_is_setup = true;#真实结算内容已经显示，页面现在可以接受重新开始输入
 	_restart_request_sent = false;#重置当前页面实例的防重复请求状态

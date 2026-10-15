@@ -1,76 +1,214 @@
 [gd_scene format=3 uid="uid://d1fvxikrg0afv"]
 
-[ext_resource type="Script" uid="uid://c5600i0aq70v0" path="res://combatants/combatant_view.gd" id="1_x77dk"]
+[ext_resource type="Script" uid="uid://c5600i0aq70v0" path="res://combatants/combatant_view.gd" id="1_view"]
+
+[sub_resource type="StyleBoxFlat" id="PortraitFrame"]
+bg_color = Color(0.06, 0.09, 0.1, 0.75)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
+border_color = Color(0.62, 0.51, 0.32, 1)
+corner_radius_top_left = 170
+corner_radius_top_right = 170
+corner_radius_bottom_left = 110
+corner_radius_bottom_right = 110
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="NamePlate"]
+bg_color = Color(0.24, 0.16, 0.09, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.71, 0.58, 0.36, 1)
+corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="Shield"]
+bg_color = Color(0.16, 0.27, 0.35, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.62, 0.72, 0.77, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_left = 20
+corner_radius_bottom_right = 20
+
+[sub_resource type="StyleBoxFlat" id="Intent"]
+bg_color = Color(0.19, 0.2, 0.16, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.66, 0.57, 0.38, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_left = 20
+corner_radius_bottom_right = 20
+content_margin_left = 12.0
+content_margin_right = 12.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+
+[sub_resource type="Shader" id="PortraitMask"]
+code = "shader_type canvas_item;\nvoid fragment(){\n float d=length((UV-vec2(0.5))*vec2(1.0,0.91));\n COLOR.a*=1.0-smoothstep(0.47,0.50,d);\n}"
+
+[sub_resource type="ShaderMaterial" id="PortraitMaterial"]
+shader = SubResource("PortraitMask")
 
 [node name="combatant_view" type="Control" unique_id=1860343574]
-custom_minimum_size = Vector2(240, 260)
+custom_minimum_size = Vector2(430, 560)
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("1_x77dk")
+offset_right = 430.0
+offset_bottom = 560.0
+mouse_filter = 2
+script = ExtResource("1_view")
 
-[node name="main_layout" type="VBoxContainer" parent="." unique_id=46169126]
+[node name="main_layout" type="Control" parent="." unique_id=46169126]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="portrait_frame" type="Panel" parent="main_layout"]
+layout_mode = 0
+offset_left = 41.0
+offset_right = 389.0
+offset_bottom = 435.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("PortraitFrame")
 
 [node name="artwork" type="TextureRect" parent="main_layout" unique_id=1414151062]
-custom_minimum_size = Vector2(200, 100)
-layout_mode = 2
+material = SubResource("PortraitMaterial")
+layout_mode = 0
+offset_left = 51.0
+offset_top = 12.0
+offset_right = 379.0
+offset_bottom = 421.0
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
 [node name="name_label" type="Label" parent="main_layout" unique_id=1319241911]
-layout_mode = 2
+layout_mode = 0
+offset_left = 27.0
+offset_top = 399.0
+offset_right = 403.0
+offset_bottom = 447.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.94, 0.83, 0.66, 1)
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("NamePlate")
 text = "角色名称"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="health_bar" type="ProgressBar" parent="main_layout" unique_id=1376846238]
-custom_minimum_size = Vector2(0, 10)
-layout_mode = 2
+layout_mode = 0
+offset_left = 94.0
+offset_top = 456.0
+offset_right = 393.0
+offset_bottom = 485.0
+mouse_filter = 2
 value = 100.0
 show_percentage = false
 
 [node name="health_label" type="Label" parent="main_layout" unique_id=1095016368]
-layout_mode = 2
+layout_mode = 0
+offset_left = 94.0
+offset_top = 456.0
+offset_right = 393.0
+offset_bottom = 485.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 18
 text = "100 / 100"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="block_label" type="Label" parent="main_layout" unique_id=853823507]
-layout_mode = 2
+layout_mode = 0
+offset_left = 13.0
+offset_top = 450.0
+offset_right = 88.0
+offset_bottom = 491.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("Shield")
 text = "格挡：0"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="enemy_intent_label" type="Label" parent="main_layout" unique_id=1395971976]
-layout_mode = 2
+layout_mode = 0
+offset_left = 1.0
+offset_top = -76.0
+offset_right = 429.0
+offset_bottom = -8.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.87, 0.93, 0.85, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("Intent")
 text = "意图：未知"
 horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="strength_label" type="Label" parent="main_layout" unique_id=1999734467]
 visible = false
-layout_mode = 2
+layout_mode = 0
+offset_left = 9.0
+offset_top = 495.0
+offset_right = 133.0
+offset_bottom = 521.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.91, 0.73, 0.48, 1)
+theme_override_font_sizes/font_size = 15
 text = "力量：0"
 horizontal_alignment = 1
 
 [node name="weak_label" type="Label" parent="main_layout" unique_id=470314878]
 visible = false
-layout_mode = 2
+layout_mode = 0
+offset_left = 140.0
+offset_top = 495.0
+offset_right = 277.0
+offset_bottom = 521.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.69, 0.83, 0.57, 1)
+theme_override_font_sizes/font_size = 15
 text = "虚弱：0 回合"
 horizontal_alignment = 1
 
 [node name="vulnerable_label" type="Label" parent="main_layout" unique_id=1133441774]
 visible = false
-layout_mode = 2
+layout_mode = 0
+offset_left = 285.0
+offset_top = 495.0
+offset_right = 424.0
+offset_bottom = 521.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.89, 0.65, 0.55, 1)
+theme_override_font_sizes/font_size = 15
 text = "易伤：0 回合"
 horizontal_alignment = 1
 
 [node name="power_label" type="Label" parent="main_layout" unique_id=1833104244]
 visible = false
-layout_mode = 2
+layout_mode = 0
+offset_left = 11.0
+offset_top = 526.0
+offset_right = 419.0
+offset_bottom = 558.0
 mouse_filter = 1
+theme_override_colors/font_color = Color(0.85, 0.77, 0.63, 1)
+theme_override_font_sizes/font_size = 15
 text = "能力："
 horizontal_alignment = 1
+autowrap_mode = 2

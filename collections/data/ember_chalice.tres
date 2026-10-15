@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CollectionDefinition" format=3]
+
+[ext_resource type="Script" path="res://collections/collection_definition.gd" id="1_definition"]
+[ext_resource type="Texture2D" path="res://collections/icons/ember_chalice.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_definition")
+collection_id = "ember_chalice"
+display_name = "余烬圣杯"
+description = "每次普通战斗胜利后，恢复6点生命。"
+icon = ExtResource("2_icon")
+effect_type = 2
+amount = 6

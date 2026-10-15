@@ -1,82 +1,151 @@
-## 负责显示一张战斗卡牌的界面，并报告玩家对该卡牌的点击。
-##
-## 该脚本读取CardInstance及其CardDefinition中的数据刷新UI，
-## 不负责消耗能量、执行卡牌效果或移动任何牌堆。
+## 手牌外层保留稳定输入矩形，只对共用卡面做140ms悬停变换。
 extends Control
 class_name CardView
 
-## 卡牌可以使用时采用的正常显示颜色。
-##
-## Color.WHITE不会改变场景原本的颜色与透明度。
-const PLAYABLE_MODULATE:Color = Color.WHITE;
+const PLAYABLE_MODULATE:Color = Color.WHITE
+const UNPLAYABLE_MODULATE:Color = Color(0.55, 0.55, 0.55, 0.65)
+const CARD_FACE_SCENE:PackedScene = preload("res://cards/card_face.tscn")
+const HOVER_PREVIEW_SIZE:Vector2 = Vector2(270, 378)
+signal card_selected(selected_card:CardInstance)
+var card_instance:CardInstance
+var _hover_tween:Tween
+var _hovered:bool = false
+var _hover_layer:CanvasLayer
+var _hover_preview:CardFace
+var _overlay_host:OverlayHost
 
-## 卡牌当前不可使用时采用的灰暗半透明显示颜色。
-##
-## 该颜色只提供视觉反馈，不代表CardView拥有或执行出牌合法性规则。
-const UNPLAYABLE_MODULATE:Color = Color(0.55,0.55,0.55,0.65);
-
-## 玩家左键点击一张已经成功绑定的卡牌时发出。
-##
-## selected_card是被点击界面当前绑定的CardInstance。
-## 该信号只报告玩家选择，不代表卡牌一定可以使用。
-signal card_selected(selected_card:CardInstance);
-
-## 当前界面正在显示的卡牌运行时实例。
-##
-## 通过bind_card_instance方法完成绑定；界面只读取该实例及其定义，
-## 不应直接修改费用、卡牌效果或所在牌堆。
-var card_instance:CardInstance;
-
-## 与开局、奖励页共用卡面，外层只负责实例与出牌输入。
-@onready var card_face:CardFace = $card_face;
-
+func set_overlay_host(host:OverlayHost)->void:
+	if _overlay_host != host:
+		_close_hover_preview()
+	_overlay_host = host
+@onready var card_face:CardFace = $card_face
 
 func _ready()->void:
-	custom_minimum_size = card_face.get_combined_minimum_size();
+	custom_minimum_size = CardFace.BASE_SIZE
+	size = custom_minimum_size
+	mouse_entered.connect(_set_hovered.bind(true))
+	mouse_exited.connect(_set_hovered.bind(false))
+	resized.connect(_sync_face_size)
 
-## 绑定已经初始化的卡牌实例；进入场景树后调用。
+func _sync_face_size()->void:
+	if not is_node_ready():
+		return
+	card_face.set_display_size(size)
+	card_face.pivot_offset = Vector2(size.x * 0.5, size.y)
+	if not _hovered:
+		card_face.position = Vector2.ZERO
+	else:
+		_place_hover_preview()
+
+## 手中牌多时由战场布局调整占位与卡面，实际点击仍位于原占位矩形。
+func set_display_size(value:Vector2)->void:
+	custom_minimum_size = value
+	size = value
+	_sync_face_size()
+
 func bind_card_instance(new_card_instance:CardInstance)->void:
-	card_instance = new_card_instance;
-	refresh_card_view();
+	card_instance = new_card_instance
+	refresh_card_view()
 
-
-## 从已绑定的实例刷新费用与卡面，不重新校验静态资源。
 func refresh_card_view()->void:
-	card_face.show_card(card_instance.definition, card_instance.current_energy_cost);
-	tooltip_text = card_face.tooltip_text;
+	card_face.show_card(card_instance.definition, card_instance.current_energy_cost)
+	tooltip_text = card_face.tooltip_text
+	_refresh_hover_preview()
 
-
-## 显示控制器提供的当前预览文案；视图不读取双方战斗状态或计算伤害。
 func set_description(text:String)->void:
-	card_face.set_description(text);
-	# 子标签穿透鼠标，悬停说明由接收输入的卡牌根节点显示。
-	tooltip_text = card_face.tooltip_text;
+	card_face.set_description(text)
+	tooltip_text = card_face.tooltip_text
+	_refresh_hover_preview()
 
+func _get_tooltip(_at_position:Vector2)->String:
+	return "" if is_instance_valid(_hover_preview) else tooltip_text
 
-## 根据控制器提供的合法性结果切换卡牌可用或不可用的显示外观。
-##
-## is_playable为true时恢复正常颜色；为false时显示为灰暗半透明状态。
-## 该方法只修改当前CardView的modulate，不读取能量或回合，不修改CardInstance，
-## 也不阻止点击和发出card_selected信号；最终出牌合法性仍由BattleController判断。
 func set_playable_visual(is_playable:bool)->void:
-	if is_playable:#控制器已经确认当前卡牌在此刻可以尝试使用
-		modulate = PLAYABLE_MODULATE;#恢复场景原有颜色与完全不透明的外观
-		return;#正常外观已经设置完成，无需继续处理不可用分支
-	modulate = UNPLAYABLE_MODULATE;#用灰暗半透明外观提示当前卡牌不可使用
-	
-## 接收发生在当前卡牌界面范围内的鼠标输入。
-##
-## 仅在鼠标左键按下且已经绑定卡牌实例时发出card_selected信号。
-## 其他鼠标按键、鼠标释放和非鼠标输入均被忽略。
+	modulate = PLAYABLE_MODULATE if is_playable else UNPLAYABLE_MODULATE
+
+func _set_hovered(value:bool)->void:
+	_hovered = value
+	if is_instance_valid(_hover_tween):
+		_hover_tween.kill()
+	z_index = 8 if value else 0
+	card_face.pivot_offset = Vector2(size.x * 0.5, size.y)
+	_hover_tween = create_tween().set_parallel(true)
+	_hover_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_hover_tween.tween_property(card_face, "position", Vector2(0, -16) if value else Vector2.ZERO, 0.14)
+	_hover_tween.tween_property(card_face, "scale", Vector2(1.06, 1.06) if value else Vector2.ONE, 0.14)
+	if value and card_instance != null:
+		_open_hover_preview()
+	else:
+		_close_hover_preview()
+
+## 独立画布保持小窗口长规则可读；展示层忽略鼠标，不改变原手牌点击范围。
+func _open_hover_preview()->void:
+	if is_instance_valid(_hover_preview):
+		return
+	if is_instance_valid(_overlay_host) and _overlay_host.has_blocking_modal():
+		return
+	_hover_preview = CARD_FACE_SCENE.instantiate()
+	if is_instance_valid(_overlay_host):
+		_overlay_host.attach_hover(_hover_preview, self)
+	else:
+		_hover_layer = CanvasLayer.new()
+		_hover_layer.layer = 20
+		add_child(_hover_layer)
+		_hover_layer.add_child(_hover_preview)
+	var window_size:Vector2 = get_viewport_rect().size
+	var factor:float = minf(1.0, minf(window_size.x * 0.32 / HOVER_PREVIEW_SIZE.x, window_size.y * 0.60 / HOVER_PREVIEW_SIZE.y))
+	_hover_preview.set_display_size(HOVER_PREVIEW_SIZE * factor)
+	_refresh_hover_preview()
+	_place_hover_preview()
+	_hover_preview.modulate.a = 0.0
+	create_tween().tween_property(_hover_preview, "modulate:a", 1.0, 0.14)
+
+func _refresh_hover_preview()->void:
+	if not is_instance_valid(_hover_preview) or card_instance == null:
+		return
+	_hover_preview.show_card(card_instance.definition, card_instance.current_energy_cost)
+	_hover_preview.set_description(card_face.description_label.text)
+
+func _place_hover_preview()->void:
+	if not is_instance_valid(_hover_preview):
+		return
+	var card_rect:Rect2 = get_global_rect()
+	var window_size:Vector2 = get_viewport_rect().size
+	_hover_preview.position = Vector2(
+		clampf(card_rect.get_center().x - _hover_preview.size.x * 0.5, 10.0, window_size.x - _hover_preview.size.x - 10.0),
+		clampf(card_rect.position.y - _hover_preview.size.y - 18.0, 10.0, window_size.y - _hover_preview.size.y - 10.0)
+	)
+
+func _close_hover_preview()->void:
+	if is_instance_valid(_hover_preview) and is_instance_valid(_overlay_host):
+		_overlay_host.release_hover(_hover_preview)
+	if is_instance_valid(_hover_layer):
+		_hover_layer.queue_free()
+	_hover_layer = null
+	_hover_preview = null
+
+func _exit_tree()->void:
+	_close_hover_preview()
+
+## 合法出牌后由独立表现层挂载；快照不持有旧CardView或修改实例。
+func make_play_snapshot()->Control:
+	var copy:CardFace = CARD_FACE_SCENE.instantiate()
+	var definition:CardDefinition = card_instance.definition
+	var cost:int = card_instance.current_energy_cost
+	var description:String = card_face.description_label.text
+	var display_size:Vector2 = card_face.size
+	copy.ready.connect(func()->void:
+		copy.set_display_size(display_size)
+		copy.show_card(definition, cost)
+		copy.set_description(description)
+	, CONNECT_ONE_SHOT)
+	return copy
+
 func _gui_input(event:InputEvent)->void:
-	var mouse_event:InputEventMouseButton = event as InputEventMouseButton;#尝试将输入转换为鼠标按键事件
-	if mouse_event == null:#不是鼠标按键事件时不处理
-		return;
-	if mouse_event.button_index != MOUSE_BUTTON_LEFT:#不是鼠标左键时不处理
-		return;
-	if not mouse_event.pressed:#只在按下时触发，释放时不重复触发
-		return;
-	if card_instance == null:#未绑定卡牌时不能报告选择
-		push_error("当前卡牌界面尚未绑定卡牌实例，无法报告点击");
-		return;
-	card_selected.emit(card_instance);#只报告被选择的实例，不执行卡牌效果
+	var mouse_event:InputEventMouseButton = event as InputEventMouseButton
+	if mouse_event == null or mouse_event.button_index != MOUSE_BUTTON_LEFT or not mouse_event.pressed:
+		return
+	if card_instance == null:
+		push_error("当前卡牌界面尚未绑定卡牌实例，无法报告点击")
+		return
+	card_selected.emit(card_instance)

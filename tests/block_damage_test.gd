@@ -207,7 +207,7 @@ func _test_non_attack_and_reward()->void:
 	_expect(_view(controller, definition).card_face.description_label.text.begins_with("造成5点伤害"), "伤害来源不改变显式的非攻击类别");
 	controller._on_card_selected(state.hand[0]);
 	_expect(state.enemy_state.current_health == 28, "非攻击伤害读取5格挡但不应用攻击修正");
-	var reward:RewardCardView = load("res://run/reward/reward_card_view.tscn").instantiate();
+	var reward:CardChoiceView = load("res://ui/cards/card_choice_view.tscn").instantiate();
 	root.add_child(reward);
 	reward.setup(definition);
 	_expect(reward.card_definition == definition, "动态伤害奖励卡可以绑定");

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c6vebaev1bmxj"]
 
 [ext_resource type="Script" uid="uid://bdrnp5dooji8" path="res://run/screens/run_result.gd" id="1_7ipvh"]
-[ext_resource type="Texture2D" uid="uid://dfkyhh4xvl0j2" path="res://artworks/main_background.png" id="2_7amta"]
+[ext_resource type="Texture2D" path="res://assets/ui/menu-background.png" id="2_7amta"]
 
 [node name="run_result" type="Control" unique_id=871468367]
 layout_mode = 3
@@ -36,7 +36,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 0.019607844)
+color = Color(0.03, 0.015, 0.006, 0.50)
 
 [node name="center_container" type="CenterContainer" parent="." unique_id=157060230]
 layout_mode = 1
@@ -47,20 +47,21 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="main_layout" type="VBoxContainer" parent="center_container" unique_id=734887830]
-custom_minimum_size = Vector2(360, 0)
+custom_minimum_size = Vector2(720, 0)
 layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="result_label" type="Label" parent="center_container/main_layout" unique_id=1452614170]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 0.88, 0.61, 1)
 theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 32
 text = "旅程结算"
 horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="restart_button" type="Button" parent="center_container/main_layout" unique_id=1027912107]
-custom_minimum_size = Vector2(150, 52)
+custom_minimum_size = Vector2(230, 56)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 20

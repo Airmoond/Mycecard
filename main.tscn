@@ -8,8 +8,20 @@
 [ext_resource type="PackedScene" uid="uid://c6tm7stf7chex" path="res://run/reward/reward_view.tscn" id="6_efxa6"]
 [ext_resource type="PackedScene" uid="uid://c6vebaev1bmxj" path="res://run/screens/run_result.tscn" id="7_dg77c"]
 [ext_resource type="PackedScene" path="res://run/draft/starting_draft_view.tscn" id="8_draft"]
+[ext_resource type="PackedScene" path="res://run/collection/collection_choice_view.tscn" id="9_collection"]
+[ext_resource type="Script" path="res://audio/audio_manager.gd" id="10_audio"]
+[ext_resource type="Script" path="res://ui/app_root.gd" id="11_app"]
+
+[ext_resource type="Script" path="res://ui/overlay/overlay_host.gd" id="12_overlay"]
 
 [node name="Main" type="Node" unique_id=1529406086]
+script = ExtResource("11_app")
+
+[node name="audio_manager" type="Node" parent="."]
+script = ExtResource("10_audio")
+
+[node name="overlay_host" type="Node" parent="."]
+script = ExtResource("12_overlay")
 
 [node name="page_container" type="Control" parent="." unique_id=1841393016]
 layout_mode = 3
@@ -24,6 +36,7 @@ script = ExtResource("1_ig7tw")
 run_definition = ExtResource("2_272bh")
 main_menu_scene = ExtResource("3_5vw27")
 starting_draft_scene = ExtResource("8_draft")
+collection_choice_scene = ExtResource("9_collection")
 map_scene = ExtResource("4_kek77")
 battle_scene = ExtResource("5_4c57u")
 reward_scene = ExtResource("6_efxa6")

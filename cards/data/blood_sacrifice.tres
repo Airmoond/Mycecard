@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="1_card"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="2_effect"]
+[ext_resource type="Texture2D" uid="uid://bosq7ijm3t6q6" path="res://assets/images/blood_sacrifice.png" id="4_artwork"]
 
 [sub_resource type="Resource" id="LoseMaxHealth"]
 script = ExtResource("2_effect")
@@ -22,3 +23,4 @@ card_type = 1
 rarity = 2
 base_energy_cost = 1
 effects = Array[ExtResource("2_effect")]([SubResource("LoseMaxHealth"), SubResource("Block")])
+artwork = ExtResource("4_artwork")

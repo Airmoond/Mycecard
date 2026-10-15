@@ -50,3 +50,8 @@ func _on_start_button_pressed()->void:
 	_start_request_sent = true;#先提交本地防重复状态，阻止同一调用链中的再次进入
 	start_button.disabled = true;#提供立即的界面反馈，并阻止玩家继续点击当前按钮
 	start_requested.emit();#只报告“希望开始”，由GameFlowController决定如何创建和切换流程
+
+## 新页面准备失败时，恢复尚未提交的新局请求。
+func reset_start_request()->void:
+	_start_request_sent = false
+	start_button.disabled = false

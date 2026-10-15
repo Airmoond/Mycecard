@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="1_card"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="2_effect"]
+[ext_resource type="Texture2D" uid="uid://b3i530kir28ye" path="res://assets/images/pommel_strike.png" id="4_artwork"]
 
 [sub_resource type="Resource" id="Damage"]
 script = ExtResource("2_effect")
@@ -20,3 +21,4 @@ card_name = "剑柄打击"
 description = "造成{damage_0}点伤害。抽1张牌。"
 base_energy_cost = 1
 effects = Array[ExtResource("2_effect")]([SubResource("Damage"), SubResource("Draw")])
+artwork = ExtResource("4_artwork")

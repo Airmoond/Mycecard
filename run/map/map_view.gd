@@ -1,84 +1,47 @@
-## 显示一张静态地图及其当前局内进度的完整页面。
-##
-## GameFlowController以后实例化MapView，并通过setup传入同一局冒险使用的
-## MapDefinition与RunState。页面根据静态节点位置创建MapNodeView和连接线，
-## 根据运行时进度显示锁定、可进入与已完成状态，并报告玩家选择的节点ID。
-##
-## MapView属于视图与输入层。它可以只读访问RunState以刷新生命、牌组和按钮状态，
-## 但不能调用enter_node、complete_current_node、heal或其他推进游戏状态的方法。
+## 地图只读取本局已生成的遭遇与进度，不在刷新或缩放时重新随机。
 class_name MapView
 extends Control
 
+const MAP_NODE_VIEW_SCENE:PackedScene = preload("res://run/map/map_node_view.tscn");
+const COLLECTION_INSPECTOR_SCENE:PackedScene = preload("res://ui/inspect/collection_inspector.tscn");
+const CARD_INSPECTOR_SCENE:PackedScene = preload("res://ui/inspect/card_inspector.tscn");
+const DESIGN_SIZE:Vector2 = Vector2(1024.0, 600.0);
+const NODE_SIZE:Vector2 = Vector2(145.0, 86.0);
+const CONNECTION_WIDTH:float = 3.0;
+const CONNECTION_COLOR:Color = Color(0.45, 0.33, 0.18, 0.65);
+const ACTIVE_CONNECTION_COLOR:Color = Color(0.9, 0.68, 0.28, 1.0);
+const COMPLETED_CONNECTION_COLOR:Color = Color(0.38, 0.62, 0.42, 1.0);
+const EXCLUDED_CONNECTION_COLOR:Color = Color(0.42, 0.38, 0.31, 0.28);
 
-## 每个地图节点使用的可复用界面场景模板。
-##
-## refresh_map会为MapDefinition.nodes中的每个元素分别实例化一个独立组件。
-const MAP_NODE_VIEW_SCENE:PackedScene = preload(
-	"res://run/map/map_node_view.tscn"
-)
+signal node_selected(node_id:String);
 
+var map_definition:MapDefinition;
+var run_state:RunState;
+var _node_views:Dictionary = {};
+var _selection_reported:bool = false;
+var _layout_scale:float = 1.0;
+var _layout_origin:Vector2 = Vector2.ZERO;
+var _layout_queued:bool = false;
+var _collection_inspector:CollectionInspector;
+var _card_inspector:CardInspector;
+var _overlay_host:OverlayHost;
 
-## 地图节点连接线使用的基础宽度。
-const CONNECTION_WIDTH:float = 4.0
+@onready var connection_layer:Control = $connection_layer;
+@onready var node_layer:Control = $node_layer;
+@onready var annotation_layer:Control = $annotation_layer;
+@onready var health_label:Label = $top_bar/health_label;
+## 保留旧节点与字段名，牌组数量现在同时是查看按钮。
+@onready var deck_label:Button = $top_bar/deck_label;
+@onready var deck_button:Button = $top_bar/deck_label;
+@onready var collection_button:Button = $top_bar/collection_button;
+@onready var route_hint:Label = $route_hint;
 
+func _ready()->void:
+	resized.connect(_queue_layout);
+	collection_button.pressed.connect(_open_collection_inspector);
+	deck_button.pressed.connect(_open_deck_inspector);
 
-## 地图节点连接线使用的灰白色。
-const CONNECTION_COLOR:Color = Color(0.78,0.8,0.86,0.9)
-
-
-## 玩家首次选择一个当前真正可进入的节点时发出。
-##
-## node_id是MapNodeDefinition中的稳定节点ID。信号只报告玩家意图，
-## GameFlowController收到后仍需调用RunState.enter_node执行最终状态提交。
-signal node_selected(node_id:String)
-
-
-## 当前页面正在显示的静态地图定义。
-##
-## 通过setup完成绑定，只用于读取节点、位置和连接；运行时不得修改该Resource。
-var map_definition:MapDefinition
-
-
-## 当前页面正在显示的局内运行时状态。
-##
-## MapView只读取生命、牌组和地图进度，不通过该引用直接推进或结算冒险。
-var run_state:RunState
-
-
-## 按稳定node_id保存当前页面创建的MapNodeView实例。
-##
-## 字典只用于连接线查找和统一禁用按钮，不属于真实地图进度；刷新页面时会重建。
-var _node_views:Dictionary = {}
-
-
-## 当前这次地图刷新之后是否已经报告过一项节点选择。
-##
-## 用于阻止快速点击不同节点时重复触发页面切换或创建多个战斗页面。
-var _selection_reported:bool = false
-
-
-## 动态连接线的父节点。
-##
-## 场景中应当位于node_layer之前，使Line2D显示在地图节点组件下方。
-@onready var connection_layer:Control = $connection_layer
-
-
-## 动态MapNodeView实例的父节点。
-##
-## 该节点必须是普通Control而不是Container，否则静态map_position可能被自动排版覆盖。
-@onready var node_layer:Control = $node_layer
-
-
-## 显示玩家当前局内生命与最大生命的顶部标签。
-@onready var health_label:Label = $top_bar/health_label
-
-
-## 显示玩家当前实际拥有卡牌数量的顶部标签。
-@onready var deck_label:Label = $top_bar/deck_label
-
-
-## 绑定已初始化的冒险与地图，确认二者属于同一局后显示。
-func setup(new_map_definition:MapDefinition,new_run_state:RunState)->bool:
+func setup(new_map_definition:MapDefinition, new_run_state:RunState)->bool:
 	if new_map_definition == null or new_run_state == null:
 		push_error("地图页面缺少地图定义或局内状态");
 		return false;
@@ -90,108 +53,271 @@ func setup(new_map_definition:MapDefinition,new_run_state:RunState)->bool:
 	refresh_map();
 	return true;
 
-
-## 从已绑定的状态重建地图；静态地图在冒险初始化时验证。
 func refresh_map()->void:
+	if map_definition == null or run_state == null:
+		return;
 	_clear_dynamic_content();
 	_selection_reported = false;
 	_refresh_run_info();
 	_create_node_views();
-	_create_connection_lines();
+	_layout_map();
+	_refresh_inspector_interactions();
 
-
-## 清理当前页面中此前动态创建的全部连接线和地图节点组件。
-##
-## 只移除connection_layer与node_layer的运行时子节点，不删除背景、顶部信息或静态资源。
 func _clear_dynamic_content()->void:
-	for connection in connection_layer.get_children():#逐一处理上一次刷新创建的Line2D
-		connection_layer.remove_child(connection);#立即移出场景树，避免旧连线继续显示
-		connection.queue_free();#在当前帧安全结束后释放旧连接节点
+	for layer:Control in [connection_layer, node_layer, annotation_layer]:
+		for child in layer.get_children():
+			layer.remove_child(child);
+			child.queue_free();
+	_node_views.clear();
 
-	for node_view in node_layer.get_children():#逐一处理上一次刷新创建的MapNodeView
-		node_layer.remove_child(node_view);#立即移出场景树和输入系统
-		node_view.queue_free();#在当前帧安全结束后释放旧地图节点组件
-
-	_node_views.clear();#删除仅用于当前界面的node_id到View映射
-
-
-## 从RunState刷新顶部生命与实际牌组数量文字。
-##
-## 该方法只读取数据并更新Label，不把标签中的文字反向作为游戏状态。
 func _refresh_run_info()->void:
-	health_label.text = "生命：%d / %d" % [
-		run_state.current_health,
-		run_state.max_health
-	];#当前生命与最大生命都来自本局运行时状态。
-	deck_label.text = "牌组：%d张" % run_state.owned_cards.size();#每个CardDefinition元素代表实际拥有的一张卡
+	health_label.text = "生命：%d / %d" % [run_state.current_health, run_state.max_health];
+	deck_label.text = "牌组：%d张" % run_state.owned_cards.size();
+	collection_button.text = "藏品";
+	collection_button.icon = null;
+	collection_button.tooltip_text = "查看本局藏品";
+	if run_state.selected_collection != null:
+		collection_button.text = "藏品：%s" % run_state.selected_collection.display_name;
+		collection_button.icon = run_state.selected_collection.icon;
+		collection_button.tooltip_text = run_state.selected_collection.description;
+	if not map_definition.is_branch_map:
+		route_hint.text = "选择下一处可进入的地图节点";
+		return;
 
+func _route_name(route_id:String)->String:
+	match route_id:
+		"a": return "上方";
+		"b": return "中间";
+		"c": return "下方";
+	return route_id;
 
-## 为每个配置节点建立对应界面。
 func _create_node_views()->void:
 	for node_definition in map_definition.nodes:
 		var view:MapNodeView = MAP_NODE_VIEW_SCENE.instantiate();
 		node_layer.add_child(view);
-		view.position = node_definition.map_position;
 		view.setup(node_definition, _get_node_visual_state(node_definition.node_id));
+		view.set_display_details(
+			run_state.get_node_display_name(node_definition.node_id),
+			_node_type_name(node_definition),
+			not node_definition.route_id.is_empty() and node_definition.route_id == run_state.selected_route_id,
+			_is_excluded_route(node_definition),
+			_node_tooltip(node_definition)
+		);
 		view.pressed.connect(_on_map_node_pressed);
-		view.set_interactable(run_state.can_enter_node(node_definition.node_id));
+		view.set_interactable(run_state.can_enter_node(node_definition.node_id) and not _has_inspector());
 		_node_views[node_definition.node_id] = view;
 
+func _node_type_name(node_definition:MapNodeDefinition)->String:
+	match run_state.get_node_type(node_definition.node_id):
+		MapNodeDefinition.NodeType.START: return "出发";
+		MapNodeDefinition.NodeType.BATTLE: return "普通战斗";
+		MapNodeDefinition.NodeType.REST: return "休整";
+		MapNodeDefinition.NodeType.UNEXPECTED: return "不期而遇";
+		MapNodeDefinition.NodeType.BOSS: return "最终 Boss";
+	return "地图节点";
 
-## 根据当前RunState取得一个节点应当显示的NodeState。
-##
-## 已完成节点优先返回COMPLETED，已解锁节点返回AVAILABLE，其余返回LOCKED。
-## 该方法只计算外观；最终按钮权限仍由RunState.can_enter_node决定。
+func _node_tooltip(node_definition:MapNodeDefinition)->String:
+	var text:String = run_state.get_node_display_name(node_definition.node_id);
+	var encounter:EncounterDefinition = run_state.get_node_encounter(node_definition.node_id);
+	if encounter != null:
+		text += "\n生命：%d" % encounter.enemy_definition.max_health;
+	if run_state.get_node_type(node_definition.node_id) == MapNodeDefinition.NodeType.REST:
+		text += "\n恢复 %d 点生命，最多恢复至当前生命上限" % node_definition.heal_amount;
+	var content:UnexpectedEncounterDefinition = run_state.get_unexpected_encounter(node_definition.node_id);
+	if content != null:
+		text += "\n进入后作出选择，确认后继续旅程";
+	if _is_excluded_route(node_definition):
+		text += "\n本局已选择另一条路线";
+	return text;
+
 func _get_node_visual_state(node_id:String)->MapNodeView.NodeState:
-	if run_state.completed_node_ids.has(node_id):#完成记录优先于其他显示状态
-		return MapNodeView.NodeState.COMPLETED;#已完成节点需要保留可见但不能再次进入
-	if run_state.available_node_ids.has(node_id):#解锁数组表示节点已经具备可进入外观
-		return MapNodeView.NodeState.AVAILABLE;#是否真正可点仍受到整局状态和当前节点限制
-	return MapNodeView.NodeState.LOCKED;#未完成且未解锁的节点统一显示为锁定
+	if run_state.completed_node_ids.has(node_id):
+		return MapNodeView.NodeState.COMPLETED;
+	if run_state.current_node_id == node_id:
+		return MapNodeView.NodeState.CURRENT;
+	if run_state.can_enter_node(node_id):
+		return MapNodeView.NodeState.AVAILABLE;
+	return MapNodeView.NodeState.LOCKED;
 
+func _is_excluded_route(node_definition:MapNodeDefinition)->bool:
+	return (
+		not run_state.selected_route_id.is_empty()
+		and not node_definition.route_id.is_empty()
+		and node_definition.route_id != run_state.selected_route_id
+	);
 
-## 节点界面创建完成后，按已经验证的地图连接绘制路线。
+## 节点坐标是设计画布上的中心；画布始终等比缩放到卷轴正文区域。
+## 缩放仅移动现有组件和重画连线，保留按钮、点击防重与随机遭遇。
+func _layout_map()->void:
+	_layout_queued = false;
+	if _node_views.is_empty() or size.x <= 0.0 or size.y <= 0.0:
+		return;
+	var usable_height:float = maxf(size.y - 114.0, 1.0);
+	_layout_scale = minf(size.x * 0.76 / DESIGN_SIZE.x, usable_height / DESIGN_SIZE.y);
+	_layout_origin = Vector2((size.x - DESIGN_SIZE.x * _layout_scale) * 0.5,
+		63.0 + (usable_height - DESIGN_SIZE.y * _layout_scale) * 0.5);
+	route_hint.offset_left = -size.x * 0.46;
+	route_hint.offset_right = size.x * 0.46;
+	route_hint.add_theme_font_size_override("font_size", clampi(roundi(size.x / 64.0), 12, 18));
+	for node_definition in map_definition.nodes:
+		var view:MapNodeView = _node_views[node_definition.node_id];
+		view.size = NODE_SIZE;
+		view.scale = Vector2.ONE * _layout_scale;
+		view.position = _design_point(node_definition.map_position) - NODE_SIZE * _layout_scale * 0.5;
+	_create_connection_lines();
+	_create_annotations();
+
+func _queue_layout()->void:
+	if _layout_queued or not is_node_ready():
+		return;
+	_layout_queued = true;
+	_layout_map.call_deferred();
+
+func _design_point(point:Vector2)->Vector2:
+	return _layout_origin + point * _layout_scale;
+
 func _create_connection_lines()->void:
+	for old_line in connection_layer.get_children():
+		connection_layer.remove_child(old_line);
+		old_line.queue_free();
 	for source in map_definition.nodes:
 		var source_view:MapNodeView = _node_views[source.node_id];
 		for target_node_id in source.next_node_ids:
+			var target_definition:MapNodeDefinition = map_definition.get_node_by_id(target_node_id);
 			var target_view:MapNodeView = _node_views[target_node_id];
 			var line:Line2D = Line2D.new();
 			line.name = "connection_%s_to_%s" % [source.node_id, target_node_id];
-			line.width = CONNECTION_WIDTH;
-			line.default_color = CONNECTION_COLOR;
-			line.add_point(_get_node_view_center(source_view));
-			line.add_point(_get_node_view_center(target_view));
+			line.width = CONNECTION_WIDTH * _layout_scale;
+			line.default_color = _connection_color(source, target_definition);
+			line.antialiased = true;
+			var direction:Vector2 = _get_node_view_center(target_view) - _get_node_view_center(source_view);
+			line.add_point(_node_edge_point(source_view, direction));
+			line.add_point(_node_edge_point(target_view, -direction));
 			connection_layer.add_child(line);
 
+func _connection_color(source:MapNodeDefinition, target:MapNodeDefinition)->Color:
+	if _is_excluded_route(source) or _is_excluded_route(target):
+		return EXCLUDED_CONNECTION_COLOR;
+	if run_state.completed_node_ids.has(source.node_id):
+		if run_state.completed_node_ids.has(target.node_id):
+			return COMPLETED_CONNECTION_COLOR;
+		if run_state.can_enter_node(target.node_id):
+			return ACTIVE_CONNECTION_COLOR;
+	if not run_state.selected_route_id.is_empty():
+		if source.route_id == run_state.selected_route_id or target.route_id == run_state.selected_route_id:
+			return ACTIVE_CONNECTION_COLOR;
+	return CONNECTION_COLOR;
 
-## 计算一个MapNodeView在MapView局部坐标中的中心位置。
-##
-## 优先使用场景配置的custom_minimum_size，未配置时再读取当前size。
-## map_position表示节点左上角，因此中心点等于position加上显示尺寸的一半。
 func _get_node_view_center(node_view:MapNodeView)->Vector2:
-	var display_size:Vector2 = node_view.custom_minimum_size;#当前模板使用170×90的静态最小尺寸
-	if display_size == Vector2.ZERO:#允许未来模板不设置自定义最小尺寸
-		display_size = node_view.size;#退回读取Control进入场景树后的实际尺寸
-	return node_view.position + display_size * 0.5;#将左上角静态坐标转换为连接线中心点
+	return node_view.position + node_view.size * node_view.scale * 0.5;
 
+func _node_edge_point(view:MapNodeView, direction:Vector2)->Vector2:
+	var center:Vector2 = _get_node_view_center(view);
+	if direction == Vector2.ZERO:
+		return center;
+	var half_size:Vector2 = view.size * view.scale * 0.5;
+	var factor:float = minf(half_size.x / maxf(absf(direction.x), 0.001),
+		half_size.y / maxf(absf(direction.y), 0.001));
+	return center + direction * factor;
 
-## 接收MapNodeView报告的玩家选择，并进行页面级最终验证。
-##
-## 已经报告过选择、尚未绑定状态或节点此刻不可进入时忽略或报告错误；首次合法
-## 选择会禁用全部节点组件，再发出node_selected。该方法不调用RunState.enter_node。
+func _create_annotations()->void:
+	for old_annotation in annotation_layer.get_children():
+		annotation_layer.remove_child(old_annotation);
+		old_annotation.queue_free();
+	if not map_definition.is_branch_map:
+		return;
+	var captions:Array[String] = ["起点", "第一战", "第二战", "休整", "最终 Boss"];
+	if map_definition.randomize_route_contents:
+		captions = ["起点", "第一处", "第二处", "第三处", "最终 Boss"];
+	for index in range(captions.size()):
+		var label:Label = Label.new();
+		label.text = captions[index];
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER;
+		label.add_theme_font_size_override("font_size", 19);
+		label.add_theme_color_override("font_color", Color(0.3, 0.2, 0.1));
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE;
+		label.size = Vector2(145.0, 30.0);
+		label.scale = Vector2.ONE * _layout_scale;
+		label.position = _design_point(Vector2(110.0 + 200.0 * index, 64.0)) - Vector2(72.5, 0.0) * _layout_scale;
+		annotation_layer.add_child(label);
+
 func _on_map_node_pressed(node_id:String)->void:
-	if _selection_reported:#页面切换完成前可能快速点击不同的可进入节点
-		return;#同一次地图显示周期最多报告一个选择
-	if run_state == null:#没有唯一局内状态时无法执行最终节点合法性检查
-		push_error("尚未绑定局内状态，无法报告地图节点选择");#报告setup调用顺序错误
-		return;#缺少真实进度时不能转发玩家输入
-	if not run_state.can_enter_node(node_id):#View外观不能替代RunState的最终进入条件
-		push_error("玩家选择了当前不可进入的地图节点：%s" % node_id);#报告显示与真实状态不一致
-		return;#锁定、完成或不存在的节点不能进入流程层
+	if _selection_reported or _has_inspector() or not is_inside_tree() or is_queued_for_deletion():
+		return;
+	if run_state == null:
+		push_error("尚未绑定局内状态，无法报告地图节点选择");
+		return;
+	if not run_state.can_enter_node(node_id):
+		push_error("玩家选择了当前不可进入的地图节点：%s" % node_id);
+		return;
+	_selection_reported = true;
+	_refresh_inspector_interactions();
+	node_selected.emit(node_id);
 
-	_selection_reported = true;#先提交页面级防重复状态，阻止不同按钮的连续输入
-	for node_view:MapNodeView in _node_views.values():
-		node_view.set_interactable(false);
+## 查看窗口共用一组锁定条件；数量刷新和地图重建也不能恢复背景输入。
+func _has_inspector()->bool:
+	return is_instance_valid(_collection_inspector) or is_instance_valid(_card_inspector) or (_overlay_host != null and _overlay_host.has_blocking_modal());
 
-	node_selected.emit(node_id);#只报告稳定ID，由流程控制器调用RunState.enter_node并切换流程
+func _can_open_inspector()->bool:
+	return run_state != null and not _selection_reported and not _has_inspector() and is_inside_tree() and not is_queued_for_deletion();
+
+func _refresh_inspector_interactions()->void:
+	var blocked:bool = run_state == null or _selection_reported or _has_inspector() or not is_inside_tree() or is_queued_for_deletion();
+	collection_button.disabled = blocked;
+	deck_button.disabled = blocked;
+	for node_id:String in _node_views:
+		var view:MapNodeView = _node_views[node_id];
+		view.set_interactable(not blocked and run_state.can_enter_node(node_id));
+
+## 整局牌组按拥有张数展示，同名卡的多份资源引用保留；不读取战斗实例。
+func _open_deck_inspector()->void:
+	if not _can_open_inspector():
+		return;
+	_card_inspector = CARD_INSPECTOR_SCENE.instantiate();
+	if _overlay_host != null:
+		_overlay_host.attach_page_modal(_card_inspector, self);
+	else:
+		add_child(_card_inspector);
+	var definitions:Array[CardDefinition] = run_state.owned_cards.duplicate();
+	if not _card_inspector.setup_definitions(definitions, "牌组"):
+		_card_inspector.get_parent().remove_child(_card_inspector);
+		_card_inspector.queue_free();
+		_card_inspector = null;
+		_refresh_inspector_interactions();
+		push_error("本局牌组查看窗口设置失败");
+		return;
+	_card_inspector.closed.connect(_on_card_inspector_closed.bind(_card_inspector));
+	_refresh_inspector_interactions();
+
+func _on_card_inspector_closed(source:CardInspector = null)->void:
+	if source != null and source != _card_inspector:
+		return;
+	_card_inspector = null;
+	_refresh_inspector_interactions();
+
+func _open_collection_inspector()->void:
+	if not _can_open_inspector():
+		return;
+	_collection_inspector = COLLECTION_INSPECTOR_SCENE.instantiate();
+	if _overlay_host != null:
+		_overlay_host.attach_page_modal(_collection_inspector, self);
+	else:
+		add_child(_collection_inspector);
+	_collection_inspector.setup(run_state.selected_collection);
+	_collection_inspector.closed.connect(_on_collection_inspector_closed.bind(_collection_inspector));
+	_refresh_inspector_interactions();
+
+func _on_collection_inspector_closed(source:CollectionInspector = null)->void:
+	if source != null and source != _collection_inspector:
+		return;
+	_collection_inspector = null;
+	_refresh_inspector_interactions();
+
+func configure_overlay(host:OverlayHost)->void:
+	_overlay_host = host
+	if host != null and not host.blocking_changed.is_connected(_on_overlay_blocking_changed):
+		host.blocking_changed.connect(_on_overlay_blocking_changed)
+
+func _on_overlay_blocking_changed(_blocked:bool)->void:
+	if is_inside_tree() and not is_queued_for_deletion():
+		_refresh_inspector_interactions()

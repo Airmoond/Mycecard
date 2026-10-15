@@ -1,10 +1,23 @@
 ## 保存一场战斗当前时刻的全部运行时状态。
 ##
 ## 包含参战角色、能量、回合阶段，以及卡牌在各牌堆和结算中的归属。
-## BattleState是战斗数据的唯一可信来源；控制器负责调用这里的方法推进战斗，
+## BattleState是战斗数据的唯一可信来源；BattleSession负责调用这里的方法推进战斗，
 ## 显示层只读取这些状态并更新画面，不应把UI中的数值反向当作真实战斗数据。
 class_name BattleState
 extends RefCounted
+
+## 只报告已经提交的能量与装备变化；监听者不能参与费用、攻击或归档验证。
+signal presentation_result(kind:StringName, amount:int)
+
+## 独立战斗随机源。显式传入时与冒险候选抽样互不消费彼此的序列。
+var _random_source:RandomNumberGenerator = RandomNumberGenerator.new()
+
+func _init()->void:
+	_random_source.randomize()
+
+func set_random_source(source:RandomNumberGenerator)->void:
+	if source != null:
+		_random_source = source
 
 ## 当前战斗所处的阶段。
 enum BattlePhase{
@@ -68,15 +81,15 @@ var attack_card_energy_this_turn:int = 0;
 ## 本场初始牌数，供状态检查核对移动过程中有没有丢牌。
 var _initial_card_count:int = 0;
 
-## 当前战斗阶段，用于让控制器判断此刻允许执行哪些战斗操作。
+## 当前战斗阶段，由BattleSession提供统一合法性查询。
 var current_phase:BattlePhase;
 
-## 当前回合编号；初始化时为0，正式开始新的玩家回合时再由控制器递增。
+## 当前回合编号；初始化时为0，正式开始新的玩家回合时再由BattleSession递增。
 var current_turn_number:int=0;#当前回合编号
 
 ## 玩家每个回合开始时应当尝试抽取的卡牌数量，必须大于0。
 ##
-## 该数值来自遭遇配置，由控制器在开始玩家回合时读取；BattleState只保存规则，
+## 该数值来自遭遇配置，由BattleSession在开始玩家回合时读取；BattleState只保存规则，
 ## 不会因为该变量变化而自动触发抽牌。
 var cards_per_turn:int;
 
@@ -126,7 +139,7 @@ func battle_state_init(
 	if enemy.current_action_index < 0 or enemy.current_action_index >= enemy.enemy_definition.action_pattern.size():#下标必须落在行动模式范围内
 		push_error("敌人当前行动下标越界，战斗初始化失败")
 		return false;
-	if enemy.current_action == null:#界面和控制器都需要读取已经准备好的行动
+	if enemy.current_action == null:#界面和BattleSession都需要读取已经准备好的行动
 		push_error("敌人当前行动为空，战斗初始化失败")
 		return false;
 	if enemy.current_action.is_invalid():#拒绝把效果不完整的行动带入战斗
@@ -278,12 +291,17 @@ func is_invalid_battle()->bool:
 ## 调用方应当保证当前BattleState已经成功初始化且energy_per_turn合法。
 ## 该方法只负责恢复能量，不负责开始玩家回合，也没有返回值。
 func reset_energy_for_turn()->void:
+	var change:int = energy_per_turn - current_available_energy;
 	current_available_energy = energy_per_turn;
+	if change != 0:
+		presentation_result.emit(&"energy", change);
 
 
 ## 增加当前能量，可以超过每回合基础值；数值由效果定义验证为正数。
 func gain_energy(amount:int)->void:
 	current_available_energy += amount;
+	if amount != 0:
+		presentation_result.emit(&"energy", amount);
 
 
 ## 只增加后续攻击牌的回能额度，不立刻回复能量。
@@ -305,6 +323,8 @@ func spend_energy(energy_cost:int)->bool:
 	if current_available_energy < energy_cost:
 		return false;
 	current_available_energy -= energy_cost;
+	if energy_cost > 0:
+		presentation_result.emit(&"energy", -energy_cost);
 	return true;
 
 
@@ -316,7 +336,11 @@ func spend_energy(energy_cost:int)->bool:
 func shuffle_draw_pile()->void:
 	if draw_pile.size() < 2:
 		return;
-	draw_pile.shuffle();
+	for index in range(draw_pile.size() - 1, 0, -1):
+		var swap_index:int = _random_source.randi_range(0, index)
+		var card:CardInstance = draw_pile[index]
+		draw_pile[index] = draw_pile[swap_index]
+		draw_pile[swap_index] = card
 
 
 ## 仅在首回合抽牌前调用：洗牌后把固有牌放到数组末尾（牌堆顶）。
@@ -436,6 +460,7 @@ func finish_card_play()->void:
 	if card.definition.card_type == CardDefinition.CardType.WEAPON:
 		card.weapon.restore_durability();
 		equipped_weapon = card;
+		presentation_result.emit(&"weapon_equip", 1);
 	elif card.definition.exhausts_on_play:
 		exhaust_pile.append(card);
 	elif card.definition.card_type == CardDefinition.CardType.POWER:
@@ -459,6 +484,7 @@ func _break_equipped_weapon()->void:
 			hand.append(old_weapon);
 	else:
 		exhaust_pile.append(old_weapon);
+	presentation_result.emit(&"weapon_break", 1);
 
 
 ## 界面显示和实际攻击共用此判断，攻击不检查能量或手牌容量。

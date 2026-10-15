@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="1_card"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="2_effect"]
+[ext_resource type="Texture2D" uid="uid://cwpqi2icy58gh" path="res://assets/images/open_wound.png" id="4_artwork"]
 
 [sub_resource type="Resource" id="Damage"]
 script = ExtResource("2_effect")
@@ -22,3 +23,4 @@ description = "造成{damage_0}点伤害。给予2层易伤。"
 rarity = 1
 base_energy_cost = 2
 effects = Array[ExtResource("2_effect")]([SubResource("Damage"), SubResource("Vulnerable")])
+artwork = ExtResource("4_artwork")

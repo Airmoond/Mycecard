@@ -1,0 +1,15 @@
+{
+  "model_version": "0.1",
+  "evaluation_date": "2026-10-03",
+  "seed_start": 20261003,
+  "samples": 24,
+  "maximum_rounds": 60,
+  "maximum_actions_per_turn": 60,
+  "player_health_grid": [35, 50, 65, 80],
+  "boss_health_grid": [40, 75, 99, 120],
+  "proposed_route_battles": 2,
+  "reference_deck": ["eternity", "war_god_blessing", "uppercut"],
+  "reference_deck_name": "永恒＋战神祝福＋上勾拳",
+  "policy": "意图贪心v1：优先致死，按可兑现伤害、所需格挡与短期辅助收益选择；不看抽牌堆顺序，不搜索最优路线",
+  "score_components": {"victory_weight": 70, "remaining_health_weight": 30}
+}

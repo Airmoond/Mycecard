@@ -1,0 +1,105 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ui/inspect/card_inspector.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_panel"]
+bg_color = Color(0.15, 0.10, 0.058, 0.99)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7, 0.55, 0.31, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+
+[node name="card_inspector" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+z_index = 100
+script = ExtResource("1_script")
+
+[node name="shade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.015, 0.025, 0.04, 0.78)
+
+[node name="panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 28.0
+offset_right = -32.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_panel")
+
+[node name="layout" type="VBoxContainer" parent="panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="title_label" type="Label" parent="panel/layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.86, 0.6, 1)
+theme_override_font_sizes/font_size = 27
+text = "卡牌：0张"
+horizontal_alignment = 1
+
+[node name="hint_label" type="Label" parent="panel/layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.77, 0.8, 0.84, 1)
+theme_override_font_sizes/font_size = 16
+text = "按名称排列 · 滚动查看全部卡牌"
+horizontal_alignment = 1
+
+[node name="empty_label" type="Label" parent="panel/layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.9, 0.89, 0.85, 1)
+theme_override_font_sizes/font_size = 22
+text = "这里还没有卡牌。"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="scroll_container" type="ScrollContainer" parent="panel/layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="card_grid" type="GridContainer" parent="panel/layout/scroll_container"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 4
+
+[node name="close_button" type="Button" parent="panel/layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+text = "关闭（Esc）"

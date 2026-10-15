@@ -15,6 +15,7 @@ func _run()->void:
 	_test_insufficient_candidates();
 	_test_reward_flow();
 	await process_frame;
+	await create_timer(0.5).timeout; # 仅等待测试退出时的混音线程释放。
 	print("卡池抽样检查完成，失败数：%d" % _failures);
 	quit(0 if _failures == 0 else 1);
 
@@ -98,7 +99,8 @@ func _test_insufficient_candidates()->void:
 	var pool:Array[CardDefinition] = _pool([0, 1, 1, 4]);
 	print("以下两条配置错误为预期：非传说候选只有2张，不能展示3张。");
 	_expect(CardPoolSampler.sample(pool, 3, CardPoolSampler.REWARD_RARITIES).is_empty(), "数量不足应返回空数组，不补空值、重复卡或部分候选");
-	var definition:RunDefinition = load("res://run/data/default_run.tres").duplicate();
+	# 本项只验证战后候选容量，隔离不期而遇各自的三选一配置。
+	var definition:RunDefinition = load("res://tests/fixtures/linear_run.tres").duplicate();
 	definition.character_definition = definition.character_definition.duplicate();
 	definition.character_definition.reward_card_pool = pool;
 	_expect(definition.is_invalid(), "配置容量检查按筛选后数量，不能用传说卡凑数");
@@ -110,7 +112,7 @@ func _test_insufficient_candidates()->void:
 func _test_reward_flow()->void:
 	var main:Node = load("res://main.tscn").instantiate();
 	var flow:GameFlowController = main.get_node("game_flow_controller");
-	flow.run_definition = flow.run_definition.duplicate();
+	flow.run_definition = load("res://tests/fixtures/linear_run.tres").duplicate();
 	flow.run_definition.character_definition = flow.run_definition.character_definition.duplicate();
 	var pool:Array[CardDefinition] = _pool([1, 1, 1, 4]);
 	flow.run_definition.character_definition.reward_card_pool = pool;

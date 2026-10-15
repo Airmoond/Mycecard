@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://b36put4k462ok"]
+
+[ext_resource type="Script" uid="uid://b1iqujddbs8dj" path="res://combatants/enemies/enemy_action_definition.gd" id="1_l8me6"]
+[ext_resource type="Script" uid="uid://r84gdmwtul6d" path="res://combatants/enemies/enemy_definition.gd" id="2_ahydh"]
+[ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="2_pgocy"]
+[ext_resource type="Texture2D" uid="uid://dyvnms1aindyq" path="res://artworks/cave_crawler.png" id="3_rdfuq"]
+
+[sub_resource type="Resource" id="Resource_2422c"]
+script = ExtResource("2_pgocy")
+target_type = 1
+amount = 6
+metadata/_custom_type_script = "uid://c07wl5mo5epjy"
+
+[sub_resource type="Resource" id="Resource_p2pe4"]
+script = ExtResource("1_l8me6")
+action_id = "attack_6"
+intent_text = "攻击"
+effects = Array[ExtResource("2_pgocy")]([SubResource("Resource_2422c")])
+metadata/_custom_type_script = "uid://b1iqujddbs8dj"
+
+[sub_resource type="Resource" id="Resource_yuhc2"]
+script = ExtResource("2_pgocy")
+effect_type = 1
+amount = 5
+metadata/_custom_type_script = "uid://c07wl5mo5epjy"
+
+[sub_resource type="Resource" id="Resource_qa0o8"]
+script = ExtResource("1_l8me6")
+action_id = "block_5"
+intent_text = "防御"
+effects = Array[ExtResource("2_pgocy")]([SubResource("Resource_yuhc2")])
+metadata/_custom_type_script = "uid://b1iqujddbs8dj"
+
+[sub_resource type="Resource" id="Resource_n8hn8"]
+script = ExtResource("2_pgocy")
+target_type = 1
+amount = 9
+metadata/_custom_type_script = "uid://c07wl5mo5epjy"
+
+[sub_resource type="Resource" id="Resource_ix6gu"]
+script = ExtResource("1_l8me6")
+action_id = "attack_9"
+intent_text = "重击"
+effects = Array[ExtResource("2_pgocy")]([SubResource("Resource_n8hn8")])
+metadata/_custom_type_script = "uid://b1iqujddbs8dj"
+
+[resource]
+script = ExtResource("2_ahydh")
+action_pattern = Array[ExtResource("1_l8me6")]([SubResource("Resource_p2pe4"), SubResource("Resource_qa0o8"), SubResource("Resource_ix6gu")])
+combatant_id = "cave_crawler"
+display_name = "哥布林战士"
+max_health = 30
+artwork = ExtResource("3_rdfuq")
+metadata/_custom_type_script = "uid://r84gdmwtul6d"

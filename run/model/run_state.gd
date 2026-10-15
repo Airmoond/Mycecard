@@ -1,102 +1,61 @@
-## 保存一局冒险在战斗之外持续存在的全部运行时状态。
-##
-## 包含玩家当前生命、本局实际拥有的卡牌定义、正在处理的地图节点、可进入节点、
-## 已完成节点和整局状态。GameFlowController以后持有唯一的RunState，并通过这里的
-## 方法推进冒险；地图、奖励和结算View只读取状态并报告输入。
-##
-## RunState不进入场景树，不保存单场战斗的能量、格挡、牌堆或CardInstance，
-## 也不修改RunDefinition、MapDefinition、CardDefinition等静态Resource。
+## 一局冒险的运行时状态；静态资源和抽定的遭遇均只读。
 class_name RunState
 extends RefCounted
 
+## 旧枚举编号保持稳定；IN_PROGRESS 表示可进入地图节点。
+enum RunStatus { SETUP, IN_PROGRESS, VICTORY, DEFEAT, DRAFTING, CHOOSING_COLLECTION, CHOOSING_UNEXPECTED, UNEXPECTED_RESULT, IN_BATTLE, CHOOSING_REWARD }
 
-## 当前整局冒险所处的运行状态。
-enum RunStatus {
-	## 对象尚未使用合法RunDefinition完成初始化。
-	SETUP,
-
-	## 冒险已经成功初始化，仍允许进入节点、治疗、加卡和继续流程。
-	IN_PROGRESS,
-
-	## 玩家已经击败最终Boss并取得整局胜利。
-	VICTORY,
-
-	## 玩家已经在战斗中失败，整局流程不再允许继续推进。
-	DEFEAT,
-
-	## 正在逐轮构筑初始牌组，完成后才允许进入地图。
-	DRAFTING
-}
-
-## 已完成的选牌轮数，也是当前轮在DRAFT_RARITIES中的下标。
-var draft_round:int = 0;
-
-
-## 创建当前运行时冒险所使用的静态定义资源。
-##
-## 成功初始化后保存传入RunDefinition的只读引用，用于查询玩家初始最大生命、地图结构
-## 和其他固定规则。运行时不得修改该资源或它引用的任何.tres内容。
 var definition:RunDefinition
-
-
-## 玩家在当前整局冒险中剩余的生命值。
-##
-## 初始化时等于角色combatant_definition.max_health；战斗结束时由GameFlowController回写，
-## 休整时由RunState.heal修改。该数值不能超过玩家最大生命，也不能小于0。
 var current_health:int = 0
-
-
-## 本局实际最大生命；新冒险从静态定义初始化，战斗结束时同步永久变化。
 var max_health:int = 0
-
-
-## 玩家在当前整局冒险中实际拥有的全部卡牌定义引用。
-##
-## 每个数组元素代表实际拥有的一张卡，因此允许同一个CardDefinition重复出现。
-## 进入战斗时再根据每个元素创建独立CardInstance；这里不保存牌堆和临时费用。
 var owned_cards:Array[CardDefinition] = []
-
-
-## 当前正在处理的地图节点ID。
-##
-## 位于地图页面、尚未进入节点或节点已经完成时为空字符串；进入节点后保存该节点
-## 的稳定ID。同一时刻最多只能有一个当前节点。
 var current_node_id:String = ""
-
-
-## 当前已经解锁并允许玩家进入的地图节点ID。
-##
-## 初始化时复制MapDefinition.starting_node_ids；进入节点时移除对应ID，完成节点后
-## 再根据其next_node_ids解锁后继。该数组属于运行时状态，不得与静态数组共用。
 var available_node_ids:Array[String] = []
-
-
-## 当前整局冒险中已经完成的地图节点ID。
-##
-## 完成节点后保存其稳定ID，用于阻止重复进入并刷新地图显示。初始化时必须为空，
-## 且同一个ID不能重复出现。
 var completed_node_ids:Array[String] = []
-
-
-## 当前整局冒险的运行状态。
-##
-## 新对象默认为SETUP；成功初始化后变为DRAFTING，选满三轮后变为IN_PROGRESS，最终由结算方法切换为
-## VICTORY或DEFEAT。
 var status:RunStatus = RunStatus.SETUP
+var draft_round:int = 0
+var draft_candidates:Array[CardDefinition] = [];
+var random:RunRNG;
+var session_id:String = "";
+var active_battle_id:String = "";
+var processed_battle_results:Dictionary = {};
+var last_battle_result:Dictionary = {};
+var reward_state:RewardState;
+var reward_history:Dictionary = {};
+
+## 首次进入一条支线时确定，直到新冒险才清空。
+var selected_route_id:String = ""
+
+## 新冒险一次生成全部战斗绑定；返回地图、领取奖励与休整不会重新抽取。
+var node_encounters:Dictionary = {}
+
+## 九个位置的实际类型与不期而遇定义一次抽定；所有共享资源保持只读。
+var node_types:Dictionary = {}
+var node_unexpected_encounters:Dictionary = {}
+## 候选与结果按位置独立保存，同名内容在不同路线互不共享可变状态。
+var unexpected_candidates:Dictionary = {}
+## 每个选牌选项独立保存；unexpected_candidates 是第一组选牌候选的兼容读取。
+var unexpected_option_candidates:Dictionary = {};
+var unexpected_results:Dictionary = {}
+
+## 开始节点选择的藏品不会进入牌组；候选仅抽取一次直到完成选择。
+var selected_collection:CollectionDefinition
+var collection_candidates:Array[CollectionDefinition] = []
+
+## 圣杯按普通节点记录触发，重复战斗回调和奖励页面重建不能再次回血。
+var _normal_victory_collection_nodes:Array[String] = []
 
 
-## 只在DRAFTING阶段查询；轮次由初始化和choose_starting_card推进。
 func get_draft_rarity()->int:
+	if draft_round < 0 or draft_round >= RunDefinition.DRAFT_RARITIES.size():
+		return -1;
 	return RunDefinition.DRAFT_RARITIES[draft_round];
 
 
-## 单轮选择直接加入真实牌组；静态卡牌合法性已由冒险定义验证。
 func choose_starting_card(card:CardDefinition)->bool:
-	if status != RunStatus.DRAFTING:
+	if status != RunStatus.DRAFTING or definition == null or card == null:
 		return false;
-	if not definition.character_definition.reward_card_pool.has(card):
-		return false;
-	if card.rarity != get_draft_rarity():
+	if not definition.character_definition.reward_card_pool.has(card) or card.rarity != get_draft_rarity():
 		return false;
 	owned_cards.append(card);
 	draft_round += 1;
@@ -105,227 +64,638 @@ func choose_starting_card(card:CardDefinition)->bool:
 	return true;
 
 
-## 使用一份静态冒险定义初始化全新的局内运行时状态。
-##
-## new_definition为空或定义非法时推送错误，保持当前RunState原有数据不变并返回false。
-## 定义合法时，先在局部数组中按照DeckEntryDefinition.count展开初始牌组，并复制
-## 地图起点；全部准备成功后再提交定义、满生命、牌组、地图进度和DRAFTING状态。
-##
-## owned_cards中的重复CardDefinition引用代表多张同名卡，属于合法状态。
-## 该方法只复制数组结构和静态资源引用，不创建CardInstance，也不修改任何静态资源。
-func run_state_init(new_definition:RunDefinition)->bool:
-	if new_definition == null:#空引用无法提供玩家、牌组、地图和奖励配置
-		push_error("冒险定义为空，局内状态初始化失败");#报告调用方缺少静态整局配置
-		return false;#验证失败前不修改当前RunState中的任何数据
-	if new_definition.is_invalid():#让RunDefinition完整验证玩家、牌组、地图和奖励池
-		push_error("冒险定义无效，局内状态初始化失败");#补充运行时初始化阶段的错误上下文
-		return false;#非法静态数据不能成为局内状态的数据来源
-
+## 验证和准备全部在局部完成，失败不会覆盖旧冒险或污染资源。
+func run_state_init(new_definition:RunDefinition, rng:RandomNumberGenerator = null)->bool:
+	if new_definition == null or new_definition.is_invalid():
+		push_error("冒险定义无效，局内状态初始化失败");
+		return false;
 	var character:CharacterDefinition = new_definition.character_definition;
-	var initial_owned_cards:Array[CardDefinition] = [];#局部保存展开后的实际拥有卡牌，避免产生半成品状态
-	for deck_entry in character.starting_deck_entries:#按照角色基础牌组的配置顺序展开
-		for _card_index in range(deck_entry.count):#count决定本局实际拥有这种卡牌的数量
-			initial_owned_cards.append(deck_entry.card_definition);#每个元素代表一张卡，但共享同一份只读定义
+	var initial_cards:Array[CardDefinition] = [];
+	for entry in character.starting_deck_entries:
+		for _index in range(entry.count):
+			initial_cards.append(entry.card_definition);
 
-	var initial_available_node_ids:Array[String] = (
-		new_definition.map_definition.starting_node_ids.duplicate()
-	);#复制静态起点数组，防止后续运行时移除节点时污染MapDefinition
+	var bindings:Dictionary = {};
+	var types:Dictionary = {};
+	var event_bindings:Dictionary = {};
+	var map:MapDefinition = new_definition.map_definition;
+	if map.is_branch_map:
+		for route in map.get_route_ids():
+			var candidates:Array[EncounterDefinition] = new_definition.normal_encounter_pool.duplicate();
+			RunRNG.shuffle(candidates, rng);
+			var route_nodes:Array[String] = map.get_route_node_ids(route);
+			if map.randomize_route_contents:
+				var route_types:Array[int] = [MapNodeDefinition.NodeType.BATTLE, MapNodeDefinition.NodeType.BATTLE, MapNodeDefinition.NodeType.UNEXPECTED];
+				RunRNG.shuffle(route_types, rng);
+				var battle_index:int = 0;
+				for index in range(route_nodes.size()):
+					var node_id:String = route_nodes[index];
+					types[node_id] = route_types[index];
+					if route_types[index] == MapNodeDefinition.NodeType.BATTLE:
+						bindings[node_id] = candidates[battle_index];
+						battle_index += 1;
+					else:
+						event_bindings[node_id] = new_definition.unexpected_encounter_pool[RunRNG.pick_index(new_definition.unexpected_encounter_pool.size(), rng)];
+			else:
+				bindings[route_nodes[0]] = candidates[0];
+				bindings[route_nodes[1]] = candidates[1];
+	for node in map.nodes:
+		if not node.requires_encounter() or bindings.has(node.node_id):
+			continue;
+		if not node.random_encounter:
+			bindings[node.node_id] = node.encounter_definition;
+		else:
+			var pool:Array[EncounterDefinition] = new_definition.boss_encounter_pool if node.node_type == MapNodeDefinition.NodeType.BOSS else new_definition.normal_encounter_pool;
+			bindings[node.node_id] = pool[RunRNG.pick_index(pool.size(), rng)];
+	bindings.make_read_only();
+	types.make_read_only();
+	event_bindings.make_read_only();
 
-	definition = new_definition;#保存静态冒险定义的只读引用
+	definition = new_definition;
 	max_health = character.combatant_definition.max_health;
-	current_health = max_health;#新冒险恢复角色原始上限并从满生命开始。
-	owned_cards = initial_owned_cards;#提交已经完整展开的本局实际拥有卡牌列表
-	current_node_id = "";#新冒险尚未进入任何地图节点
-	available_node_ids = initial_available_node_ids;#提交独立于静态地图数组的初始可进入节点列表
-	completed_node_ids.clear();#全新冒险不能继承此前已经完成的节点
-	draft_round = 0;
-	status = RunStatus.DRAFTING;#先逐轮选牌，再开放地图。
-
-	return true;#当前RunState已经完整初始化，可以交给GameFlowController使用
-
-
-## 检查当前局内运行时状态是否包含非法或互相冲突的数据。
-##
-## 冒险定义为空或非法、状态枚举无效或仍为SETUP、生命越界、实际牌组为空或包含
-## 非法卡牌，以及当前、可进入、已完成节点不存在、重复或同时出现在多个进度位置时，
-## 推送对应错误并返回true。进行中或胜利状态下生命为0时也返回true。
-## 供测试和排查问题时完整检查；日常状态操作不重复扫描静态配置。
-##
-## owned_cards允许重复保存同一个CardDefinition或card_id，因为每个数组元素代表
-## 玩家实际拥有的一张卡。该方法只读取并验证状态，不修复数据，也不修改静态资源。
-func is_invalid()->bool:
-	if definition == null:#没有静态冒险定义时无法验证玩家、地图和基础规则
-		push_error("冒险定义为空，局内状态非法");#报告当前RunState尚未完成初始化
-		return true;#缺少唯一静态来源时不能继续验证运行时数据
-	if definition.is_invalid():#运行时状态不能依赖字段不完整的玩家、地图或奖励配置
-		push_error("冒险定义无效，局内状态非法");#补充局内状态层的错误上下文
-		return true;#非法静态定义不能成为合法RunState的基础
-	if not RunStatus.values().has(status):#防止运行时状态保存枚举范围之外的非法整数
-		push_error("整局状态枚举无效，局内状态非法");#报告流程控制器无法解释的状态
-		return true;#未知状态不能安全决定是否允许继续推进
-	if status == RunStatus.SETUP:#成功初始化后的完整RunState不应继续停留在准备阶段
-		push_error("整局状态仍为SETUP，局内状态尚未完成初始化");#报告对象仍是未提交状态
-		return true;#未初始化对象不能交给页面和流程控制器使用
-
-	if max_health <= 0:
-		push_error("本局最大生命必须大于0");
-		return true;
-	if current_health < 0:#生命最低只能为0，不能出现负数运行时数据
-		push_error("当前生命小于0，局内状态非法");#报告战斗回写或治疗计算破坏了生命下限
-		return true;#负生命不能继续传入下一场战斗
-	if current_health > max_health:#跨战斗生命不能超过本局实际最大生命
-		push_error("当前生命超过最大生命，局内状态非法");#报告生命回写或治疗没有正确限制上限
-		return true;#超出静态最大值的生命状态不能使用
-	if (
-		status in [RunStatus.DRAFTING, RunStatus.IN_PROGRESS, RunStatus.VICTORY]
-	) and current_health == 0:#仍在冒险或已经胜利都意味着玩家必须存活
-		push_error("进行中或胜利状态的玩家生命为0，局内状态非法");#报告生命与整局状态互相冲突
-		return true;#死亡玩家不能继续流程，也不能取得Boss胜利
-
-	if owned_cards.is_empty():#初始化成功的冒险必须拥有至少一张实际卡牌
-		push_error("本局拥有的卡牌数组为空，局内状态非法");#报告牌组初始化或后续修改破坏了战斗入口
-		return true;#空牌组不能创建下一场BattleState
-	for card_index in range(owned_cards.size()):#逐一验证玩家实际拥有的全部卡牌定义引用
-		var owned_card:CardDefinition = owned_cards[card_index];#取得当前位置代表的一张实际拥有卡牌
-		if owned_card == null:#每个数组元素都必须指向一份真实卡牌定义
-			push_error("本局拥有的卡牌[%d]为空，局内状态非法" % card_index);#报告空卡牌的准确下标
-			return true;#空元素无法在战斗开始时创建CardInstance
-		if owned_card.is_invalid():#卡牌名称、费用和效果等静态内容必须完整合法
-			push_error("本局拥有的卡牌[%d]无效，局内状态非法" % card_index);#补充实际牌组中的位置上下文
-			return true;#非法卡牌不能带入下一场战斗
-
-	var map_definition:MapDefinition = definition.map_definition;#后续所有节点查询都读取同一份只读地图定义
-	if not current_node_id.is_empty():#空字符串表示当前位于地图页面，没有正在处理的节点
-		if not map_definition.has_node(current_node_id):#非空当前节点必须指向地图中的真实节点
-			push_error("当前地图节点不存在：%s" % current_node_id);#报告损坏的运行时节点引用
-			return true;#不存在的节点无法完成、结算或取得后继连接
-
-	var available_node_id_set:Dictionary = {};#记录可进入节点ID，用于检查重复和进度集合冲突
-	for available_index in range(available_node_ids.size()):#逐一验证当前已经解锁的节点
-		var available_node_id:String = available_node_ids[available_index];#取得当前位置的可进入节点ID
-		if available_node_id.is_empty():#空字符串不能代表一项真实的可进入节点
-			push_error("可进入节点ID[%d]为空，局内状态非法" % available_index);#报告空ID的准确位置
-			return true;#空节点不能显示为有效地图入口
-		if not map_definition.has_node(available_node_id):#可进入节点必须来自当前静态地图
-			push_error("可进入节点不存在：%s" % available_node_id);#报告运行时进度引用了错误地图内容
-			return true;#不存在的节点不能交给GameFlowController进入
-		if available_node_id_set.has(available_node_id):#同一个节点不能被重复解锁
-			push_error("可进入节点ID重复：%s" % available_node_id);#报告重复的运行时进度数据
-			return true;#重复入口可能导致重复创建页面或重复结算节点
-		if available_node_id == current_node_id:#已经进入的节点应当从可进入数组中移除
-			push_error("当前节点同时存在于可进入节点中：%s" % available_node_id);#报告两个进度位置发生冲突
-			return true;#同一节点不能同时是待进入和正在处理状态
-
-		available_node_id_set[available_node_id] = true;#记录已经完整验证的可进入节点ID
-
-	var completed_node_id_set:Dictionary = {};#记录已完成节点ID，用于检查重复和跨集合冲突
-	for completed_index in range(completed_node_ids.size()):#逐一验证当前已经完成的节点
-		var completed_node_id:String = completed_node_ids[completed_index];#取得当前位置的已完成节点ID
-		if completed_node_id.is_empty():#空字符串不能代表一项真实的完成记录
-			push_error("已完成节点ID[%d]为空，局内状态非法" % completed_index);#报告空ID的准确位置
-			return true;#空记录无法用于地图刷新或阻止重复进入
-		if not map_definition.has_node(completed_node_id):#完成记录必须属于当前静态地图
-			push_error("已完成节点不存在：%s" % completed_node_id);#报告运行时进度引用了错误地图内容
-			return true;#不存在的节点不能成为合法完成记录
-		if completed_node_id_set.has(completed_node_id):#同一个节点只能完成一次
-			push_error("已完成节点ID重复：%s" % completed_node_id);#报告重复的完成记录
-			return true;#重复完成会破坏地图推进和奖励结算边界
-		if completed_node_id == current_node_id:#正在处理的节点尚未进入完成状态
-			push_error("当前节点同时存在于已完成节点中：%s" % completed_node_id);#报告当前与完成状态冲突
-			return true;#同一节点不能同时是正在处理和已经完成
-		if available_node_id_set.has(completed_node_id):#完成节点不能再次处于可进入状态
-			push_error("节点同时存在于可进入和已完成数组中：%s" % completed_node_id);#报告两个进度集合冲突
-			return true;#已完成节点重新解锁会允许玩家重复获取节点收益
-
-		completed_node_id_set[completed_node_id] = true;#记录已经完整验证的完成节点ID
-
-	return false;#静态定义、状态、生命、牌组和地图进度均合法
-
-
-## 判断当前时刻是否允许进入指定地图节点。
-##
-## 只有RunState已经绑定定义、整局处于IN_PROGRESS、没有其他正在处理的节点、
-## node_id非空且存在于当前地图、位于available_node_ids中，并且尚未完成时返回true。
-## 任意条件不满足时返回false。
-##
-## 该方法是供MapView刷新按钮状态使用的纯查询，不推送错误、不移动节点ID，
-## 也不修改任何静态资源。enter_node仍会在真正提交前再次进行最终检查。
-func can_enter_node(node_id:String)->bool:
-	if definition == null:#尚未初始化时无法取得当前地图和节点进度
-		return false;#缺少判断依据时所有地图节点都不可进入
-	if status != RunStatus.IN_PROGRESS:#胜利、失败或准备阶段都不允许继续推进地图
-		return false;#终局状态下地图按钮应当保持不可操作
-	if not current_node_id.is_empty():#同一时刻最多只能处理一个地图节点
-		return false;#已有当前节点时不能并行进入另一节点
-	if node_id.is_empty():#空字符串不能指向一项真实地图节点
-		return false;#无效查询不应成为可进入请求
-	if definition.map_definition == null:#保留防御性检查，避免读取损坏定义中的空地图
-		return false;#没有地图时无法判断节点是否存在
-	if not definition.map_definition.has_node(node_id):#只能进入当前静态地图实际包含的节点
-		return false;#不存在的节点ID不能交给流程控制器处理
-	if completed_node_ids.has(node_id):#已经完成的节点不能再次提供战斗、治疗或奖励
-		return false;#阻止玩家重复取得同一节点收益
-
-	return available_node_ids.has(node_id);#最后以运行时解锁列表作为是否允许进入的直接依据
-
-
-## 进入当前可用节点；移除入口后，同一节点不能被重复进入。
-func enter_node(node_id:String)->bool:
-	if not can_enter_node(node_id):
-		return false;
-	available_node_ids.erase(node_id);
-	current_node_id = node_id;
-	return true;
-
-
-## 完成当前节点并解锁后继；地图连接已在冒险初始化时验证。
-func complete_current_node()->bool:
-	if status != RunStatus.IN_PROGRESS or current_node_id.is_empty():
-		return false;
-	var current_node:MapNodeDefinition = definition.map_definition.get_node_by_id(current_node_id);
-	completed_node_ids.append(current_node_id);
-	for next_node_id in current_node.next_node_ids:
-		if not completed_node_ids.has(next_node_id) and not available_node_ids.has(next_node_id):
-			available_node_ids.append(next_node_id);
+	current_health = max_health;
+	owned_cards = initial_cards;
 	current_node_id = "";
+	available_node_ids = map.starting_node_ids.duplicate();
+	completed_node_ids = [];
+	selected_route_id = "";
+	node_encounters = bindings;
+	node_types = types;
+	node_unexpected_encounters = event_bindings;
+	unexpected_candidates = {};
+	unexpected_option_candidates = {};
+	unexpected_results = {};
+	selected_collection = null;
+	collection_candidates = [];
+	_normal_victory_collection_nodes = [];
+	draft_round = 0;
+	draft_candidates = [];
+	random = null;
+	session_id = "";
+	active_battle_id = "";
+	processed_battle_results = {};
+	last_battle_result = {};
+	reward_state = null;
+	reward_history = {};
+	status = RunStatus.DRAFTING;
 	return true;
 
 
-## 在冒险进行期间加入一张卡；只验证新加入的定义，不重查整局配置。
-func add_card(card_definition:CardDefinition)->bool:
+## 统一提供本局实际战斗内容，也兼容固定遭遇的旧地图。
+func get_node_type(node_id:String)->int:
+	if definition == null or definition.map_definition == null:
+		return -1;
+	var node:MapNodeDefinition = definition.map_definition.get_node_by_id(node_id);
+	if node == null:
+		return -1;
+	return node_types.get(node_id, node.node_type);
+
+
+func node_requires_encounter(node_id:String)->bool:
+	return get_node_type(node_id) in [MapNodeDefinition.NodeType.BATTLE, MapNodeDefinition.NodeType.BOSS];
+
+
+func get_unexpected_encounter(node_id:String)->UnexpectedEncounterDefinition:
+	return node_unexpected_encounters.get(node_id) as UnexpectedEncounterDefinition;
+
+
+func get_node_encounter(node_id:String)->EncounterDefinition:
+	if definition == null or definition.map_definition == null:
+		return null;
+	var node:MapNodeDefinition = definition.map_definition.get_node_by_id(node_id);
+	if node == null or not node_requires_encounter(node_id):
+		return null;
+	if node_encounters.has(node_id):
+		return node_encounters[node_id] as EncounterDefinition;
+	return node.encounter_definition;
+
+
+func get_node_display_name(node_id:String)->String:
+	if definition == null or definition.map_definition == null:
+		return "";
+	var node:MapNodeDefinition = definition.map_definition.get_node_by_id(node_id);
+	if node == null:
+		return "";
+	var encounter:EncounterDefinition = get_node_encounter(node_id);
+	if encounter != null and encounter.enemy_definition != null:
+		return encounter.enemy_definition.display_name;
+	var content:UnexpectedEncounterDefinition = get_unexpected_encounter(node_id);
+	if content != null:
+		return content.display_name;
+	return node.display_name;
+
+
+## 候选只在首次进入此位置时生成，重建页面或取消子页不能重抽。
+func begin_unexpected_encounter(rng:RandomNumberGenerator = null)->bool:
+	if get_node_type(current_node_id) != MapNodeDefinition.NodeType.UNEXPECTED or unexpected_results.has(current_node_id):
+		return false;
+	if status == RunStatus.CHOOSING_UNEXPECTED:
+		return true;
 	if status != RunStatus.IN_PROGRESS:
 		return false;
-	if card_definition == null or card_definition.is_invalid():
-		push_error("需要添加的卡牌定义无效");
+	var content:UnexpectedEncounterDefinition = get_unexpected_encounter(current_node_id);
+	if content == null:
 		return false;
-	owned_cards.append(card_definition);
+	if not unexpected_candidates.has(current_node_id):
+		var by_option:Dictionary = UnexpectedEncounterExecutor.prepare_candidates(self, rng);
+		for option in content.options:
+			if option.operation == UnexpectedEncounterOptionDefinition.Operation.GAIN_CARD and not by_option.has(option.option_id):
+				return false;
+		var options:Array[CardDefinition] = [];
+		var first_option:UnexpectedEncounterOptionDefinition = content.first_card_option();
+		if first_option != null:
+			options = by_option[first_option.option_id];
+		options.make_read_only();
+		unexpected_candidates[current_node_id] = options;
+		unexpected_option_candidates[current_node_id] = by_option;
+	status = RunStatus.CHOOSING_UNEXPECTED;
 	return true;
 
 
-## 恢复局内生命，返回实际治疗量；不能超过本局实际最大生命。
-func heal(amount:int)->int:
-	if status != RunStatus.IN_PROGRESS or amount <= 0:
-		return 0;
-	var actual_heal_amount:int = mini(amount, max_health - current_health);
-	current_health += actual_heal_amount;
-	return actual_heal_amount;
-
-
-## 玩家存活且已完成 Boss 后，结束本局冒险。
-func mark_victory()->bool:
-	if status != RunStatus.IN_PROGRESS or current_health <= 0 or not current_node_id.is_empty():
+## 所有资格验证通过后，在同一同步调用内提交支付、收益与一次性结果。
+func resolve_unexpected_encounter(option_id:String, card:CardDefinition = null, deck_index:int = -1)->bool:
+	var result:Dictionary = UnexpectedEncounterExecutor.evaluate(self, option_id, card, deck_index);
+	if result.is_empty():
 		return false;
-	for completed_node_id in completed_node_ids:
-		var completed_node:MapNodeDefinition = definition.map_definition.get_node_by_id(completed_node_id);
-		if completed_node.node_type == MapNodeDefinition.NodeType.BOSS:
-			status = RunStatus.VICTORY;
+	current_health += result["actual_heal"] - result["health_cost"];
+	if result["added_card"] != null:
+		owned_cards.append(result["added_card"]);
+	if result["removed_card"] != null:
+		owned_cards.remove_at(result["removed_deck_index"]);
+	unexpected_results[current_node_id] = result;
+	status = RunStatus.UNEXPECTED_RESULT;
+	return true;
+
+
+func continue_unexpected_encounter()->bool:
+	if status != RunStatus.UNEXPECTED_RESULT or not unexpected_results.has(current_node_id):
+		return false;
+	status = RunStatus.IN_PROGRESS;
+	if not complete_current_node():
+		status = RunStatus.UNEXPECTED_RESULT;
+		return false;
+	return true;
+
+
+## 只有进入开始节点后才能生成候选，选牌阶段与地图查看均不触发。
+func begin_collection_selection(rng:RandomNumberGenerator = null)->bool:
+	if status != RunStatus.IN_PROGRESS or definition == null or definition.collection_pool.is_empty() or selected_collection != null:
+		return false;
+	var node:MapNodeDefinition = definition.map_definition.get_node_by_id(current_node_id);
+	if node == null or node.node_type != MapNodeDefinition.NodeType.START or completed_node_ids.has(current_node_id):
+		return false;
+	var candidates:Array[CollectionDefinition] = definition.collection_pool.duplicate();
+	RunRNG.shuffle(candidates, rng);
+	var choices:Array[CollectionDefinition] = [];
+	for index in range(definition.collection_option_count):
+		choices.append(candidates[index]);
+	choices.make_read_only();
+	collection_candidates = choices;
+	status = RunStatus.CHOOSING_COLLECTION;
+	return true;
+
+
+## 仅接受本次展示的静态资源原引用；领取后完成开始节点并开放三条支线。
+func choose_collection(collection:CollectionDefinition)->bool:
+	if status != RunStatus.CHOOSING_COLLECTION or definition == null or selected_collection != null or collection == null:
+		return false;
+	if not collection_candidates.has(collection) or not definition.collection_pool.has(collection) or collection.is_invalid():
+		return false;
+	var node:MapNodeDefinition = definition.map_definition.get_node_by_id(current_node_id);
+	if node == null or node.node_type != MapNodeDefinition.NodeType.START or completed_node_ids.has(current_node_id):
+		return false;
+	var previous_candidates:Array[CollectionDefinition] = collection_candidates;
+	selected_collection = collection;
+	collection_candidates = [];
+	status = RunStatus.IN_PROGRESS;
+	if not complete_current_node():
+		selected_collection = null;
+		collection_candidates = previous_candidates;
+		status = RunStatus.CHOOSING_COLLECTION;
+		return false;
+	return true;
+
+
+## 游戏流程先同步战斗生命再调用；治疗不改变最大生命且每个普通节点仅一次。
+func apply_normal_victory_collection()->int:
+	if status != RunStatus.IN_PROGRESS or definition == null or current_health <= 0 or selected_collection == null:
+		return 0;
+	if selected_collection.effect_type != CollectionDefinition.EffectType.NORMAL_VICTORY_HEAL or _normal_victory_collection_nodes.has(current_node_id):
+		return 0;
+	var node:MapNodeDefinition = definition.map_definition.get_node_by_id(current_node_id);
+	if node == null or get_node_type(current_node_id) != MapNodeDefinition.NodeType.BATTLE:
+		return 0;
+	_normal_victory_collection_nodes.append(current_node_id);
+	return heal(selected_collection.amount);
+
+
+func is_invalid()->bool:
+	if definition == null or definition.is_invalid():
+		push_error("局内状态缺少合法冒险定义");
+		return true;
+	if not RunStatus.values().has(status) or status == RunStatus.SETUP:
+		push_error("局内状态尚未初始化或状态枚举无效");
+		return true;
+	if max_health <= 0 or current_health < 0 or current_health > max_health:
+		push_error("局内生命超出合法范围");
+		return true;
+	if (status == RunStatus.DEFEAT and current_health != 0) or (status != RunStatus.DEFEAT and current_health == 0):
+		push_error("玩家生命与整局状态不一致");
+		return true;
+	if owned_cards.is_empty():
+		push_error("本局实际牌组不能为空");
+		return true;
+	for card in owned_cards:
+		if card == null or card.is_invalid():
+			push_error("本局实际牌组包含无效卡牌");
+			return true;
+	if draft_round < 0 or draft_round > RunDefinition.DRAFT_RARITIES.size():
+		push_error("开局构筑轮数无效");
+		return true;
+	if (status == RunStatus.DRAFTING and draft_round == RunDefinition.DRAFT_RARITIES.size()) or (status != RunStatus.DRAFTING and draft_round != RunDefinition.DRAFT_RARITIES.size()):
+		push_error("开局构筑轮数与状态不一致");
+		return true;
+
+	var map:MapDefinition = definition.map_definition;
+	if not current_node_id.is_empty() and not map.has_node(current_node_id):
+		push_error("当前地图节点不存在");
+		return true;
+	var progress_ids:Dictionary = {};
+	if not current_node_id.is_empty():
+		progress_ids[current_node_id] = true;
+	for ids in [available_node_ids, completed_node_ids]:
+		for node_id in ids:
+			if not map.has_node(node_id) or progress_ids.has(node_id):
+				push_error("地图进度包含不存在、重复或冲突的节点");
+				return true;
+			progress_ids[node_id] = true;
+	if _encounter_bindings_are_invalid():
+		return true;
+	if _collection_state_is_invalid():
+		return true;
+	if _unexpected_state_is_invalid():
+		return true;
+	if _session_state_is_invalid():
+		return true;
+	if status == RunStatus.DRAFTING and (not current_node_id.is_empty() or not completed_node_ids.is_empty() or available_node_ids != map.starting_node_ids or not selected_route_id.is_empty()):
+		push_error("构筑阶段不能推进地图或提前选择支线");
+		return true;
+	if status in [RunStatus.VICTORY, RunStatus.DEFEAT] and not available_node_ids.is_empty():
+		push_error("终局不能保留可进入节点");
+		return true;
+	if status == RunStatus.DEFEAT:
+		var defeated_node:MapNodeDefinition = map.get_node_by_id(current_node_id);
+		if defeated_node == null or not node_requires_encounter(current_node_id):
+			push_error("失败状态必须保留发生失败的战斗节点");
+			return true;
+	if status == RunStatus.VICTORY:
+		if not current_node_id.is_empty() or not _has_completed_boss():
+			push_error("胜利必须已完成 Boss 且没有正在处理的节点");
+			return true;
+	if map.is_branch_map:
+		return _branch_progress_is_invalid();
+	if not selected_route_id.is_empty():
+		push_error("线性地图不能保存支线选择");
+		return true;
+	return false;
+
+
+func _collection_state_is_invalid()->bool:
+	var map:MapDefinition = definition.map_definition;
+	if definition.collection_pool.is_empty():
+		if selected_collection != null or not collection_candidates.is_empty() or not _normal_victory_collection_nodes.is_empty() or status == RunStatus.CHOOSING_COLLECTION:
+			push_error("未配置藏品的冒险不能保存藏品状态");
+			return true;
+		return false;
+	var start_id:String = map.starting_node_ids[0];
+	if selected_collection != null:
+		if not definition.collection_pool.has(selected_collection) or selected_collection.is_invalid() or not completed_node_ids.has(start_id):
+			push_error("持有藏品必须属于配置池，且已经完成开始节点");
+			return true;
+	else:
+		if not completed_node_ids.is_empty() or not selected_route_id.is_empty() or current_node_id not in ["", start_id] or status in [RunStatus.VICTORY, RunStatus.DEFEAT]:
+			push_error("尚未选择藏品时不能完成开始节点或进入支线");
+			return true;
+		var expected_available:Array[String] = [];
+		if current_node_id.is_empty():
+			expected_available = map.starting_node_ids.duplicate();
+		if available_node_ids != expected_available:
+			push_error("尚未选择藏品时只能开放或停留在开始节点");
+			return true;
+	if status == RunStatus.CHOOSING_COLLECTION:
+		if selected_collection != null or current_node_id != start_id or collection_candidates.size() != definition.collection_option_count:
+			push_error("藏品选择状态必须停留在开始节点且保存完整候选");
+			return true;
+		var candidate_ids:Dictionary = {};
+		for collection in collection_candidates:
+			if collection == null or not definition.collection_pool.has(collection) or collection.is_invalid() or candidate_ids.has(collection.collection_id):
+				push_error("藏品候选必须来自配置池且不能重复");
+				return true;
+			candidate_ids[collection.collection_id] = true;
+	elif not collection_candidates.is_empty():
+		push_error("非藏品选择阶段不能保留领取候选");
+		return true;
+	var healed_ids:Dictionary = {};
+	for node_id in _normal_victory_collection_nodes:
+		var node:MapNodeDefinition = map.get_node_by_id(node_id);
+		if selected_collection == null or selected_collection.effect_type != CollectionDefinition.EffectType.NORMAL_VICTORY_HEAL or node == null or get_node_type(node_id) != MapNodeDefinition.NodeType.BATTLE or healed_ids.has(node_id) or (node_id != current_node_id and not completed_node_ids.has(node_id)):
+			push_error("战后藏品治疗记录必须对应已胜利的普通战斗节点");
+			return true;
+		healed_ids[node_id] = true;
+	return false;
+
+
+func _encounter_bindings_are_invalid()->bool:
+	var expected_count:int = 0;
+	var map:MapDefinition = definition.map_definition;
+	for node in map.nodes:
+		if not node_requires_encounter(node.node_id):
+			continue;
+		expected_count += 1;
+		if not node_encounters.has(node.node_id) or not (node_encounters[node.node_id] is EncounterDefinition):
+			push_error("战斗节点缺少本局遭遇绑定：%s" % node.node_id);
+			return true;
+		var encounter:EncounterDefinition = node_encounters[node.node_id];
+		if encounter.is_invalid():
+			push_error("本局遭遇绑定无效：%s" % node.node_id);
+			return true;
+		if node.random_encounter or node.node_type == MapNodeDefinition.NodeType.ROUTE_SLOT:
+			var pool:Array[EncounterDefinition] = definition.boss_encounter_pool if get_node_type(node.node_id) == MapNodeDefinition.NodeType.BOSS else definition.normal_encounter_pool;
+			if not pool.has(encounter):
+				push_error("本局随机遭遇不属于相应候选池：%s" % node.node_id);
+				return true;
+		elif encounter != node.encounter_definition:
+			push_error("固定节点的本局遭遇与静态定义不一致：%s" % node.node_id);
+			return true;
+	if node_encounters.size() != expected_count:
+		push_error("本局遭遇绑定包含多余节点");
+		return true;
+	if map.is_branch_map:
+		for route in map.get_route_ids():
+			var ids:Array[String] = [];
+			for node_id in map.get_route_node_ids(route):
+				if get_node_type(node_id) == MapNodeDefinition.NodeType.BATTLE:
+					ids.append(node_id);
+			if ids.size() != 2:
+				return true;
+			if get_node_encounter(ids[0]).enemy_definition.combatant_id == get_node_encounter(ids[1]).enemy_definition.combatant_id:
+				push_error("同一支线的两个普通敌人不能重复");
+				return true;
+	return false;
+
+
+func _unexpected_state_is_invalid()->bool:
+	var map:MapDefinition = definition.map_definition;
+	if map.randomize_route_contents:
+		if node_types.size() != 9 or node_unexpected_encounters.size() != 3:
+			return true;
+		for route in map.get_route_ids():
+			var counts:Dictionary = {MapNodeDefinition.NodeType.BATTLE: 0, MapNodeDefinition.NodeType.UNEXPECTED: 0};
+			for node_id in map.get_route_node_ids(route):
+				var kind:int = get_node_type(node_id);
+				if not counts.has(kind):
+					return true;
+				counts[kind] += 1;
+				if kind == MapNodeDefinition.NodeType.UNEXPECTED:
+					var content:UnexpectedEncounterDefinition = get_unexpected_encounter(node_id);
+					if content == null or not definition.unexpected_encounter_pool.has(content):
+						return true;
+				elif node_unexpected_encounters.has(node_id):
+					return true;
+			if counts[MapNodeDefinition.NodeType.BATTLE] != 2 or counts[MapNodeDefinition.NodeType.UNEXPECTED] != 1:
+				return true;
+	else:
+		if not node_types.is_empty() or not node_unexpected_encounters.is_empty():
+			return true;
+	for node_id in unexpected_candidates:
+		var content:UnexpectedEncounterDefinition = get_unexpected_encounter(node_id);
+		if content == null or (node_id != current_node_id and not completed_node_ids.has(node_id)):
+			return true;
+		var ids:Dictionary = {};
+		for card in unexpected_candidates[node_id]:
+			if not (card is CardDefinition) or not content.candidate_pool(definition.character_definition.reward_card_pool).has(card) or ids.has(card.card_id):
+				return true;
+			ids[card.card_id] = true;
+		var first_option:UnexpectedEncounterOptionDefinition = content.first_card_option();
+		if ids.size() != (first_option.candidate_count if first_option != null else 0):
+			return true;
+		if not unexpected_option_candidates.has(node_id):
+			return true;
+		var by_option:Dictionary = unexpected_option_candidates[node_id];
+		var expected_count:int = 0;
+		for option in content.options:
+			if option.operation != UnexpectedEncounterOptionDefinition.Operation.GAIN_CARD:
+				continue;
+			expected_count += 1;
+			var choices:Array = by_option.get(option.option_id, []);
+			if choices.size() != option.candidate_count or not choices.is_read_only():
+				return true;
+			var option_ids:Dictionary = {};
+			for card in choices:
+				if not (card is CardDefinition) or not option.candidate_pool(definition.character_definition.reward_card_pool).has(card) or option_ids.has(card.card_id):
+					return true;
+				option_ids[card.card_id] = true;
+		if by_option.size() != expected_count:
+			return true;
+	if unexpected_option_candidates.size() != unexpected_candidates.size():
+		return true;
+	for node_id in unexpected_results:
+		if not unexpected_candidates.has(node_id) or (node_id != current_node_id and not completed_node_ids.has(node_id)):
+			return true;
+	if status in [RunStatus.CHOOSING_UNEXPECTED, RunStatus.UNEXPECTED_RESULT]:
+		if get_node_type(current_node_id) != MapNodeDefinition.NodeType.UNEXPECTED or not unexpected_candidates.has(current_node_id):
+			return true;
+		if unexpected_results.has(current_node_id) != (status == RunStatus.UNEXPECTED_RESULT):
 			return true;
 	return false;
 
 
-## 标记本局失败，保留失败节点和牌组供结算读取。
-func mark_defeat()->bool:
+## 会话新增状态独立校验；旧直接状态测试仍可使用原基础接口。
+func _session_state_is_invalid()->bool:
+	if status == RunStatus.IN_BATTLE:
+		if active_battle_id.is_empty() or not node_requires_encounter(current_node_id) or processed_battle_results.has(active_battle_id) or reward_state != null:
+			return true;
+	elif not active_battle_id.is_empty():
+		return true;
+	if status == RunStatus.CHOOSING_REWARD:
+		if reward_state == null or reward_state.remaining_rounds <= 0 or reward_state.total_rounds != definition.reward_selection_count or reward_state.node_id != current_node_id or get_node_type(current_node_id) != MapNodeDefinition.NodeType.BATTLE or not processed_battle_results.has(reward_state.battle_id):
+			return true;
+		if reward_state.is_invalid(definition.character_definition.reward_card_pool, definition.reward_option_count):
+			return true;
+	elif reward_state != null:
+		return true;
+	for battle_id in processed_battle_results:
+		var result:Variant = processed_battle_results[battle_id];
+		if not (result is Dictionary) or not result.is_read_only() or result.get("battle_id") != battle_id:
+			return true;
+		var node_id:String = result.get("node_id", "");
+		if not node_requires_encounter(node_id) or (node_id != current_node_id and not completed_node_ids.has(node_id)):
+			return true;
+		var health:int = result.get("player_health", -1);
+		var maximum:int = result.get("player_max_health", 0);
+		if maximum <= 0 or health < 0 or health > maximum or (result.get("victory", false) and health == 0) or (not result.get("victory", false) and health != 0):
+			return true;
+	if reward_state != null and not processed_battle_results[reward_state.battle_id].get("victory", false):
+		return true;
+	for node_id in reward_history:
+		var reward:RewardState = reward_history[node_id] as RewardState;
+		if reward == null or reward.node_id != node_id or reward.remaining_rounds != 0 or reward.total_rounds != definition.reward_selection_count or not completed_node_ids.has(node_id) or get_node_type(node_id) != MapNodeDefinition.NodeType.BATTLE:
+			return true;
+		if reward.is_invalid(definition.character_definition.reward_card_pool, definition.reward_option_count) or not processed_battle_results.has(reward.battle_id) or not processed_battle_results[reward.battle_id].get("victory", false):
+			return true;
+	if not session_id.is_empty():
+		if random == null:
+			return true;
+		if status == RunStatus.DRAFTING:
+			if draft_candidates.is_empty() or not draft_candidates.is_read_only():
+				return true;
+			for card in draft_candidates:
+				if not definition.character_definition.reward_card_pool.has(card) or card.rarity != get_draft_rarity():
+					return true;
+		elif not draft_candidates.is_empty():
+			return true;
+	return false;
+
+
+## 分支进度只能是所选路径的前缀，防止换线、跳层和重新开启其他入口。
+func _branch_progress_is_invalid()->bool:
+	var map:MapDefinition = definition.map_definition;
+	var start_id:String = map.starting_node_ids[0];
+	if selected_route_id.is_empty():
+		if completed_node_ids.is_empty():
+			if current_node_id not in ["", start_id] or available_node_ids != ([start_id] if current_node_id.is_empty() else []):
+				push_error("未进入开始节点时，只有开始节点可以开放");
+				return true;
+		elif completed_node_ids == [start_id]:
+			if not current_node_id.is_empty() or available_node_ids != map.get_node_by_id(start_id).next_node_ids:
+				push_error("开始节点完成后必须开放三个支线入口");
+				return true;
+		else:
+			push_error("尚未选线却已经推进支线");
+			return true;
+		return false;
+
+	if not map.get_route_ids().has(selected_route_id):
+		push_error("选择的支线不存在");
+		return true;
+	var path:Array[String] = [start_id];
+	path.append_array(map.get_route_node_ids(selected_route_id));
+	path.append(map.get_node_by_id(path.back()).next_node_ids[0]);
+	if completed_node_ids.is_empty() or completed_node_ids.size() > path.size():
+		push_error("所选支线的完成记录长度无效");
+		return true;
+	for index in range(completed_node_ids.size()):
+		if completed_node_ids[index] != path[index]:
+			push_error("完成记录必须按所选支线顺序推进");
+			return true;
+	var next_index:int = completed_node_ids.size();
+	if not current_node_id.is_empty() and (next_index >= path.size() or current_node_id != path[next_index]):
+		push_error("当前节点不在所选支线的下一层");
+		return true;
+	var expected_available:Array[String] = [];
+	if status not in [RunStatus.VICTORY, RunStatus.DEFEAT] and current_node_id.is_empty() and next_index < path.size():
+		expected_available.append(path[next_index]);
+	if available_node_ids != expected_available:
+		push_error("选线后不能保留其他支线入口或跳过节点");
+		return true;
+	if status == RunStatus.VICTORY and completed_node_ids != path:
+		push_error("分支地图胜利前必须完整走完所选五层路径");
+		return true;
+	return false;
+
+
+func can_enter_node(node_id:String)->bool:
+	if definition == null or status != RunStatus.IN_PROGRESS or not current_node_id.is_empty() or node_id.is_empty():
+		return false;
+	var map:MapDefinition = definition.map_definition;
+	if map == null or not map.has_node(node_id) or completed_node_ids.has(node_id) or not available_node_ids.has(node_id):
+		return false;
+	if not definition.collection_pool.is_empty() and selected_collection == null and map.get_node_by_id(node_id).node_type != MapNodeDefinition.NodeType.START:
+		return false;
+	if map.is_branch_map:
+		var node:MapNodeDefinition = map.get_node_by_id(node_id);
+		if not node.route_id.is_empty():
+			if not selected_route_id.is_empty():
+				return node.route_id == selected_route_id;
+			return completed_node_ids.has(map.starting_node_ids[0]) and map.get_node_by_id(map.starting_node_ids[0]).next_node_ids.has(node_id);
+	return true;
+
+
+func enter_node(node_id:String)->bool:
+	if not can_enter_node(node_id):
+		return false;
+	var node:MapNodeDefinition = definition.map_definition.get_node_by_id(node_id);
+	if definition.map_definition.is_branch_map and selected_route_id.is_empty() and not node.route_id.is_empty():
+		selected_route_id = node.route_id;
+		available_node_ids.clear();
+	else:
+		available_node_ids.erase(node_id);
+	current_node_id = node_id;
+	return true;
+
+
+func complete_current_node()->bool:
+	if status != RunStatus.IN_PROGRESS or current_node_id.is_empty():
+		return false;
+	var node:MapNodeDefinition = definition.map_definition.get_node_by_id(current_node_id);
+	if node == null or completed_node_ids.has(current_node_id):
+		return false;
+	if node.node_type == MapNodeDefinition.NodeType.START and not definition.collection_pool.is_empty() and selected_collection == null:
+		return false;
+	if get_node_type(current_node_id) == MapNodeDefinition.NodeType.UNEXPECTED and not unexpected_results.has(current_node_id):
+		return false;
+	completed_node_ids.append(current_node_id);
+	for next_id in node.next_node_ids:
+		var next:MapNodeDefinition = definition.map_definition.get_node_by_id(next_id);
+		if definition.map_definition.is_branch_map and not selected_route_id.is_empty() and not next.route_id.is_empty() and next.route_id != selected_route_id:
+			continue;
+		if not completed_node_ids.has(next_id) and not available_node_ids.has(next_id):
+			available_node_ids.append(next_id);
+	current_node_id = "";
+	return true;
+
+
+func add_card(card:CardDefinition)->bool:
 	if status != RunStatus.IN_PROGRESS:
 		return false;
+	if card == null or card.is_invalid():
+		push_error("需要添加的卡牌定义无效");
+		return false;
+	owned_cards.append(card);
+	return true;
+
+
+func heal(amount:int)->int:
+	if status != RunStatus.IN_PROGRESS or amount <= 0:
+		return 0;
+	var actual:int = mini(amount, max_health - current_health);
+	current_health += actual;
+	return actual;
+
+
+func _has_completed_boss()->bool:
+	for node_id in completed_node_ids:
+		var node:MapNodeDefinition = definition.map_definition.get_node_by_id(node_id);
+		if node != null and node.node_type == MapNodeDefinition.NodeType.BOSS:
+			return true;
+	return false;
+
+
+func mark_victory()->bool:
+	if status != RunStatus.IN_PROGRESS or current_health <= 0 or not current_node_id.is_empty() or not _has_completed_boss():
+		return false;
+	available_node_ids.clear();
+	status = RunStatus.VICTORY;
+	return true;
+
+
+## 保留失败战斗节点供结算查看；终局不再开放任何地图入口。
+func mark_defeat()->bool:
+	if status != RunStatus.IN_PROGRESS or current_health != 0 or definition == null:
+		return false;
+	var node:MapNodeDefinition = definition.map_definition.get_node_by_id(current_node_id);
+	if node == null or not node_requires_encounter(current_node_id):
+		return false;
+	available_node_ids.clear();
 	status = RunStatus.DEFEAT;
 	return true;

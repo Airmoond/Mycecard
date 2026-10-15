@@ -1,2 +1,40 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
+
+# Preserve byte-level fingerprints of archived evaluation inputs and results.
+"卡牌标准模型/全卡牌量化评估.md" -text -whitespace
+"卡牌标准模型/模型参数.json" -text -whitespace
+"卡牌标准模型/评估数据.json" -text -whitespace
+"敌人标准模型/实验前评估数据.json" -text -whitespace
+"敌人标准模型/当前敌人量化评估.md" -text -whitespace
+"敌人标准模型/模型参数.json" -text -whitespace
+"敌人标准模型/第一轮配置/评估数据.json" -text -whitespace
+"敌人标准模型/评估数据.json" -text -whitespace
+"综合数值模型/Boss实验/Boss评估数据.json" -text -whitespace
+"综合数值模型/Boss实验/两种Boss设计.md" -text -whitespace
+"综合数值模型/Boss实验/生命对照数据.json" -text -whitespace
+"综合数值模型/Boss实验/生命对照数据_高压初版.json" -text -whitespace
+"综合数值模型/Boss实验/评估参数.json" -text -whitespace
+"综合数值模型/Boss实验/验证数据.json" -text -whitespace
+"综合数值模型/原始战斗数据.json" -text -whitespace
+"综合数值模型/新敌人实验/三种普通敌人设计.md" -text -whitespace
+"综合数值模型/新敌人实验/新敌人评估数据.json" -text -whitespace
+"综合数值模型/新敌人实验/校准参数.json" -text -whitespace
+"综合数值模型/新敌人实验/训练数据.json" -text -whitespace
+"综合数值模型/新敌人实验/训练数据_100血初测.json" -text -whitespace
+"综合数值模型/新敌人实验/训练数据_三咒击台阶.json" -text -whitespace
+"综合数值模型/新敌人实验/训练数据_五咒击台阶.json" -text -whitespace
+"综合数值模型/新敌人实验/训练数据_交替减益粗测.json" -text -whitespace
+"综合数值模型/新敌人实验/训练数据_初版.json" -text -whitespace
+"综合数值模型/新敌人实验/训练数据_单咒击台阶.json" -text -whitespace
+"综合数值模型/新敌人实验/训练数据_双咒击初测.json" -text -whitespace
+"综合数值模型/新敌人实验/训练数据_高生命方案.json" -text -whitespace
+"综合数值模型/新敌人实验/验证数据.json" -text -whitespace
+"综合数值模型/综合评估数据.json" -text -whitespace
+"综合数值模型/综合量化评估.md" -text -whitespace
+"综合数值模型/藏品实验/三件藏品实测评估.md" -text -whitespace
+"综合数值模型/藏品实验/原始藏品数据.json" -text -whitespace
+"综合数值模型/藏品实验/藏品评估数据.json" -text -whitespace
+"综合数值模型/藏品实验/评估参数.json" -text -whitespace
+"综合数值模型/血量对照.png" -text -whitespace
+"综合数值模型/评估参数.json" -text -whitespace

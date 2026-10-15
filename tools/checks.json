@@ -1,0 +1,203 @@
+{
+  "schema": 1,
+  "checks": {
+    "attack_card_energy_test.gd": {
+      "group": "unit",
+      "completion": "攻击牌回能检查完成，失败数：0"
+    },
+    "battle_card_flow_test.gd": {
+      "group": "unit",
+      "completion": "卡牌流转检查完成，失败数：0"
+    },
+    "block_damage_test.gd": {
+      "group": "unit",
+      "completion": "格挡伤害检查完成，失败数：0"
+    },
+    "branch_map_test.gd": {
+      "group": "flow",
+      "completion": "分支地图检查完成，失败数：0",
+      "expected_errors": {
+        "地图存在无法从起点到达的节点": 1,
+        "每条休整支线必须汇合到无后继的随机最终 Boss": 1,
+        "每条支线必须独立按战斗 → 战斗 → 休整连接": 1
+      }
+    },
+    "card_damage_preview_test.gd": {
+      "group": "unit",
+      "completion": "卡牌伤害预览检查完成，失败数：0"
+    },
+    "card_face_test.gd": {
+      "group": "presentation",
+      "completion": "卡面标识与完整描述检查完成，失败数：0"
+    },
+    "card_pool_sampler_test.gd": {
+      "group": "unit",
+      "completion": "卡池抽样检查完成，失败数：0",
+      "expected_errors": {
+        "筛选后的卡池不足：需要3张，只有2张": 1,
+        "奖励选项数必须大于 0，且不能超过角色非传说卡池大小": 1
+      }
+    },
+    "collection_battle_test.gd": {
+      "group": "unit",
+      "completion": "藏品战斗检查完成，失败数：0"
+    },
+    "collection_flow_test.gd": {
+      "group": "flow",
+      "completion": "藏品冒险流程检查完成，失败数：0",
+      "expected_errors": {
+        "藏品池不能重复配置同一藏品": 1,
+        "开局藏品必须三选一，且藏品池至少包含三件不同藏品": 1
+      }
+    },
+    "content_view_test.gd": {
+      "group": "presentation",
+      "completion": "内容查看检查完成，失败数：0"
+    },
+    "damage_healing_test.gd": {
+      "group": "unit",
+      "completion": "按伤害治疗检查完成，失败数：0"
+    },
+    "draw_restriction_test.gd": {
+      "group": "unit",
+      "completion": "本回合禁止抽牌检查完成，失败数：0"
+    },
+    "enemy_balance_test.gd": {
+      "group": "unit",
+      "completion": "敌人模型实验检查完成，失败数：0"
+    },
+    "max_health_loss_test.gd": {
+      "group": "unit",
+      "completion": "最大生命损失检查完成，失败数：0"
+    },
+    "new_boss_mechanics_test.gd": {
+      "group": "unit",
+      "completion": "新Boss机制检查完成，失败数：0"
+    },
+    "new_boss_trial_test.gd": {
+      "group": "heavy",
+      "completion": "新Boss试炼入口检查完成，失败数：0"
+    },
+    "new_enemy_mechanics_test.gd": {
+      "group": "unit",
+      "completion": "新敌人机制检查完成，失败数：0"
+    },
+    "new_enemy_trial_test.gd": {
+      "group": "heavy",
+      "completion": "新敌人试炼入口检查完成，失败数：0"
+    },
+    "phase6_audio_feedback_test.gd": {
+      "group": "audio",
+      "completion": "第六阶段音频与表现检查完成，失败数：0"
+    },
+    "phase6_full_run_playtest.gd": {
+      "group": "playtest",
+      "completion": "真实整局自动试玩完成：\\d+局，\\d+胜，失败数：0"
+    },
+    "phase6_run_flow_test.gd": {
+      "group": "flow",
+      "completion": "第六阶段真实流程检查完成，失败数：0"
+    },
+    "phase6_run_state_test.gd": {
+      "group": "flow",
+      "completion": "第六阶段局内状态检查完成，失败数：0"
+    },
+    "phase6_visual_integration_test.gd": {
+      "group": "presentation",
+      "completion": "第六阶段视觉整合检查完成，失败数：0"
+    },
+    "phase6_visual_layout_test.gd": {
+      "group": "presentation",
+      "completion": "第六阶段卡面与战斗布局检查完成，失败数：0"
+    },
+    "retain_block_power_test.gd": {
+      "group": "unit",
+      "completion": "保留格挡能力检查完成，失败数：0"
+    },
+    "starting_draft_test.gd": {
+      "group": "flow",
+      "completion": "开局构筑检查完成，失败数：0",
+      "expected_errors": {
+        "开局选牌每个稀有度至少需要一张候选，缺少：3": 1
+      }
+    },
+    "status_effects_test.gd": {
+      "group": "unit",
+      "completion": "易伤与虚弱检查完成，失败数：0"
+    },
+    "strength_test.gd": {
+      "group": "unit",
+      "completion": "力量检查完成，失败数：0"
+    },
+    "turn_start_power_test.gd": {
+      "group": "unit",
+      "completion": "回合开始能力检查完成，失败数：0"
+    },
+    "unblocked_damage_test.gd": {
+      "group": "unit",
+      "completion": "无视格挡伤害检查完成，失败数：0"
+    },
+    "warrior_legendary_cards_test.gd": {
+      "group": "unit",
+      "completion": "战士正式传说卡检查完成，失败数：0"
+    },
+    "warrior_rare_cards_test.gd": {
+      "group": "unit",
+      "completion": "战士正式稀有卡检查完成，失败数：0"
+    },
+    "warrior_remaining_cards_test.gd": {
+      "group": "unit",
+      "completion": "剩余战士草案卡检查完成，失败数：0"
+    },
+    "warrior_weapon_cards_test.gd": {
+      "group": "unit",
+      "completion": "战士正式武器卡检查完成，失败数：0"
+    },
+    "weapon_attack_trigger_test.gd": {
+      "group": "unit",
+      "completion": "武器攻击触发检查完成，失败数：0"
+    },
+    "weapon_data_test.gd": {
+      "group": "unit",
+      "completion": "武器数据、装备、攻击与强化检查完成，失败数：0"
+    },
+    "run_session_test.gd": {
+      "group": "flow",
+      "completion": "RunSession模型检查完成，失败数：0",
+      "timeout": 60
+    },
+    "battle_session_test.gd": {
+      "group": "unit",
+      "completion": "BattleSession检查通过",
+      "expected_errors": {
+        "战斗起始生命不能超过玩家最大生命": 1
+      }
+    },
+    "hand_view_lifecycle_test.gd": {
+      "group": "presentation",
+      "completion": "HandView生命周期检查通过"
+    },
+    "page_router_test.gd": {
+      "group": "flow",
+      "completion": "PageRouter检查完成，失败数：0",
+      "timeout": 60,
+      "expected_errors": {
+        "PageRouter：页面根节点类型不符合契约。": 1,
+        "PageRouter：页面准备失败，保留当前页面。": 1
+      }
+    },
+    "app_shutdown_test.gd": {
+      "group": "flow",
+      "completion": "应用退出生命周期检查完成，失败数：0",
+      "timeout": 60
+    },
+    "overlay_lifecycle_test.gd": {
+      "group": "flow",
+      "completion": "浮层生命周期与恢复检查完成，失败数：0",
+      "expected_errors": {
+        "PageRouter：页面根节点类型不符合契约。": 4
+      },
+      "timeout": 120
+    }
+  }
+}

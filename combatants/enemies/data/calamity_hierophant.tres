@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://dcyeyh8yg731u"]
+
+[ext_resource type="Script" uid="uid://r84gdmwtul6d" path="res://combatants/enemies/enemy_definition.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://b1iqujddbs8dj" path="res://combatants/enemies/enemy_action_definition.gd" id="2_action"]
+[ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="3_effect"]
+[ext_resource type="Texture2D" uid="uid://vo35thrtuask" path="res://artworks/ruin_guard.png" id="4_portrait"]
+
+[sub_resource type="Resource" id="Effect_0_0"]
+script = ExtResource("3_effect")
+effect_type = 7
+target_type = 1
+amount = 1
+
+[sub_resource type="Resource" id="Effect_0_1"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 8
+
+[sub_resource type="Resource" id="Effect_0_2"]
+script = ExtResource("3_effect")
+effect_type = 1
+amount = 6
+
+[sub_resource type="Resource" id="Action_0"]
+script = ExtResource("2_action")
+action_id = "withering_rite"
+intent_text = "衰弱仪式"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_0_0"), SubResource("Effect_0_1"), SubResource("Effect_0_2")])
+
+[sub_resource type="Resource" id="Effect_1_0"]
+script = ExtResource("3_effect")
+effect_type = 8
+target_type = 1
+amount = 1
+
+[sub_resource type="Resource" id="Effect_1_1"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 10
+
+[sub_resource type="Resource" id="Action_1"]
+script = ExtResource("2_action")
+action_id = "doom_mark"
+intent_text = "灾厄烙印"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1_0"), SubResource("Effect_1_1")])
+
+[sub_resource type="Resource" id="Effect_2_0"]
+script = ExtResource("3_effect")
+target_type = 1
+amount = 12
+
+[sub_resource type="Resource" id="Effect_2_1"]
+script = ExtResource("3_effect")
+effect_type = 1
+amount = 6
+
+[sub_resource type="Resource" id="Action_2"]
+script = ExtResource("2_action")
+action_id = "judgment"
+intent_text = "灾厄审判"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_2_0"), SubResource("Effect_2_1")])
+
+[sub_resource type="Resource" id="Effect_3_0"]
+script = ExtResource("3_effect")
+effect_type = 1
+amount = 13
+
+[sub_resource type="Resource" id="Action_3"]
+script = ExtResource("2_action")
+action_id = "recover_ward"
+intent_text = "重聚法障"
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_3_0")])
+
+[resource]
+script = ExtResource("1_enemy")
+action_pattern = Array[ExtResource("2_action")]([SubResource("Action_0"), SubResource("Action_1"), SubResource("Action_2"), SubResource("Action_3")])
+combatant_id = "calamity_hierophant"
+display_name = "灾厄祭司"
+max_health = 100
+artwork = ExtResource("4_portrait")

@@ -22,11 +22,11 @@ static func filter_pool(pool:Array[CardDefinition], allowed_rarities:Array[int])
 
 ## 开局分组传入单一稀有度，普通奖励传入REWARD_RARITIES。
 ## 数量不足返回空数组并报告配置错误，不补重复卡、不返回不完整候选。
-static func sample(pool:Array[CardDefinition], count:int, allowed_rarities:Array[int])->Array[CardDefinition]:
+static func sample(pool:Array[CardDefinition], count:int, allowed_rarities:Array[int], rng:RandomNumberGenerator = null)->Array[CardDefinition]:
 	var candidates:Array[CardDefinition] = filter_pool(pool, allowed_rarities);
 	if candidates.size() < count:
 		push_error("筛选后的卡池不足：需要%d张，只有%d张" % [count, candidates.size()]);
 		return [];
-	candidates.shuffle();
+	RunRNG.shuffle(candidates, rng);
 	candidates.resize(count);
 	return candidates;

@@ -1,0 +1,14 @@
+{
+  "model_version": "0.1",
+  "evaluation_date": "2026-10-04",
+  "samples": 64,
+  "seed_start": 73000000,
+  "deck_labels": ["基础6张诊断", "随机合法开局9张", "参考9张"],
+  "collection_ids": ["none", "copper_fang", "oathguard_emblem", "ember_chalice"],
+  "route_ids": ["a", "b", "c"],
+  "reference_deck": ["eternity", "war_god_blessing", "uppercut"],
+  "map_seed_offset": 400000,
+  "battle_seed_offsets": [100, 101, 300],
+  "reward_seed_offsets": [200, 201],
+  "policy": "继承综合模型意图贪心v1；路线按a、b、c轮换，开局与奖励固定取第一候选，四组保持相同地图、初始牌组及配对种子"
+}

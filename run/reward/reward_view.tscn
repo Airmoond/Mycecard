@@ -58,3 +58,10 @@ custom_minimum_size = Vector2(520, 220)
 layout_mode = 2
 theme_override_constants/separation = 24
 alignment = 1
+
+[node name="skip_button" type="Button" parent="center_container/main_layout"]
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 21
+text = "跳过 · 保留当前牌组"

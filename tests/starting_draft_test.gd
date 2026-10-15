@@ -17,6 +17,7 @@ func _run()->void:
 	await _test_complete_adventure();
 	_test_return_and_restart();
 	await process_frame;
+	await create_timer(0.5).timeout; # 仅等待测试退出时的混音线程释放。
 	print("开局构筑检查完成，失败数：%d" % _failures);
 	quit(0 if _failures == 0 else 1);
 
@@ -34,7 +35,9 @@ func _card(id:String)->CardDefinition:
 func _main()->GameFlowController:
 	var main:Node = load("res://main.tscn").instantiate();
 	root.add_child(main);
-	return main.get_node("game_flow_controller");
+	var flow:GameFlowController = main.get_node("game_flow_controller");
+	flow.run_definition = load("res://tests/fixtures/phase5_run.tres");
+	return flow;
 
 
 func _test_state()->void:
@@ -42,7 +45,7 @@ func _test_state()->void:
 	_expect(state.run_state_init(load("res://run/data/default_run.tres")), "合法配置可初始化");
 	_expect(state.status == RunState.RunStatus.DRAFTING and state.owned_cards.size() == 6 and not state.is_invalid(), "初始6张，处于构筑且状态合法");
 	_expect(state.owned_cards.count(_card("strike")) == 3 and state.owned_cards.count(_card("defend")) == 3, "基础3打击3防御来自资源");
-	_expect(not state.enter_node("goblin_battle") and not state.add_card(_card("strike")) and not state.mark_victory() and not state.mark_defeat(), "构筑阶段不能进地图、领取奖励或结束冒险");
+	_expect(not state.enter_node("start") and not state.add_card(_card("strike")) and not state.mark_victory() and not state.mark_defeat(), "构筑阶段不能进地图、领取奖励或结束冒险");
 	_expect(not state.choose_starting_card(_card("bloodthirsty_sword")) and state.owned_cards.size() == 6, "首轮不能选择史诗");
 	var foreign:CardDefinition = _card("eternity").duplicate();
 	_expect(not state.choose_starting_card(foreign), "同名但不在角色卡池的资源不能提交");
@@ -51,11 +54,11 @@ func _test_state()->void:
 		_expect(state.choose_starting_card(_card(id)), "按稀有度逐轮提交");
 		_expect(state.owned_cards.size() == size_before + 1 and state.owned_cards.back() == _card(id), "每轮立即追加原定义引用");
 		_expect(not state.choose_starting_card(_card(id)), "重复提交上一轮不能再次加牌");
-	_expect(state.status == RunState.RunStatus.IN_PROGRESS and state.can_enter_node("goblin_battle") and not state.is_invalid(), "三轮完成才开放地图");
+	_expect(state.status == RunState.RunStatus.IN_PROGRESS and state.can_enter_node("start") and not state.is_invalid(), "三轮完成才开放地图");
 
 
 func _test_configuration()->void:
-	var definition:RunDefinition = load("res://run/data/default_run.tres").duplicate();
+	var definition:RunDefinition = load("res://tests/fixtures/phase5_run.tres").duplicate();
 	definition.character_definition = definition.character_definition.duplicate();
 	definition.character_definition.reward_card_pool = [_card("eternity"), _card("lethal_blade"), _card("battle_trance"), _card("heavy_strike")];
 	_expect(not definition.is_invalid(), "开局每组1张即可，普通奖励仍有3张非传说");
@@ -68,21 +71,24 @@ func _test_configuration()->void:
 ## 精简状态校验后，仍由真实进度和本局生命上限决定操作结果。
 func _test_node_progression_and_healing()->void:
 	var state:RunState = RunState.new();
-	state.run_state_init(load("res://run/data/default_run.tres"));
+	state.run_state_init(load("res://tests/fixtures/phase5_run.tres"));
 	for id in ["eternity", "war_god_blessing", "battle_trance"]:
 		state.choose_starting_card(_card(id));
-	_expect(not state.enter_node("ruin_guard_boss") and not state.mark_victory(), "未解锁 Boss 不可进入，也不能提前胜利");
-	_expect(state.enter_node("goblin_battle"), "进入已解锁节点");
-	_expect(not state.enter_node("goblin_battle") and not state.enter_node("rest_site"), "处理当前节点期间不能再次进入节点");
+	_expect(not state.enter_node("final_boss") and not state.mark_victory(), "未解锁 Boss 不可进入，也不能提前胜利");
+	_expect(state.enter_node("start") and state.begin_collection_selection() and state.choose_collection(state.definition.collection_pool[0]), "开始节点开放三条支线");
+	_expect(state.enter_node("route_a_1"), "进入已解锁节点");
+	_expect(not state.enter_node("route_a_1") and not state.enter_node("route_a_rest"), "处理当前节点期间不能再次进入节点");
 	_expect(state.complete_current_node() and not state.complete_current_node(), "节点只完成一次");
-	_expect(state.available_node_ids == ["rest_site"] and state.completed_node_ids == ["goblin_battle"], "完成节点后只解锁后继，移出当前节点");
+	_expect(state.available_node_ids == ["route_a_2"] and state.completed_node_ids == ["start", "route_a_1"], "完成节点后只解锁本线后继，其他路线保持关闭");
 	state.max_health = 49;
 	state.current_health = 47;
 	_expect(state.heal(15) == 2 and state.current_health == 49, "休整治疗遵守血祭改变后的本局上限");
 	_expect(state.heal(15) == 0 and not state.mark_victory(), "满血治疗为0，完成普通节点不能胜利");
-	state.enter_node("rest_site");
+	state.enter_node("route_a_2");
 	state.complete_current_node();
-	state.enter_node("ruin_guard_boss");
+	state.enter_node("route_a_rest");
+	state.complete_current_node();
+	state.enter_node("final_boss");
 	_expect(not state.mark_victory(), "Boss 节点尚未完成时不能胜利");
 	state.complete_current_node();
 	state.current_health = 0;
@@ -103,13 +109,13 @@ func _test_page_refresh()->void:
 	map.setup(state.definition.map_definition, state);
 	map.refresh_map();
 	map.refresh_map();
-	_expect(map.node_layer.get_child_count() == 3 and map.connection_layer.get_child_count() == 2, "重复刷新地图不叠加节点和连线");
+	_expect(map.node_layer.get_child_count() == 11 and map.connection_layer.get_child_count() == 12, "重复刷新地图不叠加节点和连线");
 	var node_selections:Array[String] = [];
 	map.node_selected.connect(func(id:String)->void: node_selections.append(id));
-	var first:MapNodeView = map._node_views["goblin_battle"];
+	var first:MapNodeView = map._node_views["start"];
 	first.node_button.pressed.emit();
 	first.node_button.pressed.emit();
-	_expect(node_selections == ["goblin_battle"], "地图刷新后重复点击仍只选择一次");
+	_expect(node_selections == ["start"], "地图刷新后重复点击仍只选择一次");
 	map.queue_free();
 	var reward:RewardView = load("res://run/reward/reward_view.tscn").instantiate();
 	root.add_child(reward);
@@ -159,7 +165,7 @@ func _test_paging_and_layout()->void:
 		await process_frame;
 		var bounds:Rect2 = page.get_global_rect();
 		for view in page._card_views:
-			_expect(bounds.encloses(view.get_global_rect()) and view.size == Vector2(140, 200), "六张完整卡面在页面范围内");
+			_expect(bounds.encloses(view.get_global_rect()) and is_equal_approx(view.size.y / view.size.x, CardFace.BASE_SIZE.y / CardFace.BASE_SIZE.x), "六张完整卡面等比缩放并在页面范围内");
 		_expect(bounds.encloses(page.back_button.get_global_rect()) and bounds.encloses(page.title_label.get_global_rect()), "标题和侧栏按钮没有溢出");
 		_expect(page._card_views[0].global_position.y == page._card_views[2].global_position.y and page._card_views[3].global_position.y > page._card_views[0].global_position.y, "网格按两行三列排布");
 	var selections:Array[CardDefinition] = [];
@@ -191,10 +197,12 @@ func _test_complete_adventure()->void:
 				break;
 		_expect(run.owned_cards.size() == 7 + index, "单击立即加牌且重复点击不跳轮");
 	_expect(flow.current_page is MapView and run.owned_cards.size() == 9, "选完三张进入地图，牌组9张");
-	flow._handle_map_node_selected("goblin_battle");
+	flow._handle_map_node_selected("start");
+	flow._handle_collection_selected(load("res://collections/data/copper_fang.tres"));
+	flow._handle_map_node_selected("route_a_1");
 	var controller:BattleController = flow.current_page.get_node("battle_controller");
 	_expect(controller.battle_state.hand[0].definition == _card("eternity"), "开局选到的固有永恒进入实际战斗起手");
-	controller.battle_state.enemy_state.take_unblocked_damage(100);
+	controller.battle_state.enemy_state.take_unblocked_damage(1000);
 	controller._check_battle_result();
 	var reward:RewardView = flow.current_page as RewardView;
 	_expect(reward.reward_options.size() == 3, "战后仍三选一");
@@ -202,11 +210,17 @@ func _test_complete_adventure()->void:
 		_expect(card.rarity != CardDefinition.CardRarity.LEGENDARY, "战后奖励排除传说");
 	reward._reward_card_views[0].pressed.emit();
 	_expect(flow.current_page is MapView and run.owned_cards.size() == 10, "只选一次奖励后返回地图，牌组10张");
-	flow._handle_map_node_selected("rest_site");
-	flow._handle_map_node_selected("ruin_guard_boss");
+	flow._handle_map_node_selected("route_a_2");
 	controller = flow.current_page.get_node("battle_controller");
-	_expect(controller.battle_state.hand.size() + controller.battle_state.draw_pile.size() == 10, "Boss战使用全部10张实际卡牌");
-	controller.battle_state.enemy_state.take_unblocked_damage(100);
+	controller.battle_state.enemy_state.take_unblocked_damage(1000);
+	controller._check_battle_result();
+	(flow.current_page as RewardView)._reward_card_views[0].pressed.emit();
+	_expect(run.owned_cards.size() == 11, "第二次普通战斗也只领取一张，Boss前共11张");
+	flow._handle_map_node_selected("route_a_rest");
+	flow._handle_map_node_selected("final_boss");
+	controller = flow.current_page.get_node("battle_controller");
+	_expect(controller.battle_state.hand.size() + controller.battle_state.draw_pile.size() == 11, "Boss战使用全部11张实际卡牌");
+	controller.battle_state.enemy_state.take_unblocked_damage(1000);
 	controller._check_battle_result();
 	_expect(run.status == RunState.RunStatus.VICTORY and flow.current_page is RunResult, "Boss胜利正常进入结算");
 	flow.current_page.restart_requested.emit();
@@ -214,7 +228,9 @@ func _test_complete_adventure()->void:
 	_expect(flow.run_state != run and flow.run_state.owned_cards.size() == 6 and flow.current_page is StartingDraftView, "胜利后重开重新构筑");
 	for _round in range(3):
 		(flow.current_page as StartingDraftView)._card_views[0].pressed.emit();
-	flow._handle_map_node_selected("goblin_battle");
+	flow._handle_map_node_selected("start");
+	flow._handle_collection_selected(load("res://collections/data/copper_fang.tres"));
+	flow._handle_map_node_selected("route_a_1");
 	controller = flow.current_page.get_node("battle_controller");
 	controller.battle_state.player_state.take_unblocked_damage(100);
 	controller._check_battle_result();

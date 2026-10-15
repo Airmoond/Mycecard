@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="1_card"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="1_lfo0g"]
 [ext_resource type="Script" uid="uid://j62orvc63hae" path="res://battle/weapons/weapon_definition.gd" id="2_weapon"]
+[ext_resource type="Texture2D" uid="uid://whiip88tcx6r" path="res://assets/images/eternity-v2.png" id="4_artwork"]
 
 [sub_resource type="Resource" id="Weapon"]
 script = ExtResource("2_weapon")
@@ -22,3 +23,4 @@ is_innate = true
 retains_on_turn_end = true
 weapon_definition = SubResource("Weapon")
 base_energy_cost = 1
+artwork = ExtResource("4_artwork")

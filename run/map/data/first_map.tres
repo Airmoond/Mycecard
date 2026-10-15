@@ -1,41 +1,110 @@
 [gd_resource type="Resource" script_class="MapDefinition" format=3 uid="uid://5e1dath36ou0"]
 
-[ext_resource type="Script" uid="uid://dl15clgdu62il" path="res://run/map/data/map_node_definition.gd" id="1_n3edj"]
-[ext_resource type="Script" uid="uid://ctubqmtrc3o3i" path="res://run/map/data/map_definition.gd" id="2_iyghu"]
-[ext_resource type="Resource" uid="uid://b6u40pjmfvxb2" path="res://battle/data/encounters/cave_crawler_encounter.tres" id="2_je411"]
-[ext_resource type="Resource" uid="uid://bdf55abbobrho" path="res://battle/data/encounters/ruin_guard_encounter.tres" id="3_je411"]
+[ext_resource type="Script" uid="uid://dl15clgdu62il" path="res://run/map/data/map_node_definition.gd" id="1_node"]
+[ext_resource type="Script" uid="uid://ctubqmtrc3o3i" path="res://run/map/data/map_definition.gd" id="2_map"]
 
-[sub_resource type="Resource" id="Resource_je411"]
-script = ExtResource("1_n3edj")
-node_id = "goblin_battle"
-display_name = "哥布林营地"
-map_position = Vector2(220, 300)
-next_node_ids = Array[String](["rest_site"])
-encounter_definition = ExtResource("2_je411")
-metadata/_custom_type_script = "uid://dl15clgdu62il"
+[sub_resource type="Resource" id="Resource_start"]
+script = ExtResource("1_node")
+node_id = "start"
+display_name = "冒险起点"
+node_type = 3
+map_position = Vector2(110, 300)
+next_node_ids = Array[String](["route_a_1", "route_b_1", "route_c_1"])
 
-[sub_resource type="Resource" id="Resource_yws14"]
-script = ExtResource("1_n3edj")
-node_id = "rest_site"
-display_name = "篝火休整"
-node_type = 1
-map_position = Vector2(491, 300)
-next_node_ids = Array[String](["ruin_guard_boss"])
-heal_amount = 15
-metadata/_custom_type_script = "uid://dl15clgdu62il"
+[sub_resource type="Resource" id="Resource_route_a_1"]
+script = ExtResource("1_node")
+node_id = "route_a_1"
+display_name = "探索位置"
+node_type = 4
+map_position = Vector2(310, 150)
+next_node_ids = Array[String](["route_a_2"])
+route_id = "a"
 
-[sub_resource type="Resource" id="Resource_1wo0d"]
-script = ExtResource("1_n3edj")
-node_id = "ruin_guard_boss"
-display_name = "遗迹守卫"
+[sub_resource type="Resource" id="Resource_route_a_2"]
+script = ExtResource("1_node")
+node_id = "route_a_2"
+display_name = "探索位置"
+node_type = 4
+map_position = Vector2(510, 150)
+next_node_ids = Array[String](["route_a_rest"])
+route_id = "a"
+
+[sub_resource type="Resource" id="Resource_route_a_rest"]
+script = ExtResource("1_node")
+node_id = "route_a_rest"
+display_name = "探索位置"
+node_type = 4
+map_position = Vector2(710, 150)
+next_node_ids = Array[String](["final_boss"])
+route_id = "a"
+
+[sub_resource type="Resource" id="Resource_route_b_1"]
+script = ExtResource("1_node")
+node_id = "route_b_1"
+display_name = "探索位置"
+node_type = 4
+map_position = Vector2(310, 300)
+next_node_ids = Array[String](["route_b_2"])
+route_id = "b"
+
+[sub_resource type="Resource" id="Resource_route_b_2"]
+script = ExtResource("1_node")
+node_id = "route_b_2"
+display_name = "探索位置"
+node_type = 4
+map_position = Vector2(510, 300)
+next_node_ids = Array[String](["route_b_rest"])
+route_id = "b"
+
+[sub_resource type="Resource" id="Resource_route_b_rest"]
+script = ExtResource("1_node")
+node_id = "route_b_rest"
+display_name = "探索位置"
+node_type = 4
+map_position = Vector2(710, 300)
+next_node_ids = Array[String](["final_boss"])
+route_id = "b"
+
+[sub_resource type="Resource" id="Resource_route_c_1"]
+script = ExtResource("1_node")
+node_id = "route_c_1"
+display_name = "探索位置"
+node_type = 4
+map_position = Vector2(310, 450)
+next_node_ids = Array[String](["route_c_2"])
+route_id = "c"
+
+[sub_resource type="Resource" id="Resource_route_c_2"]
+script = ExtResource("1_node")
+node_id = "route_c_2"
+display_name = "探索位置"
+node_type = 4
+map_position = Vector2(510, 450)
+next_node_ids = Array[String](["route_c_rest"])
+route_id = "c"
+
+[sub_resource type="Resource" id="Resource_route_c_rest"]
+script = ExtResource("1_node")
+node_id = "route_c_rest"
+display_name = "探索位置"
+node_type = 4
+map_position = Vector2(710, 450)
+next_node_ids = Array[String](["final_boss"])
+route_id = "c"
+
+[sub_resource type="Resource" id="Resource_final_boss"]
+script = ExtResource("1_node")
+node_id = "final_boss"
+display_name = "最终 Boss"
 node_type = 2
-map_position = Vector2(762, 300)
-encounter_definition = ExtResource("3_je411")
-metadata/_custom_type_script = "uid://dl15clgdu62il"
+map_position = Vector2(910, 300)
+random_encounter = true
 
 [resource]
-script = ExtResource("2_iyghu")
+script = ExtResource("2_map")
 map_id = "first_map"
-nodes = Array[ExtResource("1_n3edj")]([SubResource("Resource_je411"), SubResource("Resource_yws14"), SubResource("Resource_1wo0d")])
-starting_node_ids = Array[String](["goblin_battle"])
+nodes = Array[ExtResource("1_node")]([SubResource("Resource_start"), SubResource("Resource_route_a_1"), SubResource("Resource_route_a_2"), SubResource("Resource_route_a_rest"), SubResource("Resource_route_b_1"), SubResource("Resource_route_b_2"), SubResource("Resource_route_b_rest"), SubResource("Resource_route_c_1"), SubResource("Resource_route_c_2"), SubResource("Resource_route_c_rest"), SubResource("Resource_final_boss")])
+starting_node_ids = Array[String](["start"])
+is_branch_map = true
+randomize_route_contents = true
 metadata/_custom_type_script = "uid://ctubqmtrc3o3i"

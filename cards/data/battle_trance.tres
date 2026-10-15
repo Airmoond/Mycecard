@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="1_card"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="2_effect"]
+[ext_resource type="Texture2D" uid="uid://dtharpfhen11c" path="res://assets/images/battle_trance.png" id="4_artwork"]
 
 [sub_resource type="Resource" id="Draw"]
 script = ExtResource("2_effect")
@@ -20,3 +21,4 @@ description = "抽3张牌。本回合你不能再抽牌。"
 card_type = 1
 rarity = 1
 effects = Array[ExtResource("2_effect")]([SubResource("Draw"), SubResource("PreventDraw")])
+artwork = ExtResource("4_artwork")

@@ -1,0 +1,17 @@
+{
+  "model_version": "0.1",
+  "evaluation_date": "2026-10-03",
+  "damage_per_unit": 6,
+  "block_per_unit": 5,
+  "draw_value": 0.5,
+  "healing_value": 0.3,
+  "health_loss_cost": 0.25,
+  "max_health_capacity_cost": 0.6,
+  "future_discount": 0.85,
+  "enhancement_reference": {"attack": 3, "remaining_durability": 1},
+  "scenarios": [
+    {"id": "short", "name": "短战", "turns": 1, "attack_segments_per_turn": 1, "outgoing_after_card": 6, "incoming_attack": 6, "draw_realization": 0.5, "energy_realization": 0.5, "future_block_utilization": 0.5, "new_carry_block_per_turn": 0, "current_block": 0, "missing_health": 0, "enemy_health": 40, "enemy_block": 0, "forgone_later_draw": 2, "later_attack_cards": 0},
+    {"id": "standard", "name": "标准局面", "turns": 3, "attack_segments_per_turn": 2, "outgoing_after_card": 12, "incoming_attack": 9, "draw_realization": 1, "energy_realization": 1, "future_block_utilization": 0.8, "new_carry_block_per_turn": 3, "current_block": 10, "missing_health": 6, "enemy_health": 40, "enemy_block": 0, "forgone_later_draw": 1, "later_attack_cards": 2},
+    {"id": "long", "name": "长战配合", "turns": 5, "attack_segments_per_turn": 3, "outgoing_after_card": 18, "incoming_attack": 12, "draw_realization": 1, "energy_realization": 1, "future_block_utilization": 1, "new_carry_block_per_turn": 6, "current_block": 20, "missing_health": 10, "enemy_health": 40, "enemy_block": 0, "forgone_later_draw": 0, "later_attack_cards": 4}
+  ]
+}

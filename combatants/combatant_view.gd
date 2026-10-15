@@ -81,9 +81,11 @@ func refresh_combatant_view()->void:
 func set_intent(intent_text:String)->void:
 	if intent_text.is_empty():#传入空文本时不应继续显示旧的敌人意图
 		intent_label.text = "";#清除标签中原有的意图文字
+		intent_label.tooltip_text = "";
 		intent_label.hide();#隐藏当前没有内容的意图标签
 		return;#空文本的处理已经完成，提前结束方法
 	intent_label.text = intent_text;#使用传入文本更新敌人意图
+	intent_label.tooltip_text = intent_text;
 	intent_label.show();#确保带有内容的意图标签显示出来
 
 
@@ -92,6 +94,14 @@ func set_intent(intent_text:String)->void:
 ## 初始状态下隐藏格挡、状态和敌人意图标签。
 ## 该方法不会创建CombatantState，也不会擅自绑定玩家或敌人。
 func _ready()->void:
+	FantasyTheme.apply(self);
+	name_label.add_theme_font_override("font", FantasyTheme.font(false));
+	for label:Label in [block_label, strength_label, weak_label, vulnerable_label, intent_label]:
+		label.mouse_filter = Control.MOUSE_FILTER_PASS;
+	block_label.tooltip_text = "格挡先抵消受到的伤害；持有者的回合开始时清空。";
+	strength_label.tooltip_text = "每点力量提高每段攻击伤害；本场战斗结束后清空。";
+	weak_label.tooltip_text = "攻击伤害降低25%，每段向下取整；显示剩余回合。";
+	vulnerable_label.tooltip_text = "受到的攻击伤害提高50%，每段向下取整；显示剩余回合。";
 	block_label.hide();#尚未绑定角色状态时，不显示默认格挡文字
 	strength_label.hide();
 	weak_label.hide();

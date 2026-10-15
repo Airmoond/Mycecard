@@ -16,6 +16,7 @@ func _run()->void:
 	_test_run_persistence(true);
 	_test_run_persistence(false);
 	await process_frame;
+	await create_timer(0.5).timeout; # 仅等待已释放播放器的混音线程收尾。
 	print("最大生命损失检查完成，失败数：%d" % _failures);
 	quit(0 if _failures == 0 else 1);
 
@@ -121,6 +122,8 @@ func _test_run_persistence(boss_victory:bool)->void:
 	var main:Node = load("res://main.tscn").instantiate();
 	root.add_child(main);
 	var flow:GameFlowController = main.get_node("game_flow_controller");
+	# 固定线性测试配置只用于卡牌机制隔离；正式地图在branch_map_test验证。
+	flow.run_definition = load("res://tests/fixtures/linear_run.tres");
 	flow._start_new_run();
 	for _round in range(3):
 		(flow.current_page as StartingDraftView)._card_views[0].pressed.emit();

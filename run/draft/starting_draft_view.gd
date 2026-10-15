@@ -4,7 +4,7 @@ class_name StartingDraftView
 extends Control
 
 const CARDS_PER_PAGE:int = 6;
-const CARD_SCENE:PackedScene = preload("res://run/reward/reward_card_view.tscn");
+const CARD_SCENE:PackedScene = preload("res://ui/cards/card_choice_view.tscn");
 const DECK_ROW_SCENE:PackedScene = preload("res://run/draft/deck_card_row.tscn");
 const RARITY_NAMES:Dictionary = {
 	CardDefinition.CardRarity.LEGENDARY: "传说",
@@ -18,7 +18,7 @@ signal back_requested;
 var candidates:Array[CardDefinition] = [];
 var page_index:int = 0;
 var _selection_reported:bool = false;
-var _card_views:Array[RewardCardView] = [];
+var _card_views:Array[CardChoiceView] = [];
 
 @onready var title_label:Label = %title_label;
 @onready var card_grid:GridContainer = %card_grid;
@@ -34,6 +34,7 @@ func _ready()->void:
 	previous_button.pressed.connect(_change_page.bind(-1));
 	next_button.pressed.connect(_change_page.bind(1));
 	back_button.pressed.connect(_on_back_pressed);
+	resized.connect(_resize_cards);
 
 
 ## 调用方传入已验证的非空同稀有度候选；本页面每轮创建一次。
@@ -69,15 +70,28 @@ func _refresh_page()->void:
 	_card_views.clear();
 	var first:int = page_index * CARDS_PER_PAGE;
 	for index in range(first, mini(first + CARDS_PER_PAGE, candidates.size())):
-		var view:RewardCardView = CARD_SCENE.instantiate();
+		var view:CardChoiceView = CARD_SCENE.instantiate();
 		card_grid.add_child(view);
 		view.setup(candidates[index]);
-		view.reward_card_selected.connect(_on_card_selected);
+		view.card_selected.connect(_on_card_selected);
 		view.set_interactable(true);
 		_card_views.append(view);
 	page_label.text = "%d / %d" % [page_index + 1, get_page_count()];
 	previous_button.disabled = page_index == 0;
 	next_button.disabled = page_index == get_page_count() - 1;
+	_resize_cards();
+	_resize_cards.call_deferred();
+
+## 六张卡维持两行三列，按窗口可用空间缩放，而非裁去下方文案。
+func _resize_cards()->void:
+	if not is_node_ready():
+		return;
+	var width_limit:float = maxf(132.0, (size.x - 400.0 - 48.0) / 3.0);
+	var height_limit:float = maxf(185.0, (size.y - 226.0) / 2.0);
+	var card_width:float = minf(CardFace.BASE_SIZE.x, minf(width_limit, height_limit * CardFace.BASE_SIZE.x / CardFace.BASE_SIZE.y));
+	var card_size:Vector2 = Vector2(card_width, card_width * CardFace.BASE_SIZE.y / CardFace.BASE_SIZE.x);
+	for view:CardChoiceView in _card_views:
+		view.set_display_size(card_size);
 
 
 func _on_card_selected(card:CardDefinition)->void:

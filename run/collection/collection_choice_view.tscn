@@ -1,0 +1,77 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://run/collection/collection_choice_view.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/ui/menu-background.png" id="2_background"]
+
+[node name="collection_choice_view" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="shade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.04, 0.06, 0.09, 0.63)
+
+[node name="center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 20.0
+offset_right = -28.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="layout" type="VBoxContainer" parent="center"]
+custom_minimum_size = Vector2(890, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="title" type="Label" parent="center/layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.61, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.07, 0.06, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 32
+text = "选择你的开局藏品"
+horizontal_alignment = 1
+
+[node name="options_container" type="HBoxContainer" parent="center/layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="footer" type="CenterContainer" parent="center/layout"]
+layout_mode = 2
+
+[node name="back_button" type="Button" parent="center/layout/footer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 42)
+layout_mode = 2
+tooltip_text = "结束本局并返回主菜单"
+theme_override_font_sizes/font_size = 19
+text = "返回主菜单"
