@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="1_card"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="2_effect"]
-[ext_resource type="Texture2D" uid="uid://b8ytrbb6cwmqt" path="res://assets/images/trade_wounds.png" id="4_artwork"]
+[ext_resource type="Texture2D" uid="uid://b8ytrbb6cwmqt" path="res://assets/cards/trade_wounds.png" id="4_artwork"]
 
 [sub_resource type="Resource" id="LoseHealth"]
 script = ExtResource("2_effect")

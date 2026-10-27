@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="UnexpectedEncounterDefinition" format=3]
+[gd_resource type="Resource" script_class="UnexpectedEncounterDefinition" format=3 uid="uid://i3xqqdfsxey"]
 
-[ext_resource type="Script" path="res://run/encounter/unexpected_encounter_definition.gd" id="1"]
-[ext_resource type="Texture2D" path="res://assets/ui/encounter-camp.png" id="2"]
-[ext_resource type="Script" path="res://run/encounter/unexpected_encounter_option_definition.gd" id="3_option"]
+[ext_resource type="Script" uid="uid://cocqdwq7cyhpd" path="res://run/encounter/unexpected_encounter_definition.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://c8462wp4mouie" path="res://assets/ui/encounter-camp.png" id="2"]
+[ext_resource type="Script" uid="uid://drso5khnmyadh" path="res://run/encounter/unexpected_encounter_option_definition.gd" id="3_option"]
 
 [sub_resource type="Resource" id="Option_heal"]
 script = ExtResource("3_option")
@@ -34,5 +34,4 @@ display_name = "余烬营地"
 story = "熄灭的营火下仍埋着温热的余烬。你可以稍作休息，也可以从散落的旅人手记中学到一项普通技艺。"
 artwork = ExtResource("2")
 options = Array[ExtResource("3_option")]([SubResource("Option_heal"), SubResource("Option_card"), SubResource("Option_leave")])
-kind = 0
 heal_amount = 15

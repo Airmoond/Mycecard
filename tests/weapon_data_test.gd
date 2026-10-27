@@ -86,8 +86,8 @@ func _controller(definitions:Array[CardDefinition])->BattleController:
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
 	_expect(controller.start_battle(
-		load("res://battle/data/encounters/cave_crawler_encounter.tres"),
-		load("res://combatants/data/player.tres"), definitions, 50, 50
+		load("res://battle/encounters/data/cave_crawler_encounter.tres"),
+		load("res://combatants/players/data/player.tres"), definitions, 50, 50
 	), "测试战斗应能初始化");
 	return controller;
 
@@ -415,8 +415,8 @@ func _test_enhancement_persistence()->void:
 	_expect(returning_card.weapon.current_attack == 11 and returning_card.weapon.current_durability == 5, "回手重装后恢复强化后的最大耐久");
 	_expect(not state.is_invalid_battle(), "强化回手重装后牌数守恒");
 	_expect(controller.start_battle(
-		load("res://battle/data/encounters/cave_crawler_encounter.tres"),
-		load("res://combatants/data/player.tres"), [returning], 50, 50
+		load("res://battle/encounters/data/cave_crawler_encounter.tres"),
+		load("res://combatants/players/data/player.tres"), [returning], 50, 50
 	), "下一场战斗应正常启动");
 	var fresh:CardInstance = controller.battle_state.hand[0];
 	_expect(fresh != returning_card and fresh.weapon.current_attack == 3 and fresh.weapon.max_durability == 3, "新战斗应创建未强化的全新实例");

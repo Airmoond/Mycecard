@@ -62,7 +62,7 @@ func escape(inspector:CardInspector)->void:
 	inspector._unhandled_key_input(event)
 
 func safe_encounter()->EncounterDefinition:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate()
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate()
 	encounter.enemy_definition = encounter.enemy_definition.duplicate()
 	encounter.enemy_definition.max_health = 10000
 	encounter.energy_per_turn = 12 # 本测试多次出牌制造合法的各牌区，不修改正式资源。
@@ -209,7 +209,7 @@ func test_battle()->void:
 	var controller:BattleController = page.get_node("battle_controller")
 	var definitions:Array[CardDefinition] = battle_deck()
 	var fang:CollectionDefinition = load("res://collections/data/copper_fang.tres")
-	expect(controller.start_battle(safe_encounter(), load("res://combatants/data/player.tres"), definitions, 50, 50, fang), "战斗浏览测试使用正式控制器启动")
+	expect(controller.start_battle(safe_encounter(), load("res://combatants/players/data/player.tres"), definitions, 50, 50, fang), "战斗浏览测试使用正式控制器启动")
 	var state:BattleState = controller.battle_state
 	# 先看真实空堆，再正常出牌制造弃牌、消耗、能力和装备区域。
 	controller.exhaust_pile_label.pressed.emit()
@@ -254,7 +254,7 @@ func test_battle()->void:
 	controller.discard_pile_label.pressed.emit()
 	expect(same_cards(controller._card_inspector.displayed_instances, state.discard_pile), "回合、洗牌和抽牌后再查看读取最新牌堆")
 	var old:CardInspector = controller._card_inspector
-	expect(controller.start_battle(safe_encounter(), load("res://combatants/data/player.tres"), definitions, 40, 50), "同控制器重新开始战斗")
+	expect(controller.start_battle(safe_encounter(), load("res://combatants/players/data/player.tres"), definitions, 40, 50), "同控制器重新开始战斗")
 	expect(old.is_queued_for_deletion() and not controller._has_inspector(), "新战斗清除旧牌堆窗口")
 	controller.exhaust_pile_label.pressed.emit()
 	var current:CardInspector = controller._card_inspector

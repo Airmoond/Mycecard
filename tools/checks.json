@@ -191,6 +191,10 @@
       "completion": "应用退出生命周期检查完成，失败数：0",
       "timeout": 60
     },
+    "content_directory_test.gd": {
+      "group": "unit",
+      "completion": "内容目录检查完成，失败数：0"
+    },
     "overlay_lifecycle_test.gd": {
       "group": "flow",
       "completion": "浮层生命周期与恢复检查完成，失败数：0",

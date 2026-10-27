@@ -30,7 +30,7 @@ func _test_window()->void:
 	root.add_child(page)
 	var controller:BattleController = page.get_controller()
 	controller.presentation.enabled = false
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate()
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate()
 	encounter.cards_per_turn = 10
 	var strike:CardDefinition = load("res://cards/data/strike.tres")
 	var weapon_definition:CardDefinition = load("res://cards/data/eternity.tres")
@@ -38,7 +38,7 @@ func _test_window()->void:
 	for _index in range(9):
 		deck.append(strike)
 	deck.append(weapon_definition)
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), deck, 50, 50), "十牌战斗启动")
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), deck, 50, 50), "十牌战斗启动")
 	await _frames()
 	var state:BattleState = controller.battle_state
 	var hand:HandView = controller.hand_area
@@ -96,7 +96,7 @@ func _test_window()->void:
 	_expect(state.enemy_state.current_health == health_before and state.weapon_attack_available and attack.pressed.get_connections().is_empty(), "上一回合武器按钮的迟到信号不能消耗新回合攻击机会")
 	var remaining:CardInstance = state.hand[0]
 	var old_view:CardView = hand.card_view(remaining)
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), [strike], 50, 50), "重开使用新的会话和牌实例")
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), [strike], 50, 50), "重开使用新的会话和牌实例")
 	var new_state:BattleState = controller.battle_state
 	old_view.card_selected.emit(remaining)
 	_expect(new_state.enemy_state.current_health == 30 and new_state.hand.size() == 1 and old_view.card_selected.get_connections().is_empty(), "旧牌节点迟到点击不影响新战斗")

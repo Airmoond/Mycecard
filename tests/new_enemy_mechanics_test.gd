@@ -25,12 +25,12 @@ func _expect(condition:bool, message:String)->void:
 
 
 func _controller(enemy_id:String)->BattleController:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/%s_encounter.tres" % enemy_id);
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/%s_encounter.tres" % enemy_id);
 	_expect(encounter != null and not encounter.is_invalid(), "新敌人遭遇应完整合法");
 	if encounter == null or encounter.is_invalid():
 		return null;
 	_expect(encounter.enemy_definition.max_health > 0 and encounter.enemy_definition.max_health <= 100, "三种新普通敌人生命应为合法正数且不超过100");
-	var player:CombatantDefinition = load("res://combatants/data/player.tres").duplicate();
+	var player:CombatantDefinition = load("res://combatants/players/data/player.tres").duplicate();
 	player.max_health = 1000;
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
@@ -165,9 +165,9 @@ func _test_unlimited_strength_and_reset()->void:
 		_expect(before - state.player_state.current_health == expected_damage, "本次新增力量立即计入实际单段攻击，与意图一致");
 	_expect((base_damage + state.enemy_state.strength) / 12.0 > 1.8, "持续成长可以突破普通敌人1.8模型上限，不能暗中封顶");
 	_expect(_definition_snapshot(enemy) == snapshot, "力量仅保存在本场状态，不得修改静态2力量或基础伤害");
-	var player:CombatantDefinition = load("res://combatants/data/player.tres").duplicate();
+	var player:CombatantDefinition = load("res://combatants/players/data/player.tres").duplicate();
 	player.max_health = 1000;
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/ragebound_brute_encounter.tres");
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/ragebound_brute_encounter.tres");
 	var deck:Array[CardDefinition] = [load("res://cards/data/defend.tres")];
 	_expect(controller.start_battle(encounter, player, deck, 1000, 1000), "同一控制器应能重新开启蛮兵战斗");
 	_expect(controller.battle_state.enemy_state.strength == 0, "新战斗必须将蛮兵力量归零");

@@ -25,12 +25,12 @@ func _expect(condition:bool, message:String)->void:
 
 
 func _controller(enemy_id:String)->BattleController:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/%s_encounter.tres" % enemy_id);
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/%s_encounter.tres" % enemy_id);
 	_expect(encounter != null and not encounter.is_invalid(), "新Boss遭遇应完整合法：%s" % enemy_id);
 	if encounter == null or encounter.is_invalid():
 		return null;
 	_expect(encounter.enemy_definition.max_health > 0, "Boss生命应为合法正数");
-	var player:CombatantDefinition = load("res://combatants/data/player.tres").duplicate();
+	var player:CombatantDefinition = load("res://combatants/players/data/player.tres").duplicate();
 	player.max_health = 1000;
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);

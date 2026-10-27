@@ -38,7 +38,7 @@ func _controller(cards:Array[CardDefinition])->BattleController:
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
 	# 固定6伤害测试对手，保证观察完整武器周期，避免依赖正式敌人的平衡数值。
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate();
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	var enemy:EnemyDefinition = encounter.enemy_definition.duplicate();
 	var damage:CombatEffectDefinition = CombatEffectDefinition.new();
 	damage.effect_type = CombatEffectDefinition.EffectType.DAMAGE;
@@ -50,7 +50,7 @@ func _controller(cards:Array[CardDefinition])->BattleController:
 	action.effects = [damage];
 	enemy.action_pattern = [action];
 	encounter.enemy_definition = enemy;
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), cards, 50, 50), "正式传说卡测试战斗应启动");
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), cards, 50, 50), "正式传说卡测试战斗应启动");
 	return controller;
 
 
@@ -150,7 +150,7 @@ func _test_eternity()->void:
 	_expect(state.equipped_weapon == eternal and eternal.weapon.current_attack == 11 and eternal.weapon.current_durability == 5, "重装恢复强化后的最大耐久并保留攻击");
 	_expect(not state.weapon_attack_available and not state.is_invalid_battle(), "重装不刷新攻击机会，牌区守恒");
 	_expect(_card("eternity").weapon_definition.base_attack == 3 and _card("eternity").weapon_definition.base_max_durability == 3, "强化不污染正式资源");
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [_card("eternity")], 50, 50), "永恒可带入下一战");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [_card("eternity")], 50, 50), "永恒可带入下一战");
 	var next_card:CardInstance = controller.battle_state.hand[0];
 	_expect(next_card != eternal and next_card.weapon.current_attack == 3 and next_card.weapon.current_durability == 3 and next_card.weapon.max_durability == 3, "下一战创建新实例，强化和旧耐久不延续");
 	controller.get_parent().queue_free();

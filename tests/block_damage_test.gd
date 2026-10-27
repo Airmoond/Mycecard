@@ -53,7 +53,7 @@ func _effect(type:CombatEffectDefinition.EffectType, amount:int, target:CombatEf
 
 
 func _controller(cards:Array[CardDefinition], enemy_effects:Array[CombatEffectDefinition] = [])->BattleController:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate();
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();
 	var action:EnemyActionDefinition = EnemyActionDefinition.new();
 	action.action_id = "test_block_damage";
@@ -65,7 +65,7 @@ func _controller(cards:Array[CardDefinition], enemy_effects:Array[CombatEffectDe
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), cards, 50, 50), "格挡伤害测试应正常启动");
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), cards, 50, 50), "格挡伤害测试应正常启动");
 	return controller;
 
 

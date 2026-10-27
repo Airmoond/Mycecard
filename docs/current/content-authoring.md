@@ -2,6 +2,17 @@
 
 内容由 `.tres` 资源配置，运行时保持只读。服务与状态职责见 [项目架构](../architecture/架构与重构记录.md)。
 
+## 定义与资源位置
+
+定义脚本放在所属领域根目录或专属子模块，`data/` 仅放资源实例。例如 `run/run_definition.gd` 对应 `run/data/default_run.tres`，`run/map/map_definition.gd` 对应 `run/map/data/first_map.tres`。
+
+- 玩家战斗属性：`combatants/players/data/player.tres`；敌人属性与行动：`combatants/enemies/data/`。
+- 可选角色配置：`characters/data/warrior.tres`，组合战斗角色、起始牌组和奖励池。
+- 起始牌组条目类型：`cards/deck_entry_definition.gd`。
+- 卡牌原画：`assets/cards/`；战斗角色原画：`assets/combatants/`；背景与界面素材：`assets/backgrounds/`、`assets/ui/`。
+
+完整目录规则见 [目录组织](../architecture/目录组织与整理记录.md)。
+
 ## 初始牌组与奖励
 
 编辑 `characters/data/warrior.tres`：
@@ -48,7 +59,7 @@
 
 ## 单场规则
 
-编辑 `battle/data/encounters/` 中的遭遇资源：
+编辑 `battle/encounters/data/` 中的遭遇资源：
 
 - `enemy_definition` 选择敌人。
 - `energy_per_turn`、`cards_per_turn`、`max_hand_size` 调整单场规则。

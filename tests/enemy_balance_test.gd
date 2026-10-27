@@ -9,8 +9,8 @@ func _initialize()->void:
 func _run()->void:
 	_test_resource(load("res://combatants/enemies/data/cave_crawler.tres"), [8, 12], [0, 0], 0.7, 1.8, 30);
 	_test_resource(load("res://combatants/enemies/data/ruin_guard.tres"), [0, 16, 18], [13, 0, 0], 1.3, 2.6, 99);
-	_test_actual_cycle("res://battle/data/encounters/cave_crawler_encounter.tres", [8, 12], [0, 0]);
-	_test_actual_cycle("res://battle/data/encounters/ruin_guard_encounter.tres", [0, 16, 18], [13, 0, 0]);
+	_test_actual_cycle("res://battle/encounters/data/cave_crawler_encounter.tres", [8, 12], [0, 0]);
+	_test_actual_cycle("res://battle/encounters/data/ruin_guard_encounter.tres", [0, 16, 18], [13, 0, 0]);
 	await process_frame;
 	print("敌人模型实验检查完成，失败数：%d" % _failures);
 	quit(0 if _failures == 0 else 1);
@@ -43,7 +43,7 @@ func _test_actual_cycle(encounter_path:String, damages:Array, blocks:Array)->voi
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	var player:CombatantDefinition = load("res://combatants/data/player.tres").duplicate();
+	var player:CombatantDefinition = load("res://combatants/players/data/player.tres").duplicate();
 	player.max_health = 1000; # 仅测试中延长存活，完整观察多次循环，不改正式玩家数据。
 	var deck:Array[CardDefinition] = [load("res://cards/data/defend.tres")];
 	_expect(controller.start_battle(load(encounter_path), player, deck, 1000, 1000), "实验循环应可以从真实遭遇启动");

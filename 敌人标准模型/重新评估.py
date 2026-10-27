@@ -380,8 +380,8 @@ def main():
         "battle/model/enemy_state.gd", "battle/model/combatant_state.gd",
         "battle/battle_controller.gd", "battle/actions/attack_damage_resolver.gd",
         "battle/actions/combat_effect_definition.gd", "battle/actions/action_queue.gd",
-        "battle/data/encounter_definition.gd", "run/data/run_definition.gd",
-        "run/map/data/map_definition.gd", "run/map/data/map_node_definition.gd"))
+        "battle/encounters/encounter_definition.gd", "run/run_definition.gd",
+        "run/map/map_definition.gd", "run/map/map_node_definition.gd"))
     if not math.isclose(12 / PARAMS["damage_per_enemy_turn"], 1) or not math.isclose(10 / PARAMS["block_per_enemy_turn"], 1):
         raise ValueError("两项基础估值锚点发生改变")
     for item in results:

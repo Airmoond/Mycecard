@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://r84gdmwtul6d" path="res://combatants/enemies/enemy_definition.gd" id="1_enemy"]
 [ext_resource type="Script" uid="uid://b1iqujddbs8dj" path="res://combatants/enemies/enemy_action_definition.gd" id="2_action"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="3_effect"]
-[ext_resource type="Texture2D" uid="uid://dyvnms1aindyq" path="res://artworks/cave_crawler.png" id="4_portrait"]
+[ext_resource type="Texture2D" uid="uid://dyvnms1aindyq" path="res://assets/combatants/cave_crawler.png" id="4_portrait"]
 
 [sub_resource type="Resource" id="Effect_chip_0"]
 script = ExtResource("3_effect")

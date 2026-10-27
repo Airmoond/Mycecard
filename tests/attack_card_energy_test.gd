@@ -45,7 +45,7 @@ func _controller(cards:Array[CardDefinition])->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), cards, 50, 50), "攻击牌回能测试应能启动");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), cards, 50, 50), "攻击牌回能测试应能启动");
 	return controller;
 
 
@@ -191,7 +191,7 @@ func _test_new_battle()->void:
 	var buff:CardDefinition = _buff();
 	var controller:BattleController = _controller([buff]);
 	_play(controller, buff);
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [buff], 50, 50), "可开始新战斗");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [buff], 50, 50), "可开始新战斗");
 	var state:BattleState = controller.battle_state;
 	_expect(state.attack_card_energy_this_turn == 0 and state.current_available_energy == 3 and state.exhaust_pile.is_empty(), "新战斗清空回能与消耗记录");
 	_play(controller, buff);

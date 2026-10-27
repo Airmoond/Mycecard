@@ -48,7 +48,7 @@ func _controller(card:CardDefinition, health:int, max_health:int)->BattleControl
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [card], health, max_health), "血祭测试战斗应启动");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [card], health, max_health), "血祭测试战斗应启动");
 	return controller;
 
 

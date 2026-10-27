@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="CharacterDefinition" format=3 uid="uid://cfqe1qhgscjt1"]
 
 [ext_resource type="Script" uid="uid://cpwhnqarfjks" path="res://characters/character_definition.gd" id="1_character"]
-[ext_resource type="Resource" uid="uid://df8b6i2mgvp8g" path="res://combatants/data/player.tres" id="2_player"]
-[ext_resource type="Script" uid="uid://dj8325adloygy" path="res://battle/data/deck_entry_definition.gd" id="3_deck_entry"]
+[ext_resource type="Resource" uid="uid://df8b6i2mgvp8g" path="res://combatants/players/data/player.tres" id="2_player"]
+[ext_resource type="Script" uid="uid://dj8325adloygy" path="res://cards/deck_entry_definition.gd" id="3_deck_entry"]
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="4_card"]
 [ext_resource type="Resource" uid="uid://dkccfhg2cvceb" path="res://cards/data/strike.tres" id="5_strike"]
 [ext_resource type="Resource" uid="uid://bvu4nx4814o1r" path="res://cards/data/defend.tres" id="6_defend"]

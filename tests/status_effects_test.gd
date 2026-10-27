@@ -56,13 +56,13 @@ func _action(effects:Array[CombatEffectDefinition])->EnemyActionDefinition:
 
 
 func _controller(definitions:Array[CardDefinition], actions:Array[EnemyActionDefinition])->BattleController:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate();
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();
 	encounter.enemy_definition.action_pattern = actions;
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), definitions, 50, 50), "状态测试战斗应启动");
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), definitions, 50, 50), "状态测试战斗应启动");
 	return controller;
 
 
@@ -222,12 +222,12 @@ func _test_new_battle_reset()->void:
 	var controller:BattleController = _controller([definition], [_attack()]);
 	controller.battle_state.player_state.apply_weak(3, true);
 	controller.battle_state.enemy_state.apply_vulnerable(3, true);
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [definition], 50, 50), "新战斗应启动");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [definition], 50, 50), "新战斗应启动");
 	var state:BattleState = controller.battle_state;
 	_expect(state.player_state.weak_turns == 0 and state.enemy_state.vulnerable_turns == 0, "新战斗不能继承状态");
 	_expect(not controller.player_view.weak_label.visible and not controller.enemy_view.vulnerable_label.visible, "新战斗不能残留状态显示");
 	state.player_state.apply_weak(1, true);
-	state.player_state.combatant_init_from_definition(load("res://combatants/data/player.tres"));
+	state.player_state.combatant_init_from_definition(load("res://combatants/players/data/player.tres"));
 	state.player_state.apply_weak(1, false);
 	state.player_state.tick_statuses_at_round_end();
 	_expect(state.player_state.weak_turns == 0, "重新初始化同一角色也清空首次递减标记");

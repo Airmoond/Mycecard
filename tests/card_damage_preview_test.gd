@@ -73,7 +73,7 @@ func _test_hand_refresh_and_execution()->void:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [strike, double_strike, buff], 50, 50), "预览测试战斗应启动");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [strike, double_strike, buff], 50, 50), "预览测试战斗应启动");
 	_expect(_view(controller, strike).card_face.description_label.text == "造成6点伤害", "初始手牌显示基础伤害");
 	controller._on_card_selected(_view(controller, buff).card_instance);
 	_expect(_view(controller, strike).card_face.description_label.text == "造成9点伤害", "打出状态牌后其余手牌应自动刷新");

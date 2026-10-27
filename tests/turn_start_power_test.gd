@@ -52,7 +52,7 @@ func _action(effects:Array[CombatEffectDefinition])->EnemyActionDefinition:
 
 
 func _controller(cards:Array[CardDefinition], actions:Array[EnemyActionDefinition] = [])->BattleController:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate();
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();
 	if actions.is_empty():
 		var block:CombatEffectDefinition = CombatEffectDefinition.new();
@@ -66,7 +66,7 @@ func _controller(cards:Array[CardDefinition], actions:Array[EnemyActionDefinitio
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), deck, 50, 50), "回合开始能力测试应能启动");
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), deck, 50, 50), "回合开始能力测试应能启动");
 	return controller;
 
 
@@ -158,7 +158,7 @@ func _test_cost_and_new_battle()->void:
 	_expect(state.player_state.powers.is_empty() and state.hand.size() == 3, "费用不足不能获得能力或移牌");
 	state.gain_energy(1);
 	_play_powers(controller);
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [definition], 40, 50), "新战斗应能启动");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [definition], 40, 50), "新战斗应能启动");
 	_expect(controller.battle_state.player_state.powers.is_empty() and controller.battle_state.player_state.current_health == 40 and controller.battle_state.player_state.current_block == 0, "新战斗不继承能力，也不误触发起手失血");
 	_expect(controller.battle_state.hand.size() == 1 and not controller.player_view.power_label.visible, "来源卡重新入牌组，旧能力提示清空");
 	controller.get_parent().queue_free();

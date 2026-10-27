@@ -39,7 +39,7 @@ func _collection(collection_id:String)->CollectionDefinition:
 ## 只替换本测试敌人行动和生命，静态正式资源保持原样。
 func _safe_encounter(boss:bool = false)->EncounterDefinition:
 	var path:String = "ruin_guard" if boss else "cave_crawler";
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/%s_encounter.tres" % path).duplicate();
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/%s_encounter.tres" % path).duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();
 	encounter.enemy_definition.max_health = 10000;
 	var block:CombatEffectDefinition = CombatEffectDefinition.new();
@@ -57,7 +57,7 @@ func _controller(cards:Array[CardDefinition], collection:CollectionDefinition = 
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(_safe_encounter(boss), load("res://combatants/data/player.tres"), cards, 50, 50, collection), "藏品测试战斗应正常启动");
+	_expect(controller.start_battle(_safe_encounter(boss), load("res://combatants/players/data/player.tres"), cards, 50, 50, collection), "藏品测试战斗应正常启动");
 	return controller;
 
 
@@ -74,7 +74,7 @@ func _test_starting_strength()->void:
 		controller._on_end_turn_button_pressed();
 		_expect(state.player_state.strength == 1 and state.current_turn_number == 2, "刷新和后续回合不重复领取开局力量");
 		state.player_state.gain_strength(9);
-		_expect(controller.start_battle(_safe_encounter(boss), load("res://combatants/data/player.tres"), [_card("strike")], 40, 50, fang), "同控制器可重新启动另一场带藏品战斗");
+		_expect(controller.start_battle(_safe_encounter(boss), load("res://combatants/players/data/player.tres"), [_card("strike")], 40, 50, fang), "同控制器可重新启动另一场带藏品战斗");
 		_expect(controller.battle_state.player_state.strength == 1 and controller.battle_state.player_state.current_health == 40, "新战斗清除旧力量，再重新获得藏品的1力量");
 		_expect(fang.amount == 1 and _card("double_strike").effects[0].amount == 5, "力量效果不写入藏品或卡牌资源");
 		controller.get_parent().queue_free();
@@ -108,7 +108,7 @@ func _test_early_block()->void:
 			_expect(state.current_turn_number == turn and state.player_state.current_block == (3 if turn <= 3 else 0) and state.current_available_energy == energy and state.hand.size() == hand_size, "当前玩家回合不能重复开始来刷新能量、抽牌或叠加藏品格挡");
 			if turn < 5:
 				controller._on_end_turn_button_pressed();
-		_expect(controller.start_battle(_safe_encounter(boss), load("res://combatants/data/player.tres"), [_card("defend")], 50, 50, shield), "盾徽次数随新战斗重置");
+		_expect(controller.start_battle(_safe_encounter(boss), load("res://combatants/players/data/player.tres"), [_card("defend")], 50, 50, shield), "盾徽次数随新战斗重置");
 		_expect(controller.battle_state.current_turn_number == 1 and controller.battle_state.player_state.current_block == 3, "新战斗重新享有首回合3格挡");
 		controller.get_parent().queue_free();
 
@@ -156,7 +156,7 @@ func _test_no_battle_heal_and_legacy_entry()->void:
 		state.enemy_state.take_unblocked_damage(10000);
 		controller._check_battle_result();
 		_expect(state.player_state.current_health == 40 and state.player_state.strength == 0 and state.player_state.current_block == 0, "圣杯不在战斗控制器内加血，普通胜利治疗交由整局流程，Boss也不误治");
-		_expect(controller.start_battle(_safe_encounter(), load("res://combatants/data/player.tres"), [_card("strike")], 40, 50), "原五参数战斗入口继续兼容试炼和无藏品评估");
+		_expect(controller.start_battle(_safe_encounter(), load("res://combatants/players/data/player.tres"), [_card("strike")], 40, 50), "原五参数战斗入口继续兼容试炼和无藏品评估");
 		_expect(controller.selected_collection == null and controller.battle_state.player_state.current_health == 40 and controller.battle_state.player_state.strength == 0 and controller.battle_state.player_state.current_block == 0, "不传藏品的新战斗无旧藏品或状态残留");
 		controller.get_parent().queue_free();
 
@@ -189,7 +189,7 @@ func _test_inspector()->void:
 	_expect(state.enemy_state.current_health == enemy_health - 4, "关闭后武器恢复使用，保留本场1力量");
 	controller.collection_button.pressed.emit();
 	var old_inspector:CollectionInspector = controller._collection_inspector;
-	_expect(controller.start_battle(_safe_encounter(), load("res://combatants/data/player.tres"), [_card("strike")], 40, 50), "查看中启动新战斗正常重置");
+	_expect(controller.start_battle(_safe_encounter(), load("res://combatants/players/data/player.tres"), [_card("strike")], 40, 50), "查看中启动新战斗正常重置");
 	_expect(not controller._has_collection_inspector() and old_inspector.is_queued_for_deletion() and controller.selected_collection == null, "新战斗移除旧查看窗口，不继承旧藏品");
 	controller.collection_button.pressed.emit();
 	_expect(controller._collection_inspector != null, "无藏品兼容战斗仍可打开明确空态查看窗口");

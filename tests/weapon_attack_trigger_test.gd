@@ -50,7 +50,7 @@ func _controller(specials:Array[CardDefinition], filler_count:int = 10)->BattleC
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), deck, 50, 50), "武器触发测试战斗应启动");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), deck, 50, 50), "武器触发测试战斗应启动");
 	return controller;
 
 
@@ -168,7 +168,7 @@ func _test_next_battle()->void:
 	var controller:BattleController = _controller([definition]);
 	controller._on_card_selected(controller.battle_state.hand[0]);
 	controller._on_weapon_attack_requested();
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [definition], 50, 50), "新战斗可以启动");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [definition], 50, 50), "新战斗可以启动");
 	_expect(controller.battle_state.player_state.strength == 0 and controller.battle_state.hand[0].weapon.current_durability == 3, "新战斗不继承力量与旧耐久");
 	controller._on_card_selected(controller.battle_state.hand[0]);
 	controller._on_weapon_attack_requested();

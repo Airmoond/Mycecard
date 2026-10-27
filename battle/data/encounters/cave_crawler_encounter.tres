@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="EncounterDefinition" format=3 uid="uid://b6u40pjmfvxb2"]
-
-[ext_resource type="Resource" uid="uid://b36put4k462ok" path="res://combatants/enemies/data/cave_crawler.tres" id="1_mx8nk"]
-[ext_resource type="Script" uid="uid://bicregg5k10el" path="res://battle/data/encounter_definition.gd" id="1_siugc"]
-
-[resource]
-script = ExtResource("1_siugc")
-encounter_id = "cave_crawler_encounter"
-enemy_definition = ExtResource("1_mx8nk")

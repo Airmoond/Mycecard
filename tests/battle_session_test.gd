@@ -2,8 +2,8 @@
 extends SceneTree
 
 var _failures:int = 0
-var _encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres")
-var _player:CombatantDefinition = load("res://combatants/data/player.tres")
+var _encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres")
+var _player:CombatantDefinition = load("res://combatants/players/data/player.tres")
 
 func _initialize()->void:
 	_run.call_deferred()

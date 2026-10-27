@@ -49,13 +49,13 @@ func _controller(specials:Array[CardDefinition], filler_count:int = 10, hand_lim
 	var definitions:Array[CardDefinition] = specials.duplicate();
 	for index in range(filler_count):
 		definitions.append(load("res://cards/data/defend.tres"));
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate();
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.cards_per_turn = 2;
 	encounter.max_hand_size = hand_limit;
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), definitions, 50, 50), "抽牌限制测试战斗应能启动");
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), definitions, 50, 50), "抽牌限制测试战斗应能启动");
 	return controller;
 
 
@@ -114,7 +114,7 @@ func _test_turn_and_battle_reset()->void:
 	_expect(state.current_turn_number == 2 and not state.draw_blocked_this_turn and state.hand.size() == 2, "下一回合先解禁，再正常抽基础数量");
 	_expect(not controller.draw_pile_label.text.contains("禁抽") and controller.draw_pile_label.tooltip_text.is_empty(), "解禁时清除界面提示");
 	state.prevent_draw_for_turn();
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [load("res://cards/data/defend.tres")], 50, 50), "可启动新战斗");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [load("res://cards/data/defend.tres")], 50, 50), "可启动新战斗");
 	_expect(not controller.battle_state.draw_blocked_this_turn and controller.battle_state.hand.size() == 1, "新战斗不继承禁抽状态");
 	controller.get_parent().queue_free();
 

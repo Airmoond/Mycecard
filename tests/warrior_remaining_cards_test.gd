@@ -41,11 +41,11 @@ func _controller(cards:Array[CardDefinition])->BattleController:
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
 	# 使用独立40生命对手验证卡牌结算，不依赖正式Boss的平衡血量。
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/ruin_guard_encounter.tres").duplicate();
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/ruin_guard_encounter.tres").duplicate();
 	var enemy:EnemyDefinition = encounter.enemy_definition.duplicate();
 	enemy.max_health = 40;
 	encounter.enemy_definition = enemy;
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), cards, 50, 50), "正式卡测试使用独立40生命对手");
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), cards, 50, 50), "正式卡测试使用独立40生命对手");
 	return controller;
 
 

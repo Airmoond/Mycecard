@@ -63,7 +63,7 @@ func _action(effects:Array[CombatEffectDefinition])->EnemyActionDefinition:
 
 
 func _controller(cards:Array[CardDefinition], actions:Array[EnemyActionDefinition] = [])->BattleController:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate();
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();
 	if actions.is_empty():
 		actions = [_action([_effect(CombatEffectDefinition.EffectType.DAMAGE, 7, CombatEffectDefinition.TargetType.OPPONENT)])];
@@ -71,7 +71,7 @@ func _controller(cards:Array[CardDefinition], actions:Array[EnemyActionDefinitio
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), cards, 50, 50), "能力测试战斗应启动");
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), cards, 50, 50), "能力测试战斗应启动");
 	return controller;
 
 
@@ -173,12 +173,12 @@ func _test_new_battle_reset()->void:
 	var controller:BattleController = _controller([definition]);
 	controller._on_card_selected(controller.battle_state.hand[0]);
 	controller.battle_state.enemy_state.apply_power(definition.effects[0].power_definition);
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [definition], 50, 50), "下一场应重新启动");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [definition], 50, 50), "下一场应重新启动");
 	var state:BattleState = controller.battle_state;
 	_expect(state.player_state.powers.is_empty() and state.enemy_state.powers.is_empty() and state.hand.size() == 1 and state.played_power_cards.is_empty(), "新战斗清空能力与归档，能力牌重新进入牌组");
 	_expect(not controller.player_view.power_label.visible and not controller.enemy_view.power_label.visible, "新战斗能力显示清空");
 	state.player_state.apply_power(definition.effects[0].power_definition);
-	state.player_state.combatant_init_from_definition(load("res://combatants/data/player.tres"));
+	state.player_state.combatant_init_from_definition(load("res://combatants/players/data/player.tres"));
 	_expect(state.player_state.powers.is_empty(), "重新初始化同一角色也清空能力");
 	controller.get_parent().queue_free();
 

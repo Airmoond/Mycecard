@@ -36,9 +36,9 @@ python tools/project.py experiment --scenario enemy-calibration
 
 | 敌人 | 定义 | 遭遇 | 机制 |
 | --- | --- | --- | --- |
-| 铁壁哨卫 | [bulwark_sentinel.tres](../../combatants/enemies/data/bulwark_sentinel.tres) | [对应遭遇](../../battle/data/encounters/bulwark_sentinel_encounter.tres) | 连续三个防守行动后重击 |
-| 咒缚侍徒 | [hexbound_acolyte.tres](../../combatants/enemies/data/hexbound_acolyte.tres) | [对应遭遇](../../battle/data/encounters/hexbound_acolyte_encounter.tres) | 9基础伤后虚弱1；先易伤1再11基础伤 |
-| 狂怒蛮兵 | [ragebound_brute.tres](../../combatants/enemies/data/ragebound_brute.tres) | [对应遭遇](../../battle/data/encounters/ragebound_brute_encounter.tres) | 每行动先增加2力量再攻击 |
+| 铁壁哨卫 | [bulwark_sentinel.tres](../../combatants/enemies/data/bulwark_sentinel.tres) | [对应遭遇](../../battle/encounters/data/bulwark_sentinel_encounter.tres) | 连续三个防守行动后重击 |
+| 咒缚侍徒 | [hexbound_acolyte.tres](../../combatants/enemies/data/hexbound_acolyte.tres) | [对应遭遇](../../battle/encounters/data/hexbound_acolyte_encounter.tres) | 9基础伤后虚弱1；先易伤1再11基础伤 |
+| 狂怒蛮兵 | [ragebound_brute.tres](../../combatants/enemies/data/ragebound_brute.tres) | [对应遭遇](../../battle/encounters/data/ragebound_brute_encounter.tres) | 每行动先增加2力量再攻击 |
 
 在Godot打开[敌人试炼.tscn](./敌人试炼.tscn)，按F6运行。以50生命、3打击＋3防御选择敌人进行单场战斗，胜负后可返回选择。场景复用正式战斗界面和规则；部分敌人原画仍使用占位素材。
 

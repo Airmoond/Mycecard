@@ -99,7 +99,7 @@ func _start_fight(enemy_id:String)->void:
 	var character:CharacterDefinition = load("res://characters/data/warrior.tres")
 	var controller:BattleController = page.get_node("battle_controller")
 	controller.battle_finished.connect(_on_finished)
-	controller.start_battle(load("res://battle/data/encounters/%s_encounter.tres" % enemy_id),character.combatant_definition,deck,starting_health,50)
+	controller.start_battle(load("res://battle/encounters/data/%s_encounter.tres" % enemy_id),character.combatant_definition,deck,starting_health,50)
 
 func _on_finished(victory:bool, health:int, max_health:int)->void:
 	result_label.text = "%s · 剩余生命 %d / %d" % ["胜利" if victory else "失败",health,max_health]

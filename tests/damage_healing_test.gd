@@ -57,7 +57,7 @@ func _health_loss(amount:int)->CombatEffectDefinition:
 
 
 func _controller(definition:CardDefinition, enemy_effects:Array[CombatEffectDefinition] = [])->BattleController:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres");
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres");
 	if not enemy_effects.is_empty():
 		encounter = encounter.duplicate();
 		encounter.enemy_definition = encounter.enemy_definition.duplicate();
@@ -69,7 +69,7 @@ func _controller(definition:CardDefinition, enemy_effects:Array[CombatEffectDefi
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), [definition], 20, 50), "治疗测试战斗应能以20生命启动");
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), [definition], 20, 50), "治疗测试战斗应能以20生命启动");
 	return controller;
 
 
@@ -153,7 +153,7 @@ func _test_lethal_attack()->void:
 	controller._on_card_selected(card);
 	controller._on_card_selected(card);
 	_expect(health_results.size() == 1 and not state.is_invalid_battle(), "重复点击不重复治疗或报告结果，牌区保持守恒");
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [definition], health_results[0], 50), "后续战斗可使用治疗后的生命启动");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [definition], health_results[0], 50), "后续战斗可使用治疗后的生命启动");
 	_expect(controller.battle_state.player_state.current_health == 24 and controller.battle_state.exhaust_pile.is_empty(), "生命正确延续，消耗记录不跨战斗");
 	controller.get_parent().queue_free();
 

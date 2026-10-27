@@ -64,8 +64,13 @@ func _commit_page(page:Control, combat:bool = false)->bool:
 		audio.set_music_state(&"combat" if combat else &"exploration")
 	return true
 
-func _show_main_menu()->void:
-	var menu:MainMenu = _prepare_page(main_menu_scene, MENU_SCRIPT, Callable(), _show_main_menu) as MainMenu
+## 显示主菜单，并连接开始新一局的请求。
+##
+## 页面切换成功后，将 [member run_session] 设为 [code]null[/code]，
+## 并清除覆盖层宿主（若存在）中的临时内容。
+## 如果主菜单准备失败，则直接返回。
+func _show_main_menu() -> void:
+	var menu: MainMenu = _prepare_page(main_menu_scene, MENU_SCRIPT, Callable(), _show_main_menu) as MainMenu
 	if menu == null:
 		return
 	menu.start_requested.connect(_start_new_run.bind(menu))

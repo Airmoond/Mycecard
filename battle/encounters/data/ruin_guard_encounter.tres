@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EncounterDefinition" format=3 uid="uid://bdf55abbobrho"]
+
+[ext_resource type="Resource" uid="uid://chtvhsmhnklag" path="res://combatants/enemies/data/ruin_guard.tres" id="1_cpyxc"]
+[ext_resource type="Script" uid="uid://bicregg5k10el" path="res://battle/encounters/encounter_definition.gd" id="1_crmsf"]
+
+[resource]
+script = ExtResource("1_crmsf")
+encounter_id = "ruin_guard_encounter"
+enemy_definition = ExtResource("1_cpyxc")
+metadata/_custom_type_script = "uid://bicregg5k10el"

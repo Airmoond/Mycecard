@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c6tm7stf7chex"]
 
 [ext_resource type="Script" uid="uid://b3u0ciyok3xgs" path="res://run/reward/reward_view.gd" id="1_ieyu1"]
-[ext_resource type="Texture2D" uid="uid://dqec0s6dqeil7" path="res://artworks/map_background.png" id="2_qqrfc"]
+[ext_resource type="Texture2D" uid="uid://dqec0s6dqeil7" path="res://assets/backgrounds/map_background.png" id="2_qqrfc"]
 
 [node name="reward_view" type="Control" unique_id=453111862]
 layout_mode = 3

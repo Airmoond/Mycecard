@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EncounterDefinition" format=3]
+
+[ext_resource type="Script" path="res://battle/encounters/encounter_definition.gd" id="1_encounter"]
+[ext_resource type="Resource" path="res://combatants/enemies/data/calamity_hierophant.tres" id="2_enemy"]
+
+[resource]
+script = ExtResource("1_encounter")
+encounter_id = "calamity_hierophant_encounter"
+enemy_definition = ExtResource("2_enemy")

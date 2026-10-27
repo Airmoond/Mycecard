@@ -16,18 +16,26 @@ func frames()->void:
 		await process_frame
 
 func run()->void:
+	# 不进入场景树，检查编辑器读取的保存布局，不依赖运行时适配。
+	var preview:Control = load("res://battle/battle.tscn").instantiate()
+	var preview_size:Vector2 = Vector2(ProjectSettings.get_setting("display/window/size/viewport_width"), ProjectSettings.get_setting("display/window/size/viewport_height"))
+	var preview_stage:Control = preview.get_node("main_layout")
+	expect(preview.clip_contents, "编辑器预览裁剪画布外的桌面装饰")
+	expect(preview_stage.scale.is_equal_approx(Vector2.ONE * (2.0 / 3.0)), "保存舞台缩放与1280×720预览一致")
+	expect((preview_stage.size * preview_stage.scale).is_equal_approx(preview_size), "未运行脚本时舞台尺寸与项目视口一致")
+	preview.free()
 	for window_size:Vector2i in [Vector2i(1920, 1080), Vector2i(1280, 720)]:
 		root.size = window_size
 		var page:Control = load("res://battle/battle.tscn").instantiate()
 		root.add_child(page)
-		var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate()
+		var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate()
 		encounter.cards_per_turn = 10
 		var deck:Array[CardDefinition] = []
 		for index in range(9):
 			deck.append(load("res://cards/data/strike.tres"))
 		deck.append(load("res://cards/data/eternity.tres"))
 		var controller:BattleController = page.get_node("battle_controller")
-		expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), deck, 50, 50), "十牌布局战斗可启动")
+		expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), deck, 50, 50), "十牌布局战斗可启动")
 		await frames()
 		var hand_rect:Rect2 = controller.hand_area.get_global_rect()
 		var page_rect:Rect2 = page.get_global_rect()

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CardDefinition" format=3 uid="uid://bjplw014emciv"]
 
-[ext_resource type="Texture2D" uid="uid://c8h84yxsnnuto" path="res://assets/images/attack_and_block-v2.png" id="1_drl3e"]
+[ext_resource type="Texture2D" uid="uid://c8h84yxsnnuto" path="res://assets/cards/attack_and_block-v2.png" id="1_drl3e"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="1_sik7p"]
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="2_drl3e"]
 

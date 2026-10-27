@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="MapDefinition" format=3]
 
-[ext_resource type="Script" uid="uid://dl15clgdu62il" path="res://run/map/data/map_node_definition.gd" id="1_n3edj"]
-[ext_resource type="Script" uid="uid://ctubqmtrc3o3i" path="res://run/map/data/map_definition.gd" id="2_iyghu"]
-[ext_resource type="Resource" uid="uid://b6u40pjmfvxb2" path="res://battle/data/encounters/cave_crawler_encounter.tres" id="2_je411"]
-[ext_resource type="Resource" uid="uid://bdf55abbobrho" path="res://battle/data/encounters/ruin_guard_encounter.tres" id="3_je411"]
+[ext_resource type="Script" uid="uid://dl15clgdu62il" path="res://run/map/map_node_definition.gd" id="1_n3edj"]
+[ext_resource type="Script" uid="uid://ctubqmtrc3o3i" path="res://run/map/map_definition.gd" id="2_iyghu"]
+[ext_resource type="Resource" uid="uid://b6u40pjmfvxb2" path="res://battle/encounters/data/cave_crawler_encounter.tres" id="2_je411"]
+[ext_resource type="Resource" uid="uid://bdf55abbobrho" path="res://battle/encounters/data/ruin_guard_encounter.tres" id="3_je411"]
 
 [sub_resource type="Resource" id="Resource_je411"]
 script = ExtResource("1_n3edj")

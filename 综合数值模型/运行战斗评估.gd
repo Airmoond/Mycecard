@@ -128,7 +128,7 @@ func _weapon_score()->float:
 	return 1000.0 if damage >= state.enemy_state.current_health else damage / 6.0 + 0.05
 
 func _make_encounter(enemy_id:String, enemy_hp:int)->EncounterDefinition:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/%s_encounter.tres" % enemy_id).duplicate()
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/%s_encounter.tres" % enemy_id).duplicate()
 	var enemy:EnemyDefinition = encounter.enemy_definition.duplicate()
 	enemy.max_health = enemy_hp
 	encounter.enemy_definition = enemy

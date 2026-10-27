@@ -50,7 +50,7 @@ func _card(exhausts:bool = false, power:bool = false, retains:bool = false)->Car
 
 func _state(cards:Array[CardInstance])->BattleState:
 	var player:CombatantState = CombatantState.new();
-	_expect(player.combatant_init_from_definition(load("res://combatants/data/player.tres")), "玩家初始化失败");
+	_expect(player.combatant_init_from_definition(load("res://combatants/players/data/player.tres")), "玩家初始化失败");
 	var enemy:EnemyState = EnemyState.new();
 	_expect(enemy.enemy_state_init(load("res://combatants/enemies/data/cave_crawler.tres")), "敌人初始化失败");
 	var state:BattleState = BattleState.new();
@@ -130,8 +130,8 @@ func _test_lethal_card_is_archived_before_result()->void:
 	var controller:BattleController = page.get_node("battle_controller");
 	var card:CardInstance = _card(true);
 	_expect(controller.start_battle(
-		load("res://battle/data/encounters/cave_crawler_encounter.tres"),
-		load("res://combatants/data/player.tres"),
+		load("res://battle/encounters/data/cave_crawler_encounter.tres"),
+		load("res://combatants/players/data/player.tres"),
 		[card.definition], 50, 50
 	), "测试战斗应成功启动");
 	controller.battle_state.enemy_state.current_health = 1;
@@ -166,8 +166,8 @@ func _energy_controller(definition:CardDefinition)->BattleController:
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
 	_expect(controller.start_battle(
-		load("res://battle/data/encounters/cave_crawler_encounter.tres"),
-		load("res://combatants/data/player.tres"), [definition], 50, 50
+		load("res://battle/encounters/data/cave_crawler_encounter.tres"),
+		load("res://combatants/players/data/player.tres"), [definition], 50, 50
 	), "回能测试战斗应能启动");
 	return controller;
 
@@ -224,13 +224,13 @@ func _opening_definitions(innate_count:int, ordinary_count:int, retains:bool = f
 
 
 func _opening_controller(definitions:Array[CardDefinition], draw_count:int = 5, hand_limit:int = 10)->BattleController:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate();
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.cards_per_turn = draw_count;
 	encounter.max_hand_size = hand_limit;
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), definitions, 50, 50), "起手测试战斗应正常启动");
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), definitions, 50, 50), "起手测试战斗应正常启动");
 	return controller;
 
 
@@ -283,8 +283,8 @@ func _test_short_opening_and_new_battle()->void:
 	_expect(controller.battle_state.hand.size() == 2, "牌组不足起手数量时只抽已有牌");
 	var old_card:CardInstance = controller.battle_state.hand[0];
 	_expect(controller.start_battle(
-		load("res://battle/data/encounters/cave_crawler_encounter.tres"),
-		load("res://combatants/data/player.tres"), definitions, 50, 50
+		load("res://battle/encounters/data/cave_crawler_encounter.tres"),
+		load("res://combatants/players/data/player.tres"), definitions, 50, 50
 	), "同一控制器应能重新开始战斗");
 	var state:BattleState = controller.battle_state;
 	_expect(state.current_turn_number == 1 and state.hand[0].definition.is_innate, "每场新战斗都重新安排固有起手");

@@ -45,11 +45,11 @@ func _power()->CardDefinition:
 
 func _controller(definitions:Array[CardDefinition], encounter:EncounterDefinition = null)->BattleController:
 	if encounter == null:
-		encounter = load("res://battle/data/encounters/cave_crawler_encounter.tres");
+		encounter = load("res://battle/encounters/data/cave_crawler_encounter.tres");
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
 	var controller:BattleController = page.get_node("battle_controller");
-	_expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), definitions, 50, 50), "力量测试战斗应启动");
+	_expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), definitions, 50, 50), "力量测试战斗应启动");
 	return controller;
 
 
@@ -76,7 +76,7 @@ func _test_power_and_lifetime()->void:
 	_expect(controller.player_view.strength_label.text == "力量：4" and controller.player_view.strength_label.visible, "界面应显示力量");
 	controller._on_end_turn_button_pressed();
 	_expect(state.player_state.strength == 4, "力量不随回合衰减");
-	_expect(controller.start_battle(load("res://battle/data/encounters/cave_crawler_encounter.tres"), load("res://combatants/data/player.tres"), [power], 50, 50), "下一场战斗应启动");
+	_expect(controller.start_battle(load("res://battle/encounters/data/cave_crawler_encounter.tres"), load("res://combatants/players/data/player.tres"), [power], 50, 50), "下一场战斗应启动");
 	_expect(controller.battle_state.player_state.strength == 0 and not controller.player_view.strength_label.visible, "新战斗清空力量并隐藏标签");
 	controller.get_parent().queue_free();
 
@@ -156,7 +156,7 @@ func _test_weapon_strength()->void:
 
 
 func _test_enemy_strength_preview()->void:
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate();
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();
 	var action:EnemyActionDefinition = EnemyActionDefinition.new();
 	action.action_id = "test_strength_attack";

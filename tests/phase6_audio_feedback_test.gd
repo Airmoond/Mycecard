@@ -169,12 +169,12 @@ func _test_battle_lifecycle(manager:GameAudioManager)->void:
 	root.add_child(page)
 	var controller:BattleController = page.get_node("battle_controller")
 	controller.configure_services(manager, host)
-	var encounter:EncounterDefinition = load("res://battle/data/encounters/cave_crawler_encounter.tres").duplicate()
+	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate()
 	encounter.enemy_definition = encounter.enemy_definition.duplicate()
 	encounter.enemy_definition.max_health = 1
 	var strike:CardDefinition = load("res://cards/data/strike.tres")
 	var deck:Array[CardDefinition] = [strike, strike, strike]
-	expect(controller.start_battle(encounter, load("res://combatants/data/player.tres"), deck, 50, 50), "反馈生命周期场景应正常启动")
+	expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), deck, 50, 50), "反馈生命周期场景应正常启动")
 	await process_frame
 	var count:int = manager.accepted_sfx.size()
 	controller.battle_finished.connect(func(_win:bool, _hp:int, _maximum:int)->void: page.queue_free())

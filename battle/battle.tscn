@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://hh8u8a5llyha"]
 
-[ext_resource type="Texture2D" path="res://assets/ui/arena-background.png" id="1_background"]
+[ext_resource type="Texture2D" uid="uid://d0daen86csgvt" path="res://assets/ui/arena-background.png" id="1_background"]
 [ext_resource type="PackedScene" uid="uid://d1fvxikrg0afv" path="res://combatants/combatant_view.tscn" id="2_actor"]
 [ext_resource type="Script" uid="uid://dvs15nk2hx2pk" path="res://battle/battle_controller.gd" id="3_controller"]
-[ext_resource type="Script" path="res://battle/view/battle_view.gd" id="4_layout"]
-[ext_resource type="Script" path="res://battle/view/hand_view.gd" id="5_hand"]
+[ext_resource type="Script" uid="uid://b113dbgfmj88a" path="res://battle/view/battle_view.gd" id="4_layout"]
+[ext_resource type="Script" uid="uid://do36m2yfrs56f" path="res://battle/view/hand_view.gd" id="5_hand"]
 [ext_resource type="Theme" path="res://ui/themes/fantasy_theme.tres" id="6_theme"]
 
 [sub_resource type="StyleBoxFlat" id="Table"]
@@ -23,10 +23,14 @@ border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.61, 0.48, 0.29, 1)
-corner_radius_bottom_left = 25
 corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
 
 [sub_resource type="StyleBoxFlat" id="Weapon"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
 bg_color = Color(0.23, 0.17, 0.11, 0.93)
 border_width_left = 2
 border_width_top = 2
@@ -35,12 +39,8 @@ border_width_bottom = 2
 border_color = Color(0.56, 0.46, 0.3, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
-corner_radius_bottom_left = 8
 corner_radius_bottom_right = 8
-content_margin_left = 12.0
-content_margin_right = 12.0
-content_margin_top = 8.0
-content_margin_bottom = 8.0
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="Energy"]
 bg_color = Color(0.07, 0.35, 0.53, 1)
@@ -51,20 +51,21 @@ border_width_bottom = 5
 border_color = Color(0.67, 0.58, 0.39, 1)
 corner_radius_top_left = 70
 corner_radius_top_right = 70
-corner_radius_bottom_left = 70
 corner_radius_bottom_right = 70
+corner_radius_bottom_left = 70
 shadow_color = Color(0.01, 0.05, 0.1, 0.65)
 shadow_size = 9
 
 [node name="battle" type="Control" unique_id=1249455180]
+clip_contents = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("4_layout")
 theme = ExtResource("6_theme")
+script = ExtResource("4_layout")
 
 [node name="background" type="TextureRect" parent="." unique_id=1832210687]
 layout_mode = 1
@@ -79,7 +80,7 @@ expand_mode = 1
 stretch_mode = 6
 metadata/_edit_lock_ = true
 
-[node name="shade" type="ColorRect" parent="."]
+[node name="shade" type="ColorRect" parent="." unique_id=246513260]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -90,12 +91,13 @@ mouse_filter = 2
 color = Color(0.015, 0.027, 0.032, 0.2)
 
 [node name="main_layout" type="Control" parent="." unique_id=1451292022]
-layout_mode = 0
+anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
+scale = Vector2(0.6666667, 0.6666667)
 mouse_filter = 2
 
-[node name="table" type="Panel" parent="main_layout"]
+[node name="table" type="Panel" parent="main_layout" unique_id=950988871]
 layout_mode = 0
 offset_left = -80.0
 offset_top = 822.0
@@ -104,40 +106,39 @@ offset_bottom = 1130.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Table")
 
-[node name="title" type="Label" parent="main_layout"]
-theme_type_variation = &"TitleLabel"
+[node name="title" type="Label" parent="main_layout" unique_id=455495643]
 layout_mode = 0
 offset_left = 660.0
 offset_top = 22.0
 offset_right = 1260.0
 offset_bottom = 80.0
-mouse_filter = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("Title")
 text = "◆  秘境 · 战斗  ◆"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="round_label" type="Label" parent="main_layout"]
+[node name="round_label" type="Label" parent="main_layout" unique_id=308034493]
 layout_mode = 0
 offset_left = 710.0
 offset_top = 90.0
 offset_right = 1210.0
 offset_bottom = 130.0
-mouse_filter = 2
 theme_override_font_sizes/font_size = 21
 text = "准备战斗"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="player_area" type="Control" parent="main_layout" unique_id=1509184168]
-layout_mode = 0
+anchors_preset = 0
 offset_right = 960.0
 offset_bottom = 820.0
 mouse_filter = 2
 
 [node name="player_view" parent="main_layout/player_area" unique_id=1060699741 instance=ExtResource("2_actor")]
 layout_mode = 0
+anchors_preset = 0
 offset_left = 245.0
 offset_top = 170.0
 offset_right = 675.0
@@ -149,33 +150,33 @@ offset_left = 47.0
 offset_top = 738.0
 offset_right = 327.0
 offset_bottom = 815.0
-mouse_filter = 2
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("Weapon")
 text = "武器：未装备"
 
 [node name="enemy_area" type="Control" parent="main_layout" unique_id=1153101793]
-layout_mode = 0
+anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 820.0
 mouse_filter = 2
 
 [node name="enemy_view" parent="main_layout/enemy_area" unique_id=1860343574 instance=ExtResource("2_actor")]
 layout_mode = 0
+anchors_preset = 0
 offset_left = 1245.0
 offset_top = 170.0
 offset_right = 1675.0
 offset_bottom = 730.0
 
 [node name="battle_info_area" type="Control" parent="main_layout" unique_id=1197807532]
-layout_mode = 0
+anchors_preset = 0
 offset_left = 30.0
 offset_top = 833.0
 offset_right = 330.0
 offset_bottom = 1065.0
 mouse_filter = 2
 
-[node name="energy_gem" type="Panel" parent="main_layout/battle_info_area"]
+[node name="energy_gem" type="Panel" parent="main_layout/battle_info_area" unique_id=878686196]
 layout_mode = 0
 offset_left = 25.0
 offset_right = 225.0
@@ -189,7 +190,6 @@ offset_left = 13.0
 offset_top = 31.0
 offset_right = 237.0
 offset_bottom = 84.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.91, 0.98, 1, 1)
 theme_override_font_sizes/font_size = 24
 text = "能量：0 / 0"
@@ -197,36 +197,35 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="draw_pile_label" type="Button" parent="main_layout/battle_info_area" unique_id=999817448]
-theme_type_variation = &"SmallIconButton"
 layout_mode = 0
 offset_top = 151.0
 offset_right = 98.0
 offset_bottom = 215.0
+theme_type_variation = &"SmallIconButton"
 theme_override_font_sizes/font_size = 15
 text = "抽牌堆：0"
 
 [node name="discard_pile_label" type="Button" parent="main_layout/battle_info_area" unique_id=1834091141]
-theme_type_variation = &"SmallIconButton"
 layout_mode = 0
 offset_left = 102.0
 offset_top = 151.0
 offset_right = 200.0
 offset_bottom = 215.0
+theme_type_variation = &"SmallIconButton"
 theme_override_font_sizes/font_size = 15
 text = "弃牌堆：0"
 
 [node name="exhaust_pile_label" type="Button" parent="main_layout/battle_info_area" unique_id=1443763427]
-theme_type_variation = &"SmallIconButton"
 layout_mode = 0
 offset_left = 204.0
 offset_top = 151.0
 offset_right = 310.0
 offset_bottom = 215.0
+theme_type_variation = &"SmallIconButton"
 theme_override_font_sizes/font_size = 15
 text = "消耗牌：0"
 
 [node name="hand_area" type="HBoxContainer" parent="main_layout" unique_id=1888169406]
-script = ExtResource("5_hand")
 layout_mode = 0
 offset_left = 350.0
 offset_top = 818.0
@@ -235,8 +234,9 @@ offset_bottom = 1070.0
 mouse_filter = 2
 theme_override_constants/separation = 10
 alignment = 1
+script = ExtResource("5_hand")
 
-[node name="collection_button" type="Button" parent="main_layout"]
+[node name="collection_button" type="Button" parent="main_layout" unique_id=265461779]
 layout_mode = 0
 offset_left = 1690.0
 offset_top = 661.0
@@ -246,12 +246,12 @@ theme_override_font_sizes/font_size = 18
 text = "查看藏品"
 
 [node name="end_turn_button" type="Button" parent="main_layout" unique_id=903653378]
-theme_type_variation = &"ProminentButton"
 layout_mode = 0
 offset_left = 1610.0
 offset_top = 740.0
 offset_right = 1870.0
 offset_bottom = 805.0
+theme_type_variation = &"ProminentButton"
 theme_override_font_sizes/font_size = 27
 text = "结束回合"
 

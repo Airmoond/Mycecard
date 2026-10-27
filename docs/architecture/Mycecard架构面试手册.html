@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Mycecard · 架构与面试手册</title>
+<style>
+:root{--paper:#f6f5ef;--white:#fffefa;--ink:#182d2a;--muted:#66736e;--line:#dcded4;--green:#236952;--pale:#e5eee4;--gold:#ac7432;--blue:#386c91;--purple:#765b8b;--red:#a84e3e;--radius:14px;--mono:Consolas,"Cascadia Code",monospace;--sans:"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:32px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.8 var(--sans)}a{color:var(--green);text-decoration-thickness:1px;text-underline-offset:4px}button,input{font:inherit}button,a,input,summary{touch-action:manipulation}button{cursor:pointer}button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid #d89c41;outline-offset:4px}button{border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink);padding:9px 16px}button:hover{border-color:var(--green);background:#edf2e8}button:disabled{cursor:default;opacity:.45}h1,h2,h3,h4,p{margin:0}p+p{margin-top:12px}h1{font-size:clamp(38px,4.7vw,68px);line-height:1.16;letter-spacing:-2px;font-weight:750}h2{font-size:clamp(28px,3vw,37px);line-height:1.35;letter-spacing:-1px}h3{font-size:21px;line-height:1.5;margin:28px 0 12px}h4{font-size:17px;margin:16px 0 6px}ul,ol{padding-left:22px}li{padding-left:3px;margin:7px 0}strong{font-weight:700}code{font-family:var(--mono);font-size:.88em;overflow-wrap:anywhere;background:#eaece4;border-radius:4px;padding:2px 5px}pre{overflow:auto;white-space:pre;font:13px/1.75 var(--mono);background:#1d342f;color:#e3ede3;border-radius:10px;padding:20px;margin:16px 0}pre code{background:none;padding:0;font-size:inherit;color:inherit}small,.small{font-size:13px;line-height:1.7}.muted{color:var(--muted)}.eyebrow{font:700 12px/1.5 var(--mono);letter-spacing:2px;text-transform:uppercase;color:var(--green)}.skip{position:fixed;left:16px;top:-80px;background:var(--ink);color:white;z-index:100;padding:12px}.skip:focus{top:12px}
+.sidebar{width:256px;position:fixed;inset:0 auto 0 0;border-right:1px solid var(--line);padding:34px 24px 24px;background:var(--paper);display:flex;flex-direction:column;z-index:30}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink);font-size:23px;font-weight:750;letter-spacing:-.8px}.brandmark{width:31px;height:36px;background:var(--green);border-radius:8px 8px 14px 4px;display:grid;place-items:center;color:#f2e2af;font:700 21px Georgia;transform:rotate(-7deg)}.side-note{font-size:12px;color:var(--muted);margin:12px 0 27px}.toc{display:grid;gap:3px;overflow:auto}.toc a{display:flex;gap:12px;font-size:13px;text-decoration:none;padding:8px 10px;color:var(--muted);border-radius:6px;line-height:1.6}.toc a span{font:12px/1.9 var(--mono);opacity:.65}.toc a:hover,.toc a.active{background:var(--pale);color:var(--green)}.side-foot{margin-top:auto;padding-top:20px;font-size:12px;color:var(--muted)}.progress-track{height:3px;background:var(--line);margin:12px 0}.progress-track i{display:block;height:100%;width:0;background:var(--green)}.mobile-bar{display:none}.shell{margin-left:256px}.topbar{max-width:1160px;margin:auto;padding:27px 54px 0;display:flex;align-items:center;justify-content:space-between;gap:18px;color:var(--muted);font-size:12px}.topbar button{padding:6px 12px;font-size:12px}.topbar .dot{width:6px;height:6px;background:var(--green);display:inline-block;border-radius:50%;margin-right:6px}.content{max-width:1160px;margin:auto;padding:0 54px 80px}.hero{padding:64px 0 44px;border-bottom:1px solid var(--line)}.hero .eyebrow{margin-bottom:22px}.hero h1 em{font-style:normal;color:var(--green)}.hero .lead{max-width:690px;margin-top:24px;font-size:18px;line-height:1.9;color:#54655b}.hero-bottom{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;margin-top:30px;font-size:12px;color:var(--muted)}.primary{display:inline-block;border:1px solid var(--green);background:var(--green);color:#fff;text-decoration:none;border-radius:7px;padding:10px 20px;font-size:14px}.primary:hover{background:#1b503f;color:white}.badge{font:12px var(--mono);padding:5px 8px;border:1px solid var(--line);border-radius:5px}.section{padding:48px 0;border-bottom:1px solid var(--line)}.section-head{display:flex;align-items:flex-start;gap:19px;margin-bottom:22px}.section-no{font:14px var(--mono);padding-top:10px;color:var(--gold)}.section-head .eyebrow{margin-bottom:7px}.intro{font-size:17px;color:#53675d;max-width:780px;margin-bottom:26px}.two{display:grid;grid-template-columns:1fr 1fr;gap:24px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.note{border-left:3px solid var(--green);padding:15px 20px;background:var(--pale);border-radius:0 9px 9px 0;margin:20px 0}.note.gold{background:#f3ecdd;border-color:var(--gold)}.note.red{background:#f4e9e3;border-color:var(--red)}.note p{font-size:14px}.note strong{color:var(--green)}.note.gold strong{color:#875921}.note.red strong{color:var(--red)}.panel{padding:23px;border:1px solid var(--line);border-radius:var(--radius);background:var(--white)}.panel h3{margin:0 0 10px}.panel p{font-size:14px}.caption{font-size:12px;color:var(--muted);margin:12px 0}.source{font-size:12px;color:var(--muted);margin-top:18px}.source a{font-family:var(--mono);margin-right:10px;overflow-wrap:anywhere}.list-plain{list-style:none;padding:0}.term{display:block;font:12px var(--mono);color:var(--green);margin-bottom:6px}.path-line{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:22px 0}.path-line span{background:#e9ece3;padding:7px 12px;border-radius:5px;font-size:13px}.path-line b{color:#8f9d91;font-weight:400}.path-line .focus{color:white;background:var(--green)}
+.layer-layout{display:grid;grid-template-columns:1.05fr 1fr;gap:22px;align-items:start}.layer-stack{display:grid;gap:7px}.layer-btn{text-align:left;padding:16px 18px;display:flex;align-items:center;gap:15px;border-left:4px solid var(--layer);border-radius:8px}.layer-btn[aria-pressed=true]{background:var(--ink);color:white;border-color:var(--ink);border-left-color:var(--layer)}.layer-btn .n{font:12px var(--mono);opacity:.6}.layer-btn strong{display:block;font-size:16px}.layer-btn small{display:block;font-size:11px;opacity:.8;font-family:var(--mono)}.layer-btn .arrow{margin-left:auto;font-size:20px;opacity:.5}.layer-detail{min-height:385px;padding:26px;background:var(--white);border:1px solid var(--line);border-radius:12px}.layer-detail h3{margin:4px 0 17px}.layer-detail p,.layer-detail li{font-size:14px}.layer-detail h4{margin-top:20px;font-size:13px;color:var(--green)}.rule-line{font:12px var(--mono);color:var(--muted);padding:6px 18px}.legend{display:flex;gap:20px;flex-wrap:wrap;margin:15px 0;font-size:12px;color:var(--muted)}.legend i{display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:2px;background:var(--c)}.tree{font-family:var(--mono);font-size:13px;line-height:1.9;white-space:pre;overflow:auto;background:#1d342f;color:#e0e9dd;padding:25px;border-radius:12px}.tree em{font-style:normal;color:#b7cfa2}.tree .dim{color:#9fb1a6}.life-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}.table{border-collapse:collapse;width:100%;font-size:13px;text-align:left;background:var(--white)}.table th{font-weight:600;background:#eaece3;color:#43594d;padding:13px 16px;white-space:nowrap}.table td{padding:13px 16px;vertical-align:top;border-top:1px solid var(--line)}.table code{background:transparent;padding:0;font-size:12px}.table ul{margin:0;padding-left:16px}.compare{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}.compare>div{padding:22px;background:var(--white)}.compare h4{margin-top:0}.compare p{font-size:14px}.compare .label{font:11px var(--mono);color:var(--muted);letter-spacing:1px}.flow-rail{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:22px 0}.flow-rail>div{position:relative;padding:15px 9px;text-align:center;background:var(--pale);border-radius:8px;font-size:13px}.flow-rail>div:not(:last-child):after{content:'›';position:absolute;right:-8px;top:24px;z-index:1;color:var(--green)}.flow-rail small{display:block;color:var(--muted);font-size:11px}.route-map{padding:25px 20px;border:1px solid var(--line);border-radius:12px;background:var(--white)}.route-grid{display:grid;grid-template-columns:.65fr repeat(3,1fr) .65fr;grid-template-rows:repeat(3,auto);gap:9px 15px;align-items:center;font-size:13px;text-align:center}.route-node{background:#e7ece2;border-radius:6px;padding:12px 5px;position:relative}.route-node.event{background:#efe3cd;color:#7e5729}.route-node:not(.endpoint):after{content:'→';position:absolute;right:-14px;color:#9eaa9a}.route-node.endpoint{background:var(--ink);color:#f9edc9;grid-row:1/4;align-self:stretch;display:grid;align-content:center}.route-map .caption{margin-bottom:0}.tabs{display:flex;flex-wrap:wrap;gap:7px;margin:20px 0}.tabs button[aria-selected=true]{background:var(--green);border-color:var(--green);color:white}.trace{border:1px solid var(--line);border-radius:12px;background:var(--white);overflow:hidden}.trace-head{display:flex;justify-content:space-between;align-items:center;padding:17px 23px;background:#eaece3;gap:12px}.trace-head strong{font-size:14px}.trace-body{padding:25px}.trace-progress{display:flex;gap:5px;margin-bottom:25px}.trace-progress button{height:5px;flex:1;min-width:0;padding:0;background:var(--line);border:0;border-radius:2px}.trace-progress button.done{background:var(--green)}.trace-role{font:12px var(--mono);color:var(--green)}.trace-body h3{margin:8px 0 12px;font-size:24px}.trace-body p{font-size:15px;min-height:54px}.trace-meta{background:var(--paper);border-radius:8px;padding:14px 17px;margin-top:20px;font-size:13px}.trace-controls{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:14px}.trace-controls a{font-size:12px;font-family:var(--mono)}.trace-count{font:12px var(--mono);color:var(--muted)}.numbered{counter-reset:steps;list-style:none;padding:0}.numbered li{position:relative;padding:0 0 17px 44px;margin:0;border-left:1px solid var(--line);margin-left:13px}.numbered li:before{counter-increment:steps;content:counter(steps);position:absolute;left:-14px;top:0;width:28px;height:28px;background:var(--paper);border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;font:12px var(--mono);color:var(--green)}.numbered li:last-child{border:0;padding-bottom:0}.numbered p{font-size:14px;color:var(--muted)}.formula{background:#1d342f;color:#edf0df;padding:25px;border-radius:12px}.formula .eyebrow{color:#b2c79d}.formula .math{font:17px/1.9 var(--mono);margin:13px 0;overflow-wrap:anywhere}.formula p{font-size:13px;color:#bbcdbf}.calc{display:grid;grid-template-columns:1fr 1fr;gap:23px;margin-top:20px}.calc-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.calc label{font-size:12px;color:var(--muted)}.calc input[type=number]{display:block;width:100%;border:1px solid var(--line);background:var(--white);padding:8px 10px;border-radius:6px;margin-top:5px;color:var(--ink)}.checks{grid-column:1/-1;display:flex;gap:18px}.checks label{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--ink)}.checks input{accent-color:var(--green)}.calc-output{background:var(--pale);padding:20px;border-radius:10px}.calc-values{display:flex;gap:30px}.calc-values strong{font:700 35px/1.3 var(--mono);color:var(--green);display:block}.calc-values small{font-size:12px;color:var(--muted)}.zones{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0}.zones span{border:1px solid var(--line);background:var(--white);font-size:13px;padding:8px 12px;border-radius:5px}.zones .resolve{border-color:var(--gold);background:#f2e8d6}.event-lane{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;margin:20px 0}.event-lane .box{padding:24px;background:var(--pale);border-radius:10px}.event-lane .box:last-child{background:#e9e5ee}.event-lane .box p{font-size:13px;margin-top:8px}.event-lane .connector{text-align:center;font-size:25px;color:var(--muted)}.event-lane code{display:inline-block;margin-top:9px}.pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.pills span{font-size:12px;padding:3px 9px;border-radius:4px;border:1px solid var(--line);background:var(--white)}details{border-top:1px solid var(--line);padding:15px 0}summary{cursor:pointer;list-style:none;font-size:16px;font-weight:650;position:relative;padding-right:32px}summary:after{content:'+';position:absolute;right:5px;color:var(--green);font:22px var(--mono)}details[open] summary:after{content:'−'}details>div{padding:14px 0 2px;font-size:14px;max-width:850px}details>div p{margin:0 0 10px}summary::-webkit-details-marker{display:none}.qa-tag{display:inline-block;font-size:10px;vertical-align:2px;margin-right:9px;padding:2px 6px;color:var(--green);background:var(--pale);border-radius:3px;font-weight:500}.answer{font-size:17px;line-height:2;max-width:830px}.answer em{font-style:normal;color:var(--green);font-weight:700}.speech{position:relative;padding:25px 28px;border-left:3px solid var(--gold);background:var(--white);margin-top:15px}.speech .answer{font-size:16px}.speech .small{margin-top:15px;color:var(--muted)}.timerbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:15px 0}.timer{font:24px var(--mono);color:var(--green);min-width:75px}.qa-tools{display:flex;justify-content:space-between;align-items:center;margin:25px 0 12px;gap:14px}.qa-tools input{border:1px solid var(--line);border-radius:7px;padding:9px 12px;background:var(--white);min-width:0;flex:1;max-width:390px}.qa-tools button{font-size:13px}.quiz{margin-top:25px;border:1px solid var(--line);border-radius:12px;overflow:hidden}.quiz-header{display:flex;justify-content:space-between;gap:15px;align-items:center;background:var(--ink);color:#e7ecd8;padding:18px 23px}.quiz-header strong{font-size:15px}.quiz-header span{font:13px var(--mono);color:#b5caac}.quiz-item{padding:23px;background:var(--white);border-top:1px solid var(--line)}.quiz-item h4{margin:0 0 15px}.quiz-options{display:grid;gap:7px}.quiz-options button{text-align:left;font-size:14px;padding:11px 14px}.quiz-options button.chosen{border-color:var(--red);background:#f6e7e1;color:#883f32}.quiz-options button.correct{border-color:var(--green);background:var(--pale);color:var(--green)}.quiz-feedback{font-size:13px;margin-top:13px;color:#52675a}.quiz-options button:disabled{opacity:1}.reading-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 30px}.reading{border-top:1px solid var(--line);padding:15px 0}.reading a{font-size:14px;font-weight:650}.reading p{font-size:12px;color:var(--muted);margin-top:4px}.closing{padding:36px 0 0;display:flex;justify-content:space-between;gap:20px;font-size:12px;color:var(--muted)}.back-top{position:fixed;right:24px;bottom:22px;border-radius:50%;height:43px;width:43px;padding:0;background:var(--ink);color:white;z-index:10}.print-only{display:none}[hidden]{display:none!important}
+@media(min-width:1550px){.content,.topbar{max-width:1240px}.sidebar{width:276px}.shell{margin-left:276px}.toc a{font-size:14px}.content{padding-left:66px;padding-right:66px}}
+@media(max-width:1100px){.sidebar{width:218px;padding:30px 17px}.shell{margin-left:218px}.content{padding:0 30px 60px}.topbar{padding-left:30px;padding-right:30px}.layer-layout{grid-template-columns:1fr}.layer-detail{min-height:0}.layer-stack{grid-template-columns:1fr 1fr}.layer-stack .rule-line{grid-column:1/-1}.three{grid-template-columns:1fr}.flow-rail{grid-template-columns:repeat(3,1fr)}.flow-rail>div:nth-child(3):after{content:none}.hero{padding-top:48px}.hero h1{font-size:49px}}
+@media(max-width:760px){html{scroll-padding-top:76px}body{font-size:15px}.sidebar{display:none;top:58px;width:100%;height:calc(100dvh - 58px);border:0;padding:22px}.sidebar.open{display:flex}.sidebar .brand,.side-note{display:none}.toc a{font-size:15px;padding:10px}.mobile-bar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;padding:10px 20px;height:58px;background:var(--paper);border-bottom:1px solid var(--line);z-index:40}.mobile-bar .brand{font-size:20px}.mobile-bar .brandmark{width:24px;height:28px;font-size:17px}.mobile-bar button{font-size:13px;padding:5px 12px}.shell{margin:0}.content{padding:0 20px 45px}.topbar{padding:22px 20px 0;font-size:10px}.topbar button{font-size:11px}.hero{padding:40px 0 30px}.hero h1{font-size:43px;letter-spacing:-1.7px}.hero .lead{font-size:16px}.hero-bottom{gap:12px;font-size:11px}.section{padding:37px 0}.section-head{gap:12px}.section-no{font-size:12px}.section h2{font-size:27px}.intro{font-size:15px}.two,.compare,.calc,.reading-grid{grid-template-columns:1fr}.layer-stack{grid-template-columns:1fr}.layer-btn{padding:13px 15px}.three{gap:12px}.panel{padding:19px}.flow-rail{gap:7px}.flow-rail>div{font-size:11px;padding:13px 4px}.route-map{padding:18px 10px}.route-grid{gap:8px 10px;font-size:10px;grid-template-columns:.6fr repeat(3,1fr) .6fr}.route-node{padding:13px 2px}.route-node:after{right:-10px!important}.trace-body{padding:19px}.trace-head{padding:13px 19px}.trace-body h3{font-size:21px}.trace-body p{min-height:0;font-size:14px}.trace-controls{flex-wrap:wrap}.trace-controls a{order:3;width:100%}.event-lane{grid-template-columns:1fr}.event-lane .connector{transform:rotate(90deg);height:40px}.formula .math{font-size:14px}.table{min-width:630px}.speech{padding:20px}.qa-tools{flex-wrap:wrap}.qa-tools input{max-width:none;width:100%;flex-basis:100%}.closing{display:block}.back-top{display:none!important}.tree{font-size:11px;padding:18px}.hero-bottom .badge{font-size:10px}.quiz-item{padding:18px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+@media print{@page{size:A4;margin:17mm 15mm}.sidebar,.topbar,.mobile-bar,.back-top,.no-print,.tabs,.trace-controls,.trace-progress,.qa-tools,.timerbar,.quiz{display:none!important}.shell{margin:0}.content{max-width:none;padding:0}body{font-size:10pt;line-height:1.65;background:white;color:#172d27}.hero{padding:0 0 20px}.hero h1{font-size:34pt}.hero .lead{font-size:12pt}.hero-bottom{margin-top:16px}.section{padding:25px 0;break-inside:auto}.section-head{display:block;break-inside:avoid;break-after:avoid}.section-no{float:left;padding-right:12px}.section-head>div{padding-left:24px}h2{font-size:21pt}h3{font-size:14pt;break-after:avoid}.intro{font-size:11pt}.panel,.note,.formula,.trace,.speech,.route-map{break-inside:avoid}.layer-layout,.two,.calc{grid-template-columns:1fr 1fr}.layer-stack{grid-template-columns:1fr}.layer-detail{min-height:0}.layer-btn{padding:9px 12px}.print-only{display:block}.trace{display:none}details{padding:10px 0}details>div{display:block!important}details::details-content{content-visibility:visible!important;height:auto!important}summary:after{display:none}.source{font-size:8pt}a{color:inherit;text-decoration:none}pre,.tree{white-space:pre-wrap;font-size:8pt}.life-wrap{overflow:visible}.life-wrap svg{min-width:0!important}.table{min-width:0;font-size:9pt}.table th,.table td{padding:8px}code{font-size:8pt}.reading-grid{grid-template-columns:1fr 1fr}#sources .source,.closing,#speech-panel{display:none}.formula{color:#172d27;background:#eef1e7}.formula p{color:#45584b}.formula .eyebrow{color:#236952}.calc input{border:0}.checks input{accent-color:#236952}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳至正文</a>
+<header class="mobile-bar"><a class="brand" href="#overview"><span class="brandmark">M</span>Mycecard</a><button id="menu-toggle" aria-expanded="false" aria-controls="sidebar">章节目录</button></header>
+<aside class="sidebar" id="sidebar" aria-label="手册导航">
+ <a class="brand" href="#overview"><span class="brandmark">M</span>Mycecard</a>
+ <p class="side-note">ARCHITECTURE FIELD GUIDE<br>项目理解 · 代码导读 · 面试表达</p>
+ <nav class="toc">
+  <a href="#overview" class="active"><span>00</span>先建立完整心智模型</a>
+  <a href="#layers"><span>01</span>分层与依赖方向</a>
+  <a href="#ownership"><span>02</span>对象、数据与生命周期</a>
+  <a href="#run"><span>03</span>一局冒险怎样推进</a>
+  <a href="#battle"><span>04</span>一次出牌怎样结算</a>
+  <a href="#content"><span>05</span>内容配置与不期而遇</a>
+  <a href="#reliability"><span>06</span>切页、防重与失败恢复</a>
+  <a href="#presentation"><span>07</span>界面、动画与声音</a>
+  <a href="#engineering"><span>08</span>验证、取舍与演进</a>
+  <a href="#interview"><span>09</span>面试讲述与深入追问</a>
+  <a href="#practice"><span>10</span>情境自测</a>
+  <a href="#sources"><span>11</span>源码阅读路线</a>
+ </nav>
+ <div class="side-foot"><span id="read-label">阅读进度 0%</span><div class="progress-track"><i id="read-progress"></i></div>基于本地 v0.6.1 实现<br>核对日期 · 2026.10.21</div>
+</aside>
+<div class="shell">
+<div class="topbar"><span><i class="dot"></i>工程实况 / GODOT 4.6.1 / GDSCRIPT</span><button id="print-button" title="打印时展开全部面试问答">打印 / 保存 PDF</button></div>
+<main class="content" id="main">
+<section class="hero" id="overview">
+ <p class="eyebrow">00 / Start with the system</p>
+ <h1>把一款卡牌游戏，<br>讲成<em>清楚的工程。</em></h1>
+ <p class="lead">从一局冒险到一次出牌，理解 Mycecard 的状态归属、规则边界和页面生命周期。面试时不背类名，讲清楚：<strong>为什么这样拆，解决了什么问题，又付出了什么代价。</strong></p>
+ <div class="hero-bottom"><a class="primary" href="#layers">从架构总览开始 ↓</a><span class="badge">v0.6.1 · 本地单局冒险</span><span>单文件 · 离线可用 · 支持打印</span></div>
+</section>
+<div class="section">
+ <p class="eyebrow">一句话抓住项目</p>
+ <p class="answer" style="margin-top:14px">Mycecard 是一个 Godot 回合制卡牌构筑游戏。工程以领域组织代码，分离<em>静态内容、整局规则、单场战斗、页面编排和视听表现</em>。核心规则不依赖场景树，因此游戏界面与数值实验可以调用同一套战斗实现。</p>
+ <div class="path-line" aria-label="核心信息流"><span>玩家意图</span><b>→</b><span>流程 / 控制器</span><b>→</b><span class="focus">Session 裁决</span><b>→</b><span>State 改变</span><b>→</b><span>视图与表现消费结果</span></div>
+ <div class="three">
+  <div><span class="term">WHAT / 产品闭环</span><p class="small">开局构筑 → 选藏品 → 三路择一 → 两战斗 + 一不期而遇 → 最终 Boss → 结算。普通战斗胜利后，三选一卡牌，也可跳过。</p></div>
+  <div><span class="term">WHY / 重构主线</span><p class="small">把“按按钮、算数值、切页面、播声音”从同一处拆开。新卡牌尽量配资源，旧页面不能重复提交，动画快慢不能改变伤害。</p></div>
+  <div><span class="term">HOW / 学习顺序</span><p class="small">先读 01–04 理解主干，再读 05–08 理解边界；最后用 09 的讲述练习和 10 的情境题验证自己能否解释原因。</p></div>
+ </div>
+ <div class="note gold"><strong>先认清三个“结构”</strong><p>目录结构回答“文件在哪”；运行时对象关系回答“谁持有谁”；调用链回答“事情怎么发生”。三者有关联，但不能拿文件夹名称代替架构解释。</p></div>
+</div>
+
+<section class="section" id="layers">
+ <div class="section-head"><span class="section-no">01</span><div><p class="eyebrow">Responsibilities & dependencies</p><h2>五层职责，两个规则中心</h2></div></div>
+ <p class="intro">整局由 RunSession 管，单场由 BattleSession 管。外层负责把输入交进去，把结果展示出来；规则层不反向操作按钮、场景、动画或音频。</p>
+ <div class="layer-layout">
+  <div class="layer-stack" aria-label="点击查看层级职责">
+   <button class="layer-btn" data-layer="view" aria-pressed="false" style="--layer:#765b8b"><span class="n">A</span><span><strong>视图与表现</strong><small>View · HandView · Presentation</small></span><span class="arrow">↗</span></button>
+   <button class="layer-btn" data-layer="flow" aria-pressed="false" style="--layer:#386c91"><span class="n">B</span><span><strong>流程与适配</strong><small>GameFlowController · BattleController</small></span><span class="arrow">↗</span></button>
+   <button class="layer-btn" data-layer="rules" aria-pressed="true" style="--layer:#236952"><span class="n">C</span><span><strong>规则与状态</strong><small>RunSession / State · BattleSession / State</small></span><span class="arrow">↗</span></button>
+   <button class="layer-btn" data-layer="content" aria-pressed="false" style="--layer:#ac7432"><span class="n">D</span><span><strong>内容定义</strong><small>Resource · .tres · Definition</small></span><span class="arrow">↗</span></button>
+   <div class="rule-line">↑ 上层读取 / 调用下层；结果经返回值和信号传出</div>
+   <button class="layer-btn" data-layer="services" aria-pressed="false" style="--layer:#849279"><span class="n">E</span><span><strong>应用装配与公共服务</strong><small>AppRoot · Router · Overlay · Audio</small></span><span class="arrow">↗</span></button>
+  </div>
+  <div class="layer-detail" id="layer-detail" aria-live="polite"></div>
+ </div>
+ <noscript><div class="note">规则与状态负责合法性、数值、回合与阶段；流程层连接页面和规则；内容 Resource 提供静态配置；视图负责显示与输入；AppRoot 装配音频、导航和浮层服务。下方章节包含完整说明，关闭 JavaScript 不影响正文阅读。</div></noscript>
+ <h3>把关键对象接起来：谁调用谁？</h3>
+ <div class="life-wrap" style="background:var(--white);padding:15px">
+ <svg viewBox="0 0 980 400" role="img" aria-labelledby="architecture-title architecture-desc" style="display:block;width:100%;min-width:660px;font-family:var(--sans)">
+  <title id="architecture-title">Mycecard 核心对象协作图</title><desc id="architecture-desc">GameFlowController 调用 RunSession、PageRouter 和 BattleController；PageRouter 管页面，BattleController 调用 BattleSession 并连接 BattleView 与 BattlePresentation；表现调用应用音频和浮层服务。规则对象不依赖视图或服务。</desc>
+  <defs><marker id="arrowhead" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7" fill="none" stroke="#7e9486" stroke-width="1.3"/></marker></defs>
+  <g fill="none" stroke="#8fa394" stroke-width="1.5" marker-end="url(#arrowhead)">
+   <path d="M215 176 H251 V48 H292"/><path d="M215 176 H292"/><path d="M215 176 H251 V300 H292"/>
+   <path d="M505 176 H566"/><path d="M505 300 H566"/>
+   <path d="M505 300 H535 V220 H566"/><path d="M505 300 H535 V365 H566"/>
+   <path d="M780 365 H815 V300 H842"/>
+  </g>
+  <rect x="7" y="137" width="208" height="78" rx="9" fill="#1d342f"/><text x="111" y="170" text-anchor="middle" fill="#fffefa" font-size="16" font-weight="650">GameFlowController</text><text x="111" y="194" text-anchor="middle" fill="#b8cdb5" font-size="12">页面意图 → 整局命令 → 展示</text>
+  <rect x="292" y="10" width="278" height="78" rx="9" fill="#e5eee4"/><text x="431" y="42" text-anchor="middle" fill="#236952" font-size="17" font-weight="650">RunSession / RunState</text><text x="431" y="67" text-anchor="middle" fill="#53675d" font-size="12">整局规则 · 阶段 · 牌组 · 候选</text>
+  <rect x="292" y="142" width="213" height="68" rx="9" fill="#e4edf2"/><text x="398" y="171" text-anchor="middle" fill="#386c91" font-size="17" font-weight="650">PageRouter</text><text x="398" y="193" text-anchor="middle" fill="#53675d" font-size="12">prepare / commit</text>
+  <rect x="566" y="142" width="214" height="47" rx="8" fill="#f0edf3"/><text x="673" y="171" text-anchor="middle" fill="#765b8b" font-size="15">菜单 / 地图 / 奖励等页面</text>
+  <rect x="292" y="267" width="213" height="68" rx="9" fill="#e4edf2"/><text x="398" y="296" text-anchor="middle" fill="#386c91" font-size="17" font-weight="650">BattleController</text><text x="398" y="319" text-anchor="middle" fill="#53675d" font-size="12">输入 · 实际事件 · 结果适配</text>
+  <rect x="566" y="199" width="214" height="43" rx="8" fill="#f0edf3"/><text x="673" y="226" text-anchor="middle" fill="#765b8b" font-size="15">BattleView / HandView</text>
+  <rect x="566" y="267" width="214" height="68" rx="9" fill="#e5eee4"/><text x="673" y="296" text-anchor="middle" fill="#236952" font-size="16" font-weight="650">BattleSession / State</text><text x="673" y="319" text-anchor="middle" fill="#53675d" font-size="12">单场规则 · 费用 · 效果 · 回合</text>
+  <rect x="566" y="345" width="214" height="43" rx="8" fill="#f0edf3"/><text x="673" y="372" text-anchor="middle" fill="#765b8b" font-size="15">BattlePresentation</text>
+  <rect x="842" y="259" width="130" height="80" rx="9" fill="#eceee3"/><text x="907" y="290" text-anchor="middle" fill="#53675d" font-size="15">Audio</text><text x="907" y="314" text-anchor="middle" fill="#53675d" font-size="15">OverlayHost</text>
+  <text x="15" y="285" fill="#66736e" font-size="12">图例：箭头表示主要调用 / 适配方向</text><text x="15" y="308" fill="#66736e" font-size="12">返回值和信号把结果向外传递</text><text x="15" y="354" fill="#ac7432" font-size="12">内容 Resource 为两个规则域提供静态配置</text><text x="15" y="377" fill="#66736e" font-size="12">AppRoot 装配常驻服务；此图省略装配连线</text>
+ </svg></div>
+ <p class="caption">战斗页同样由 Router 创建；图中把它的控制器、模型和表现展开。线表示主要协作，不是完整引用清单，也不表示线程。</p>
+ <h3>依赖方向的关键，不是“禁止所有互相通信”</h3>
+ <div class="two">
+  <div><h4>允许：外层适配内层</h4><p class="small">BattleController 调用 <code>session.play_card(card)</code>；BattleSession 发出实际数值事件；控制器把事件交给 BattlePresentation。规则不必知道有没有画面，界面也不必重新算一遍伤害。</p></div>
+  <div><h4>避免：界面成为第二套规则</h4><p class="small">不能只在按钮上检查费用，然后直接修改敌人生命。规则入口仍要检查阶段、手牌身份和费用，数值实验或其他调用者才能得到同样的约束。</p></div>
+ </div>
+ <div class="note"><strong>面试表达</strong><p>“这是按领域组织的分层架构，吸收了 MVC 的职责分离思路，但没有强行套一个完整框架。模型是场景无关的 Godot 对象，而不是完全脱离引擎的纯语言库。”</p></div>
+ <div class="source">依据：<a href="../../run/model/run_session.gd">run_session.gd</a><a href="../../battle/model/battle_session.gd">battle_session.gd</a><a href="../../battle/battle_controller.gd">battle_controller.gd</a></div>
+</section>
+
+<section class="section" id="ownership">
+ <div class="section-head"><span class="section-no">02</span><div><p class="eyebrow">Ownership & lifetime</p><h2>场景树不是全部数据的家</h2></div></div>
+ <p class="intro">画面由 Node 管，规则对象用 RefCounted。区分“应用活多久、这局活多久、这场活多久”，才能理解为什么切页不丢牌组，也不会把上场战斗的格挡带进下一场。</p>
+ <div class="two">
+  <div><h3 style="margin-top:0">运行时：应用根与可替换页面</h3><div class="tree">Main <em>· AppRoot</em>
+├─ audio_manager <span class="dim">· 常驻音频</span>
+├─ overlay_host <span class="dim">· 常驻浮层管理</span>
+├─ page_container
+│  └─ 当前页面 <span class="dim">· 菜单 / 地图 / 战斗…</span>
+├─ game_flow_controller
+│  └─ PageRouter <span class="dim">· 运行时创建</span>
+└─ sound_controls <span class="dim">· AppRoot 创建</span></div><p class="caption">main.tscn 是应用入口；main_menu.tscn 只是其中一个页面。</p></div>
+  <div><h3 style="margin-top:0">规则：由对象引用持有</h3><div class="tree">GameFlowController
+└─ RunSession <em>· 一局</em>
+   └─ RunState
+      ├─ RunRNG / RewardState
+      ├─ owned_cards <span class="dim">· 定义列表</span>
+      └─ 地图 / 生命 / 当前阶段
+
+BattleController <span class="dim">· 战斗页中的 Node</span>
+└─ BattleSession <em>· 一场</em>
+   └─ BattleState
+      ├─ CombatantState / EnemyState
+      └─ CardInstance <span class="dim">· 实际卡牌</span></div><p class="caption">右图是持有关系，不是 Godot 编辑器里的子节点树。</p></div>
+ </div>
+ <h3>目录按领域分，领域内部再按职责分</h3>
+ <div class="two"><div class="tree">run/ <em>· 整局冒险</em>
+├─ model/ <span class="dim">会话、状态、奖励、随机</span>
+├─ map/ <span class="dim">地图定义、节点、地图视图</span>
+├─ draft/ · collection/ · reward/
+├─ encounter/ <span class="dim">不期而遇定义、执行器、视图</span>
+├─ screens/ <span class="dim">主菜单与结算</span>
+├─ run_definition.gd · data/ <span class="dim">类型与实例分开</span>
+└─ game_flow_controller.gd
+
+battle/ <em>· 单场战斗</em>
+├─ model/ <span class="dim">会话、状态、实例、结果</span>
+├─ actions/ <span class="dim">队列、效果、伤害解析</span>
+├─ encounters/ <span class="dim">遭遇定义与 data 实例</span>
+├─ view/ · presentation/
+└─ battle_controller.gd · battle.tscn</div><div class="tree">cards/ <span class="dim">卡与牌组条目定义、卡面、数据</span>
+combatants/ <span class="dim">公共定义与角色视图</span>
+├─ players/data/ <span class="dim">玩家战斗属性</span>
+└─ enemies/ <span class="dim">敌人定义、行动与 data</span>
+characters/ <span class="dim">玩家角色与初始内容组合</span>
+collections/ <span class="dim">藏品定义、数据和图标</span>
+ui/ <span class="dim">跨领域共用 UI 与应用服务</span>
+├─ navigation/ · overlay/ · inspect/
+├─ cards/ · themes/
+└─ app_root.gd · audio_settings.*
+assets/ <span class="dim">cards · combatants · backgrounds · ui</span>
+audio/ <span class="dim">声音服务、music · sfx · source</span>
+tests/ <span class="dim">游戏规则、流程、表现回归</span>
+tools/ <span class="dim">工程验证、实验、构建</span>
+docs/ <span class="dim">当前开发与架构说明</span>
+卡牌 / 敌人 / 综合数值模型/ <span class="dim">数值评估</span></div></div>
+ <p class="caption">这是主要职责索引，不是全部文件清单。cards 等内容领域保留其就近视图与数据，不是把所有 .gd 文件粗暴归进一个 scripts 文件夹。数值模型目录属于开发工具，不是玩家运行时模块。</p>
+ <h3>生命周期表：离开这一页，哪些东西应该消失？</h3>
+ <div class="life-wrap"><table class="table"><thead><tr><th>生命周期</th><th>代表对象</th><th>保留什么</th><th>结束时做什么</th></tr></thead><tbody>
+  <tr><td>应用</td><td>AppRoot / Audio / Overlay</td><td>音乐播放位置、当前音量、公共主题与设置</td><td>正常退出时停输入、清理浮层、停音频并等待释放</td></tr>
+  <tr><td>一局冒险</td><td>RunSession / RunState</td><td>牌组定义、HP / 最大 HP、路线、藏品、候选与进度</td><td>成功返回菜单后清除本局会话；目前不写持久存档</td></tr>
+  <tr><td>一场战斗</td><td>BattleSession / BattleState</td><td>手牌、费用、格挡、力量、状态、武器耐久、回合</td><td>页面退出调用 dispose；只通过 BattleResult 回传生命与胜败</td></tr>
+  <tr><td>一个页面</td><td>BattleView / MapView / 查看器</td><td>控件、输入连接与页面拥有的模态窗口</td><td>旧页移除后释放；页属查看器同时清理</td></tr>
+  <tr><td>一次表现</td><td>独立 CardFace 快照 / 飘字</td><td>当时的图像、位置和实际数值</td><td>动画结束或所属表现层销毁时释放</td></tr>
+ </tbody></table></div>
+ <h3>Definition 与 Instance：同名不等于同一张</h3>
+ <div class="compare"><div><span class="label">STATIC / RESOURCE</span><h4>CardDefinition：牌的种类</h4><p>例如“打击”的 ID、基础费用、原画与效果列表。牌组可以重复引用同一个定义。运行时按只读契约使用，不把临时减费写回这里。</p><pre><code>同一份 strike.tres
+  ↙ 引用          引用 ↘
+CardInstance A    CardInstance B</code></pre></div><div><span class="label">RUNTIME / REFCOUNTED</span><h4>CardInstance：本场的一张牌</h4><p>A 与 B 有不同实例身份，可以有不同临时费用。手牌区用实例身份识别控件，不能用 card_id 做唯一键，否则两张同名牌会互相覆盖。</p><p style="margin-top:13px">武器实例由卡牌实例单向持有，记录当前攻击力与耐久；避免互相强引用形成 RefCounted 环。下一场战斗会重新创建卡牌和武器实例。</p></div></div>
+ <div class="note gold"><strong>关于“只读”的准确说法</strong><p>部分候选数组与结果字典调用了 make_read_only()，但 Resource 本身没有被深度冻结；只读容器里的对象引用也不是自动不可变。RunState 仍有公开可变字段，生产流程通过 Session 写入是架构约定。</p></div>
+ <div class="source">依据：<a href="../../main.tscn">main.tscn</a><a href="../../ui/app_root.gd">app_root.gd</a><a href="../../battle/model/card_instance.gd">card_instance.gd</a><a href="../../cards/card_definition.gd">card_definition.gd</a></div>
+</section>
+
+<section class="section" id="run">
+ <div class="section-head"><span class="section-no">03</span><div><p class="eyebrow">Run state machine</p><h2>一局冒险，由状态而不是页面推动</h2></div></div>
+ <p class="intro">页面是状态的投影。先让规则接受一个命令，进入新阶段，再由 GameFlowController 展示对应页面。页面加载失败，不代表业务操作应该重做一次。</p>
+ <div class="flow-rail"><div>主菜单<small>创建新会话</small></div><div>开局构筑<small>传说 → 史诗 → 稀有</small></div><div>起点 / 藏品<small>三选一</small></div><div>选定路线<small>2 战斗 + 1 不期而遇</small></div><div>最终 Boss<small>三种之一</small></div><div>胜败结算<small>返回菜单结束本局</small></div></div>
+ <div class="two">
+  <div><h3>RunSession：命令与提交边界</h3><p class="small">生产流程通过 <code>enter_node</code>、<code>choose_reward</code>、<code>resolve_unexpected</code> 等入口操作本局。Session 检查阶段、候选、来源步骤等条件，并在成功时递增 <code>step_token</code>，保存只读命令结果。</p><p class="small">它还负责把带身份的战斗结果接回冒险：校验战斗和节点 ID、生命范围与胜负一致性，拒绝已处理结果，然后进入奖励或终局。</p></div>
+  <div><h3>RunState：事实与基础转移</h3><p class="small">保存当前阶段、地图解锁、选定路线、牌组、生命、藏品、事件候选与结果。它并非一个空数据袋：地图验证、基础状态转移、不期而遇实际应用等仍在这里。</p><p class="small">这也是当前的演进点：RunState 已较大，可按地图绑定、事件状态等内聚职责继续拆，但不能让视图接走业务。</p></div>
+ </div>
+ <h3>地图固定的是拓扑，随机的是绑定</h3>
+ <div class="route-map"><div class="route-grid" aria-label="三条独立路线示意，每条两战斗一不期而遇">
+  <div class="route-node endpoint" style="grid-column:1">起点<br>选藏品</div>
+  <div class="route-node event" style="grid-column:2;grid-row:1">不期而遇</div><div class="route-node" style="grid-column:3;grid-row:1">战斗 A</div><div class="route-node" style="grid-column:4;grid-row:1">战斗 B</div>
+  <div class="route-node" style="grid-column:2;grid-row:2">战斗 C</div><div class="route-node event" style="grid-column:3;grid-row:2">不期而遇</div><div class="route-node" style="grid-column:4;grid-row:2">战斗 D</div>
+  <div class="route-node" style="grid-column:2;grid-row:3">战斗 B</div><div class="route-node" style="grid-column:3;grid-row:3">战斗 D</div><div class="route-node event" style="grid-column:4;grid-row:3">不期而遇</div>
+  <div class="route-node endpoint" style="grid-column:5">共同的<br>最终 Boss</div>
+ </div><p class="caption">示意排列，不代表某个固定种子。首次进入分支后锁定路线，不能横向换路。实际只经历一条路线：两个普通战斗、一次不期而遇，再到 Boss。</p></div>
+ <ul class="small"><li><strong>新局时一次生成：</strong>每路独立洗牌 [战斗、战斗、不期而遇]，绑定两种不同普通遭遇；不同路线允许普通敌人重复。</li><li><strong>不期而遇独立随机：</strong>三路各抽一个实例，允许实例重复；不是把三个实例强制一一分配。</li><li><strong>不在重绘时抽签：</strong>地图重建读取已保存的绑定；不期而遇候选在首次进入时生成并保存。</li></ul>
+ <h3>认得阶段名称，还要知道它的含义</h3>
+ <div class="pills"><span>DRAFTING · 开局选牌</span><span>CHOOSING_COLLECTION · 选藏品</span><span>IN_PROGRESS · 可操作地图</span><span>IN_BATTLE · 战斗中</span><span>CHOOSING_REWARD · 战后选牌</span><span>CHOOSING_UNEXPECTED · 事件选择</span><span>UNEXPECTED_RESULT · 事件已提交</span><span>VICTORY / DEFEAT · 终局</span></div>
+ <p class="caption">还有初始化用 SETUP。IN_PROGRESS 是“地图就绪”这一具体阶段，不是“整局未结束”的泛称。</p>
+ <div class="note"><strong>当前默认配置</strong><p>初始牌组为 3 打击 + 3 防御，再各选 1 张传说、史诗、稀有，合计 9 张。普通胜利后是<strong>一轮三选一，可跳过</strong>；Boss 胜利直接结算。脚本默认奖励轮数为 3，但 default_run.tres 覆盖为 1，要看有效资源而不是只看脚本默认值。</p></div>
+ <h3>随机的可复现性：两个随机流，各管一类事</h3>
+ <div class="compare"><div><h4>内容 RNG</h4><p>决定地图绑定、Boss、候选等冒险内容。候选保存后重读，不因打开查看器、翻页或重试页面而重抽。</p></div><div><h4>战斗 RNG</h4><p>决定抽牌洗牌，与内容流分离；由初始种子异或常量派生。同配置、同种子、同行动序列可复现，尚没有完整的行动录制与回放系统。</p></div></div>
+ <div class="source">依据：<a href="../../run/game_flow_controller.gd">game_flow_controller.gd</a><a href="../../run/model/run_state.gd">run_state.gd</a><a href="../../run/model/run_rng.gd">run_rng.gd</a><a href="../../run/data/default_run.tres">default_run.tres</a></div>
+</section>
+
+<section class="section" id="battle">
+ <div class="section-head"><span class="section-no">04</span><div><p class="eyebrow">Command → state → event</p><h2>出一张牌，沿调用链走到底</h2></div></div>
+ <p class="intro">用一次具体动作理解分层，比记住十几个类名更有效。下方可逐步查看出牌、战后奖励和事件提交，观察每一步由谁负责、改了什么状态。</p>
+ <div class="tabs no-print" role="tablist" aria-label="调用链案例"><button id="tab-card" role="tab" aria-controls="trace-panel" aria-selected="true" data-trace="card">打出一张牌</button><button id="tab-reward" role="tab" aria-controls="trace-panel" aria-selected="false" data-trace="reward" tabindex="-1">战后奖励 / 跳过</button><button id="tab-event" role="tab" aria-controls="trace-panel" aria-selected="false" data-trace="event" tabindex="-1">血契祭坛确认</button><button id="tab-recovery" role="tab" aria-controls="trace-panel" aria-selected="false" data-trace="recovery" tabindex="-1">页面加载失败</button></div>
+ <div class="trace" id="trace-panel" role="tabpanel" aria-labelledby="tab-card">
+  <div class="trace-head"><strong id="trace-name">打出一张牌</strong><span class="trace-count" id="trace-count"></span></div>
+  <div class="trace-body"><div class="trace-progress" id="trace-progress" aria-label="跳至步骤"></div><div id="trace-content" aria-live="polite"></div><div class="trace-controls"><button id="trace-prev">← 上一步</button><a id="trace-source" href="../../battle/battle_controller.gd">查看负责模块</a><button id="trace-next">下一步 →</button></div></div>
+ </div>
+ <div class="print-only" id="print-traces"></div>
+ <h3>BattleSession 才是规则入口，Controller 是适配器</h3>
+ <div class="two">
+  <div><h4>Session 管“能不能”和“怎么算”</h4><p class="small">准备与激活、阶段合法性、费用与武器条件、有序效果、敌人回合、胜败、实际事件和最终结果。其状态对象包含玩家与敌人、能量、所有牌区、武器、状态与回合。</p><p class="small"><code>can_play_card</code> 与真正的 <code>play_card</code> 共用检查入口。按钮置灰是提示，规则验证才是权威。</p></div>
+  <div><h4>Controller 管“接到谁、交给谁”</h4><p class="small">连接 BattleView 的输入信号；创建并持有 BattleSession；把合法操作交进去；把实际事件和独立卡面快照交给表现；刷新视图后一次性向整局报告结果。</p><p class="small">仍保留少量旧接口转发以兼容原有测试和调用。不能因此认为它仍然拥有第二套战斗规则。</p></div>
+ </div>
+ <h3>一次出牌的同步规则顺序</h3>
+ <ol class="numbered"><li><strong>检查：当前阶段、卡实例、能量、特殊前置条件</strong><p>必须是玩家回合、仍在手中的实际实例；不能正在结算或已经终局。</p></li><li><strong>先构造效果队列，再提交费用与牌区移动</strong><p>ActionQueue 是 Callable 的 FIFO 同步队列；不是动画时间轴，也不是后台线程。</p></li><li><strong>按顺序执行每个效果，产生实际结果事件</strong><p>先加力量再伤害，与先伤害再加力量不同；多段伤害逐段读取当前状态。自损致死可中断剩余效果。</p></li><li><strong>完成牌区归档，检查胜败，再通知外层</strong><p>普通牌进弃牌堆，消耗牌进消耗区，能力牌和武器按各自规则去向。双方同时死亡时，失败判断优先。</p></li></ol>
+ <div class="zones" aria-label="牌区与临时结算区"><span>抽牌堆</span><span>手牌</span><span class="resolve">resolving_card · 结算中</span><span>弃牌堆</span><span>消耗区</span><span>已打出能力</span><span>已装备武器</span></div>
+ <p class="small">牌区验证使用实例身份检查，避免同一张实际卡同时出现在两个区域。武器每个玩家回合只有一次攻击机会，重新装备不刷新本回合机会。</p>
+ <div class="note red"><strong>这不是通用事务回滚系统</strong><p>若队列在部分执行后发生错误，已支付的费用和已发生的效果会保留，resolving_card 留在结算中以阻止后续命令。不能把“有校验、有提交边界”讲成“任何异常都能自动恢复原状态”。</p></div>
+ <h3>伤害只保留一个权威算法</h3>
+ <div class="formula"><span class="eyebrow">AttackDamageResolver</span><div class="math">攻击伤害 = max(0, floor((基础值 + 力量) × 虚弱系数 × 易伤系数))</div><p>攻击者虚弱：×0.75；目标易伤：×1.5；全部乘完再向下取整。之后由目标的格挡吸收，得到实际生命损失。治疗联动使用实际生命损失，而非原始伤害。</p></div>
+ <div class="calc no-print" aria-label="伤害演算练习">
+  <div class="calc-inputs"><label>基础伤害<input id="damage-base" type="number" min="0" max="999" value="6"></label><label>力量<input id="damage-strength" type="number" min="0" max="999" value="2"></label><label>目标格挡<input id="damage-block" type="number" min="0" max="999" value="4"></label><div class="checks"><label><input id="damage-weak" type="checkbox" checked>攻击者虚弱</label><label><input id="damage-vulnerable" type="checkbox" checked>目标易伤</label></div></div>
+  <div class="calc-output" aria-live="polite"><div class="calc-values"><div><strong id="damage-raw">9</strong><small>格挡前伤害</small></div><div><strong id="damage-hp">5</strong><small>生命损失上界</small></div></div><p class="caption" id="damage-work"></p><p class="small muted">假设目标剩余生命足够；实际扣血还受当前生命上限约束。此处是教学演算，不调用游戏运行时。</p></div>
+ </div>
+ <p class="caption">例：基础 6 + 力量 2，虚弱与易伤同时存在：floor(8 × 0.75 × 1.5) = 9；格挡 4，最多扣血 5。预览通常展示格挡前伤害，不是预测整条效果链后的最终血量。</p>
+ <h3>回合也属于规则，而非动画回调</h3>
+ <div class="compare"><div><h4>玩家回合开始</h4><p>按能力条件清除旧格挡 → 恢复能量 → 重置禁抽与武器机会 → 回合计数 → 回合开始能力 / 藏品 → 起手固有安排或正常抽牌 → 开放玩家阶段。</p></div><div><h4>结束回合与敌人行动</h4><p>弃掉非保留手牌 → 敌人阶段 → 敌方清理旧格挡与开始效果 → 执行当前行动 → 状态结算、行动下标推进 → 新玩家回合。意图与执行读取同一 current_action。</p></div></div>
+ <div class="note"><strong>跨战斗传递的是结算，不是旧战斗对象</strong><p>下一场从 RunState 的牌组定义、实际生命和最大生命创建全新实例；格挡、临时力量、手牌、武器耐久等不通过旧 BattleState 跨场复用。藏品按定义在新场的对应时机重新施加。</p></div>
+ <div class="source">依据：<a href="../../battle/model/battle_session.gd">battle_session.gd</a><a href="../../battle/model/battle_state.gd">battle_state.gd</a><a href="../../battle/actions/action_queue.gd">action_queue.gd</a><a href="../../battle/actions/attack_damage_resolver.gd">attack_damage_resolver.gd</a></div>
+</section>
+
+<section class="section" id="content">
+ <div class="section-head"><span class="section-no">05</span><div><p class="eyebrow">Data-driven content</p><h2>配置表达内容，代码解释机制</h2></div></div>
+ <p class="intro">“数据驱动”不等于任何玩法都不写代码。资源可以组合已有机制；新增机制仍然需要扩展定义、验证和规则实现，再由内容资源使用。</p>
+ <div class="two"><div><h3 style="margin-top:0">卡牌：有序效果，而非名称分支</h3><p class="small">CardDefinition 定义基础费用、类型、稀有度、固有 / 保留 / 消耗、原画和 <code>effects</code>。每个 CombatEffectDefinition 描述一种效果、目标、数值与次数；数组顺序就是语义顺序。</p><p class="small">“攻击牌类型”与“伤害是否受攻击修正”是不同维度：技能也可以配置攻击伤害，但不一定触发攻击牌专属的回能统计。</p><p class="small">文案中的 <code>{damage_0}</code> 对应 effects[0]。它只格式化显示，不决定实际伤害；修改说明文字不会改变规则。</p></div><div><h3 style="margin-top:0">敌人：定义、状态、行动模式</h3><p class="small">EnemyDefinition 保存静态属性与行动模式，EnemyState 保存生命、状态与当前行动下标。敌人按配置的行动循环推进；目前不是自适应策略 AI，更不是模型推理。</p><p class="small">EncounterDefinition 组合敌人和本场规则，例如每回合能量、抽牌数、手牌上限。CharacterDefinition 组合玩家定义、初始牌组和奖励池。</p></div></div>
+ <h3>不期而遇：选项资源 → 结果提案 → 会话提交</h3>
+ <div class="path-line"><span>选项定义</span><b>→</b><span>执行器查询可用性 / 候选</span><b>→</b><span>evaluate 结果提案</span><b>→</b><span class="focus">会话接受并应用</span><b>→</b><span>结果页 / 继续地图</span></div>
+ <p class="small">选项拥有稳定 ID、选择方式、生命费用、治疗 / 获牌 / 删牌等操作、筛选条件和结果模板。UnexpectedEncounterExecutor 不直接修改本局，RunState 在验证后同步支付费用与应用收益，再进入 UNEXPECTED_RESULT。视图不用按“营地 / 祭坛 / 泉”重写三套业务。</p>
+ <div class="life-wrap" style="margin-top:20px"><table class="table"><thead><tr><th>现有实例</th><th>可选内容</th><th>关键规则</th></tr></thead><tbody><tr><td>余烬营地</td><td>恢复 15；或从 3 张普通牌选 1；或离开</td><td>普通候选排除打击与防御，治疗不超过最大生命</td></tr><tr><td>血契祭坛</td><td>支付 8 当前生命，从 3 张稀有 / 史诗牌选 1；或离开</td><td>至少 9 生命才可支付；确认选牌才扣血，取消不扣血</td></tr><tr><td>遗忘之泉</td><td>删 1 张实际牌组条目；或恢复 8；或离开</td><td>按牌组索引删除重复牌中的指定一张，至少留 1 张牌</td></tr></tbody></table></div>
+ <div class="note gold"><strong>扩展边界要讲具体</strong><p>复用现有操作的第四个不期而遇，可以主要新增 .tres 资源并加入池。若要“升级卡牌”“多阶段交易”，需要新规则机制；当前获牌选项验证也固定为 3 个候选，并非任意数量都已支持。</p></div>
+ <h3>藏品不是牌，它的触发点分属不同规则域</h3>
+ <div class="three"><div class="panel"><span class="term">BATTLE / ACTIVATE</span><h4>赤铜獠牙</h4><p>战斗激活时获得 1 力量。由 BattleSession 应用，不在地图页面偷偷加属性。</p></div><div class="panel"><span class="term">BATTLE / TURN START</span><h4>守誓盾徽</h4><p>前 3 个玩家回合各获得 3 格挡。计数和触发在单场战斗规则内。</p></div><div class="panel"><span class="term">RUN / RESULT COMMIT</span><h4>余烬圣杯</h4><p>普通战斗胜利后恢复 6 生命。在整局接受结果时应用一次，Boss 胜利不走此普通奖励分支。</p></div></div>
+ <div class="source">依据：<a href="../../run/encounter/unexpected_encounter_option_definition.gd">option_definition.gd</a><a href="../../run/encounter/unexpected_encounter_executor.gd">unexpected_encounter_executor.gd</a><a href="../../docs/current/content-authoring.md">内容新增说明</a></div>
+</section>
+
+<section class="section" id="reliability">
+ <div class="section-head"><span class="section-no">06</span><div><p class="eyebrow">Commit boundaries & recovery</p><h2>把“重复点击”和“加载失败”当真问题</h2></div></div>
+ <p class="intro">可靠性不是多写几个 if，而是明确身份、阶段和提交时机。这里最值得在面试中展开：规则已经成功，页面却失败时，如何避免重复发奖、重复回血或重抽候选。</p>
+ <h3>三类身份，解决三个不同问题</h3>
+ <div class="three"><div class="panel"><span class="term">PAGE SOURCE</span><h4>还是当前页面吗？</h4><p>PageRouter.is_current 检查来源页面身份与存活状态，并在提交中拒绝回调，阻止已退出页面继续操纵流程。</p></div><div class="panel"><span class="term">STEP TOKEN</span><h4>还是这一步操作吗？</h4><p>页面连接时绑定当前 step_token。命令成功递增 token，旧回调即使迟到也不能重复提交同一步。</p></div><div class="panel"><span class="term">BATTLE + NODE ID</span><h4>还是这场战斗吗？</h4><p>结果必须属于当前 battle_id / node_id，且未被处理。再校验生命范围与胜负一致性，拒绝错场或重复结果。</p></div></div>
+ <p class="caption">兼容入口允许 token = -1，表示跳过步骤匹配。因此准确说法是“生产页面绑定 token”，不是“所有任意调用天然幂等”。</p>
+ <h3>页面切换分两段，战斗启动也分两段</h3>
+ <div class="compare"><div><span class="label">PREPARE / 隐藏准备</span><h4>先准备候选页面，保留旧页面</h4><p>实例化 → 检查根为 Control 且脚本匹配 → 放入最终 page_container → 隐藏、禁用处理 → 初始化。失败就丢弃候选，旧页保持。</p><p style="margin-top:12px">BattleSession.prepare 只构建 SETUP；不启动回合，不抽牌，也不消费洗牌随机流。</p></div><div><span class="label">COMMIT / 正式启用</span><h4>提交身份，再退出旧页面</h4><p>先设置当前页与 generation 并关闭重入入口 → 停止、隐藏和移除旧页 → 显示新页 → 排队释放旧页。新页不重新挂载。</p><p style="margin-top:12px">提交成功后才调用 BattleController.activate_battle，启动首回合和反馈。</p></div></div>
+ <div class="note"><strong>为什么准备后不能先摘下再重新挂上？</strong><p>移出场景树会触发 _exit_tree。BattleController 会在这里 dispose 会话；若为“切换”重挂新页，就可能把刚准备好的战斗提前销毁。直接在最终容器里隐藏准备，避免这类生命周期副作用。</p></div>
+ <h3>具体失败：战斗胜利已提交，奖励页创建失败</h3>
+ <ol class="numbered"><li><strong>规则先确定事实</strong><p>RunSession 接受 BattleResult，回写生命，记录已处理身份，应用普通胜利藏品治疗，保存 RewardState 与候选，进入 CHOOSING_REWARD。</p></li><li><strong>展示失败，不反向撤销事实</strong><p>Flow 展示导航错误浮层，提供重试或返回；状态仍是奖励选择。旧画面可能保留，但旧步骤回调不能再次生效。</p></li><li><strong>重试只重新展示当前状态</strong><p>读取现有候选和生命，不重复提交 BattleResult，不再次治疗，也不重抽卡牌。返回菜单成功时结束当前局。</p></li></ol>
+ <h3>奖励和事件：候选先保存，确认才消耗</h3>
+ <ul class="small"><li><strong>RewardState：</strong>保存所属节点、战斗、总轮数、当前轮、候选和提交记录；只有进入下一轮才抽样。当前配置是一轮。</li><li><strong>跳过：</strong>同样消耗当前奖励轮次，最后一轮完成后结束该普通战斗节点；不是一个只关窗口的 UI 行为。</li><li><strong>事件确认：</strong>验证选择属于既存候选、费用可付、删除索引有效，再在同步路径应用。关闭选牌子页不等于已经支付。</li></ul>
+ <div class="source">依据：<a href="../../ui/navigation/page_router.gd">page_router.gd</a><a href="../../run/game_flow_controller.gd">game_flow_controller.gd</a><a href="../../run/model/reward_state.gd">reward_state.gd</a><a href="../../tests/run_session_test.gd">run_session_test.gd</a></div>
+</section>
+
+<section class="section" id="presentation">
+ <div class="section-head"><span class="section-no">07</span><div><p class="eyebrow">Presentation without rule ownership</p><h2>画面可以延迟，事实不能重算</h2></div></div>
+ <p class="intro">动画和音效消费已经发生的结算。先确保“扣了多少血、哪一方受击”可靠，再决定飘字、闪光与声音怎样表达，而不是在动画结束时才扣血。</p>
+ <div class="event-lane"><div class="box"><span class="term">AUTHORITATIVE / 同步规则</span><strong>BattleSession → BattleEvent</strong><p>记录战斗 ID、事件顺序、来源、目标、类型与实际数值。例如格挡吸收后只损失 2 生命，就发出对应实际结果。</p><code>battle_id · sequence · amount</code></div><div class="connector">→</div><div class="box"><span class="term" style="color:var(--purple)">VISUAL / 异步表现</span><strong>BattlePresentation → Audio / Overlay</strong><p>按事件定位飘字、闪光与声音；出牌使用独立卡面快照。规则已完成，不等待 Tween，也不读取正在退出的旧角色控件。</p><code>snapshot · rect · event</code></div></div>
+ <p class="small">Controller 执行命令时暂存实际事件，结束后先交表现层，再刷新界面并报告可能导致切页的终局结果。BattleEvent 是反馈事件，不是足以重建全局状态的事件日志；当前不属于 Event Sourcing。</p>
+ <h3>HandView：保留还在手中的卡，而不是每次全部重建</h3>
+ <ul class="small"><li>以 <code>CardInstance.get_instance_id()</code> 为键维护控件；两张同名牌也能独立处理。</li><li>仍在手中的卡保留节点，只在定义、费用、描述、可用性变化时更新；离手时清理旧控件和输入连接。</li><li>出牌前创建独立 CardFace 快照，手牌真实节点可以安全删除；不会让动画强行延长旧业务节点生命周期。</li><li>模型、动作或尺寸改变时刷新；不在每一帧重复读取全部文字。</li></ul>
+ <h3>公共卡面与场景编辑</h3>
+ <p class="small">CardFace 提供统一卡面；CardView 加手牌交互；CardChoiceView 供构筑、奖励、不期而遇复用。固定布局和文字优先在 .tscn 修改，动态状态在对应 View，公共外观在 fantasy_theme.tres。战斗设计画布为 1920×1080，按可用区域等比缩放居中；保存的初始缩放与根裁剪让 1280×720 编辑器预览也保持对齐。</p>
+ <h3>浮层：层级与所有权必须一起管</h3>
+ <div class="life-wrap"><table class="table"><thead><tr><th>CanvasLayer</th><th>用途</th><th>谁负责结束</th></tr></thead><tbody><tr><td>20</td><td>悬停</td><td>模态出现时关闭，避免透出输入</td></tr><tr><td>24</td><td>战斗反馈</td><td>BattlePresentation，随战斗页清理</td></tr><tr><td>100</td><td>页面模态：牌堆、卡牌、藏品查看器</td><td>所属页面退出时清理，恢复合适焦点</td></tr><tr><td>140</td><td>终局短提示</td><td>应用浮层，可跨页完成</td></tr><tr><td>200</td><td>声音设置</td><td>应用拥有，切页不销毁</td></tr></tbody></table></div>
+ <p class="caption">Esc 按实际 CanvasLayer，再按同层注册先后，只关闭最高的一个模态；不是广播给所有窗口各关一次。</p>
+ <h3>音频是常驻服务，不是散落的播放节点</h3>
+ <div class="two"><div><h4>运行时播放与混音</h4><p class="small">GameAudioManager 管探索 / 战斗两首 BGM、约 0.8 秒交叉淡化、位置续播、音效并发和优先级、事件去重、音乐压低与限幅。默认音乐 0.65、音效 0.80；8 路音效中 UI 最多 2 路。AudioSettings 只调音量与静音，不改业务。</p></div><div><h4>退出也是生命周期设计</h4><p class="small">AppRoot 接管关闭请求并防重：停输入与页面处理 → 清临时浮层 → 音频停播、解绑流 → 等待跟踪的播放弱引用释放 → quit。默认等待上限 5 秒，超时返回失败；当前音量设置仅进程内有效，不是持久偏好存档。</p></div></div>
+ <div class="source">依据：<a href="../../battle/presentation/battle_presentation.gd">battle_presentation.gd</a><a href="../../battle/view/hand_view.gd">hand_view.gd</a><a href="../../ui/overlay/overlay_host.gd">overlay_host.gd</a><a href="../../audio/audio_manager.gd">audio_manager.gd</a></div>
+</section>
+
+<section class="section" id="engineering">
+ <div class="section-head"><span class="section-no">08</span><div><p class="eyebrow">Evidence & trade-offs</p><h2>架构价值，落到可验证的行为上</h2></div></div>
+ <p class="intro">不能只说“解耦好、扩展强”。要举出独立运行、失败重试、实际事件、同名卡身份这些具体行为，再说明如何验证。</p>
+ <div class="life-wrap"><table class="table"><thead><tr><th>风险 / 目标</th><th>验证入口举例</th><th>能证明什么</th></tr></thead><tbody><tr><td>战斗不依赖画面</td><td><code>battle_session_test.gd</code><br><code>battle_card_flow_test.gd</code></td><td>模型初始化、合法操作、牌区与结果；不靠手动点击才可测</td></tr><tr><td>预览和实际计算漂移</td><td><code>card_damage_preview_test.gd</code><br><code>damage_healing_test.gd</code></td><td>修正、顺序与实际生命损失等规则</td></tr><tr><td>切页重入、奖励重复提交</td><td><code>page_router_test.gd</code><br><code>run_session_test.gd</code></td><td>准备失败保留旧页、过期命令拒绝、重试不重复副作用</td></tr><tr><td>手牌节点或浮层遗留</td><td><code>hand_view_lifecycle_test.gd</code><br><code>overlay_lifecycle_test.gd</code></td><td>实例身份、旧连接清理、所有权和 Esc 层级</td></tr><tr><td>纯布局测试看不出实际绘制</td><td><code>phase6_visual_layout_test.gd</code><br>GPU 环境实际检查</td><td>几何范围与真实渲染互补；画面能打开不代表交互正确</td></tr><tr><td>发布和退出不同于编辑器运行</td><td><code>tools/project.py release</code><br><code>app_shutdown_test.gd</code></td><td>独立构建、启动和正常关闭路径</td></tr></tbody></table></div>
+ <h3>统一工具入口，不把 Python 带进游戏运行时</h3>
+ <p class="small"><code>tools/project.py</code> 管环境检查、导入、注册测试、干净副本、历史数据校验、数值实验和 Windows 发布。工具检查退出码、完成标记、预期错误次数与超时，不能把“进程没崩”当成通过。环境记录 Godot 4.6.1、Python 3.12.7；玩家运行导出的游戏不依赖 Python。</p>
+ <p class="small">当前注册 43 个 Godot 检查和 14 项工具契约测试。数值实验从独立源码副本直接调用 BattleSession，避免另写一套简化战斗；历史数值实验有固定旧地图与策略条件，不能直接当作当前不期而遇版本的胜率证据。</p>
+ <div class="note gold"><strong>测试状态和能力要分开讲</strong><p>43 / 14 是当前注册规模；其中新增一项内容目录回归。具体执行结果见目录整理记录。编辑器布局修复另有相关检查和实际编辑器绘制检查。</p></div>
+ <h3>四个有理由的取舍</h3>
+ <div class="two"><div><h4>① 选同步规则，不让动画主导时序</h4><p class="small">回合制、单敌人场景下，同步结算更容易验证和复现。代价是复杂“中途选择”“连锁响应”不能靠随便加一个 await 解决，需要暂停/恢复命令协议或更明确的阶段机。</p><h4>② 用 Resource，而非提前做通用编辑平台</h4><p class="small">复用 Godot Inspector 和资源序列化，内容与美术易接入。代价是资源类型、枚举编号和引用要保持兼容，模型仍依赖 Godot。</p></div><div><h4>③ 页面按需创建，服务常驻</h4><p class="small">减少页面间隐式引用，退出后局部对象容易释放。代价是需要候选快照、当前状态恢复和明确的 prepare / commit；不能靠页面节点本身存整局事实。</p><h4>④ 继续兼容已有入口</h4><p class="small">Controller 的旧方法转发和旧地图 REST 规则保留回归路径。代价是代码边界暂时不够纯；后续应迁移调用者、补同等证据后再删除，而不是直接改坏旧实验。</p></div></div>
+ <h3>当前边界与下一步：按需求排序，而非追求框架感</h3>
+ <div class="compare"><div><h4>已实现</h4><p>本地单局、单敌人、有配置的地图与内容、奖励可跳过、三个不期而遇、独立战斗模型、页面恢复、共用卡面、反馈与混音、验证和构建工具。</p></div><div><h4>尚未实现</h4><p>持久存档、联网同步、多敌人目标系统、完整回放、通用事务回滚、跨局成长与自动 CI。不要在面试中把这些说成已有能力。</p></div></div>
+ <ol class="small"><li><strong>先收紧写入口：</strong>逐步隐藏公开可变集合，缩小 RunState；把旧测试迁到 Session 公共接口，再移除兼容转发。</li><li><strong>再建自动回归：</strong>把已有严格工具接入 CI；视觉 GPU 与平台发布检查保留明确运行环境，不伪装成纯无头测试即可覆盖。</li><li><strong>有产品需求再做新系统：</strong>存档需版本化快照、稳定 ID、迁移和 RNG 状态；多敌人需目标选择与目标 ID；回放需记录配置版本、命令序列和随机状态，而不只是存种子。</li></ol>
+ <div class="source">依据：<a href="../../tools/checks.json">checks.json</a><a href="../../tools/project.py">project.py</a><a href="../current/development.md">开发与构建</a><a href="../current/numerical-baselines.md">数值实验说明</a></div>
+</section>
+
+<section class="section" id="interview">
+ <div class="section-head"><span class="section-no">09</span><div><p class="eyebrow">Tell the engineering story</p><h2>先讲主线，再用一个难点证明</h2></div></div>
+ <p class="intro">建议用“产品目标 → 核心边界 → 具体难点 → 证据 → 取舍”讲项目。下面是基于当前实现的口述范本；个人负责范围与量化成绩，按你实际做过的工作补充。</p>
+ <div class="tabs no-print" role="tablist" aria-label="面试开场长度"><button role="tab" id="tab-short" aria-controls="speech-panel" aria-selected="true" data-speech="short">30 秒 · 项目概览</button><button role="tab" id="tab-medium" aria-controls="speech-panel" aria-selected="false" data-speech="medium" tabindex="-1">2 分钟 · 架构主线</button><button role="tab" id="tab-deep" aria-controls="speech-panel" aria-selected="false" data-speech="deep" tabindex="-1">5 分钟 · 深入提纲</button></div>
+ <div class="speech" id="speech-panel" role="tabpanel" aria-labelledby="tab-short"><div id="speech-content"></div></div>
+ <div class="timerbar no-print"><span class="timer" id="timer-value" aria-label="练习计时">00:30</span><button id="timer-start">开始口述计时</button><button id="timer-reset">重置</button><span class="small muted" id="timer-status" aria-live="polite">不录音；切换提纲会重置计时。</span></div>
+ <div class="print-only" id="print-speeches"></div>
+ <h3>你最值得主动展开的一个难点</h3>
+ <div class="speech"><p class="answer">“普通战斗胜利后，规则已经提交，但奖励页可能加载失败。如果重试时重新执行胜利处理，就会重复回血或重抽候选。我的处理思路是把业务提交与页面展示分开：RunSession 先校验战斗身份，记录结果并固定 RewardState；PageRouter 隐藏准备页面，成功才切换。重试只根据当前状态重建页面，页面来源和 step_token 再阻止旧回调提交。这样，恢复操作不会变成第二次业务执行。”</p><p class="small">练习时接着解释：为什么这不是数据库事务？为什么只禁用按钮不够？为什么 BattleSession 也需要 prepare / activate？你能回答这三个追问，这个案例才算掌握。</p></div>
+ <h3>追问练习：先口答，再展开对照</h3>
+ <div class="qa-tools no-print"><input id="qa-search" type="search" placeholder="搜索追问：如 生命周期、随机、存档" aria-label="搜索面试追问"><button id="qa-expand">全部展开</button><span id="qa-count" class="small muted"></span></div>
+ <div id="qa-list">
+ <details data-qa><summary><span class="qa-tag">分层</span>为什么不把规则直接写在 BattleController？</summary><div><p>控制器同时处理节点生命周期、输入和表现。如果费用、回合、伤害也写在里面，数值实验就必须实例化场景，界面修改也更容易碰到规则。抽出 RefCounted 的 BattleSession 后，Controller 只做输入和结果适配，游戏与实验调用同一套规则。</p><p><strong>代价：</strong>多了显式上下文传递、事件桥接和对象生命周期管理。对于极小原型可以先简化，但本项目已出现奖励、不期而遇、数值实验与多页面恢复需求，边界有实际收益。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">状态</span>Session 和 State 有什么区别？RunState 是否纯数据？</summary><div><p>Session 是生产命令门面：检查操作是否属于当前阶段与步骤，协调结果提交。State 保存事实，并提供基础状态转移与验证。当前 RunState 包含地图生成、节点和事件应用等较多逻辑，不是纯 DTO。</p><p>不要声称所有写入已经被语言权限完全封住；目前公开字段仍需收紧。拆分目标是更小的内聚模块与更明确的写入口，而不是把所有代码机械地搬进 Session。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">资源</span>为什么用 Resource？两张相同卡怎么保证互不影响？</summary><div><p>Resource 适合 Inspector 编辑、类型化引用与 .tres 序列化。CardDefinition 共享静态配置，CardInstance 保存单张运行态；两张打击可以指向同一资源，但实例身份和临时费用不同。</p><p>Resource 只读主要靠契约，不是引擎自动冻结。必须避免把减费或武器耐久写回共享定义，否则所有引用者甚至下一局都会受影响。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">身份</span>为什么防重复要页面来源、token 和 battle_id 三种检查？</summary><div><p>页面来源解决旧页回调；step_token 解决旧业务步骤；battle_id / node_id 解决结果归属与重复结算。三个检查覆盖不同身份，不能互相替代。按钮禁用只能减少 UI 重入，不能约束排队回调或其他调用者。</p><p>生产页面绑定 token；兼容的 -1 调用可绕过步骤检查。对结果另有 processed_battle_results 与阶段校验，不能简单承诺任意命令都天然幂等。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">切页</span>prepare / commit 和 prepare / activate 分别保护什么？</summary><div><p>Router 的 prepare / commit 保护页面可用性和场景生命周期：旧页不提前删，新页在最终容器内准备。BattleSession 的 prepare / activate 保护业务时机：未提交的隐藏战斗不能先抽牌、推进回合或播反馈。</p><p>若新页准备后又移出再重挂，会触发 _exit_tree，可能 dispose 刚准备好的会话；所以 commit 不 reparent 新页。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">队列</span>ActionQueue 是异步动画队列吗？能撤销吗？</summary><div><p>不是。它是 Callable 的同步 FIFO 规则队列，保证多个效果按定义顺序执行。动画消费实际结果，不驱动规则队列。</p><p>当前没有通用撤销：中途失败保留已发生费用和效果，结算中标记阻止继续命令。若未来支持反应卡或中途选择，应设计可暂停恢复的规则协议，不能直接在同步模型中混入动画 await。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">事件</span>有 BattleEvent，是否就是事件溯源架构？</summary><div><p>不是。当前状态是权威，BattleEvent 传出实际反馈数值，服务于表现与音效。事件并没有承诺完整记录所有状态改变，也没有事件重放恢复状态的协议。</p><p>真正回放还需配置版本、初始状态、命令序列和随机状态。给事件带 sequence 有助于反馈排序和识别，不等于已有事件存储系统。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">数值</span>伤害预览如何避免和实际规则不一致？</summary><div><p>统一 AttackDamageResolver，预览在局部模拟前序效果对力量、格挡、易伤等的影响，不修改实际状态。实际多段效果逐段使用当前状态，乘法完成后再取整，目标再扣格挡。</p><p>预览一般是格挡前伤害，不代表完整预测目标最终生命、后续触发与致死中断。治疗联动使用实际 HP 损失，不能拿预览数字当实际扣血。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">随机</span>只保存 seed，就能完整复现一局吗？</summary><div><p>需要相同配置、版本和相同操作序列，并保持相同随机消费顺序。项目把冒险内容与战斗洗牌分成两个 RNG 流，并把已生成候选保存，减少 UI 行为对随机的干扰。</p><p>只有 seed 还不够做中途存档或完整回放；中途恢复通常还需 RNG 当前状态、阶段、候选和战斗实例状态等。当前没有持久存档。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">生命周期</span>为什么手牌动画要复制卡面，不能直接移动原节点？</summary><div><p>规则执行后卡已离手，HandView 应立即维护真实手牌控件；若动画仍持有原节点，清理和切页会互相牵制。独立 CardFace 快照只持有表现数据与坐标，原控件可以正确释放。</p><p>这属于让表现脱离业务对象寿命。终局短提示还可交应用层浮层跨页完成，而普通战斗反馈随页面清理。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">扩展</span>新增卡牌、不期而遇、多敌人，各改哪里？</summary><div><p>复用已有卡牌效果：新增 .tres 并接入角色池；复用已有事件操作：新增选项 / 事件资源并接入 RunDefinition。新增机制则要同时补定义验证、规则、显示与测试。</p><p>多敌人不是只复制 EnemyView：需要目标选择命令、稳定目标 ID、战斗状态的实体集合、效果目标解析和胜败判断等。当前单敌人的边界要先承认，再说明演进路径。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">验证</span>怎样证明重构没把游戏规则改坏？</summary><div><p>在规则层检查费用、牌区、效果顺序、回合和结果；在流程层检查过期命令、候选稳定和结果单次提交；在生命周期层检查 Router、手牌和浮层；再做真实渲染与独立构建启动。</p><p>数值实验与游戏共用 BattleSession，降低双实现漂移。旧实验有固定配置条件，要原样保留并说明适用范围，不能用当前 UI 跑通代替历史数值契约。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">取舍</span>为什么不用 ECS、完整 DDD 或全局事件总线？</summary><div><p>这个项目主要复杂度是回合规则、流程提交和页面寿命，不是大量实体同构计算。用类型化对象、显式会话入口和少量结果信号就能解决，额外框架成本目前没有对应收益。</p><p>也不是完全没有依赖注入：应用装配后传入音频和浮层等服务，但 Flow 仍会按场景路径找兄弟节点，部分旧调用保留兼容查找，不能说已全面容器化。</p></div></details>
+ <details data-qa><summary><span class="qa-tag">演进</span>如果下一个需求是存档，你会怎么做？</summary><div><p>先定义存档边界：地图阶段存档还是战斗中也支持。做版本化快照，保存稳定内容 ID、牌组条目、HP、路线、阶段、候选、已处理结果及 RNG 状态；加载时校验、迁移并解析资源，不能直接序列化整个场景树。</p><p>若支持战斗中，还需实例 ID、牌区、状态与武器等快照，且只能在明确稳定提交点保存。这是后续设计，不是当前已有系统。</p></div></details>
+ </div>
+ <p id="qa-empty" class="muted small" hidden>没有匹配的追问，试试“状态”“切页”或“随机”。</p>
+ <h3>面试时最容易说过头的六句话</h3>
+ <div class="life-wrap"><table class="table"><thead><tr><th>别这样说</th><th>改成准确表达</th></tr></thead><tbody><tr><td>“所有模型完全脱离 Godot。”</td><td>规则不依赖场景树和 UI，仍使用 Godot 的 RefCounted / Resource / 类型。</td></tr><tr><td>“资源不可变，任何地方都不能改。”</td><td>静态资源按只读契约使用，部分容器只读；仍需约束共享对象写入。</td></tr><tr><td>“有事件和 seed，所以支持回放。”</td><td>有反馈事件与分离随机流；还没有完整的版本化命令记录与重放。</td></tr><tr><td>“所有错误都会回滚。”</td><td>初始化和展示有准备边界；战斗中途规则错误没有通用回滚。</td></tr><tr><td>“新增任何玩法只要配表。”</td><td>已有机制可配置组合，新机制需要规则和验证扩展。</td></tr><tr><td>“这套架构已经没有问题。”</td><td>边界已明确，但 RunState 偏大、部分状态公开、兼容转发和 CI 仍可改进。</td></tr></tbody></table></div>
+</section>
+
+<section class="section" id="practice">
+ <div class="section-head"><span class="section-no">10</span><div><p class="eyebrow">Check understanding</p><h2>换一个情境，你还会判断吗？</h2></div></div>
+ <p class="intro">先选择，再看解释。能说明“为什么另外两个不对”，比记住正确选项更接近面试所需的理解。</p>
+ <div class="quiz no-print"><div class="quiz-header"><strong>架构情境自测 · 8 题</strong><span id="quiz-score" aria-live="polite">0 / 8 已作答</span></div><div id="quiz-items"></div><div style="padding:20px 23px;background:var(--white)"><button id="quiz-reset">重新自测</button><span id="quiz-summary" class="small muted" style="margin-left:14px" aria-live="polite"></span></div></div>
+ <noscript><p>启用 JavaScript 后可完成选择题；也可直接使用下方口头自测。</p></noscript>
+ <h3>不用看屏幕，试着回答这四件事</h3>
+ <ol><li>从主菜单启动到战斗胜利，画出一条“意图 → 命令 → 状态 → 页面”调用链。</li><li>解释为什么下一场战斗保留 HP，却不保留上一场的格挡、临时费用和武器耐久。</li><li>假设战后奖励页失败并重试，逐项说明什么应该不变，哪个组件负责保证。</li><li>任选一个新需求，指出它属于配置扩展、规则机制扩展，还是应用服务扩展，并说明测试位置。</li></ol>
+ <div class="note"><strong>掌握标准</strong><p>不看类名，也能讲清状态归属；看到 bug，能判断该在哪一层修；面对追问，能区分已实现能力、现有限制和下一步方案。</p></div>
+</section>
+
+<section class="section" id="sources">
+ <div class="section-head"><span class="section-no">11</span><div><p class="eyebrow">Read the code with a question</p><h2>带着问题读源码，而不是逐文件扫</h2></div></div>
+ <p class="intro">建议按下面顺序阅读。链接相对项目目录，手册放在仓库原位置时可以定位源码；若只复制这一份 HTML，正文和互动仍完整可用，但源码链接需要原仓库。</p>
+ <div class="reading-grid">
+ <div class="reading"><span class="term">01 / 应用怎样组装？</span><a href="../../main.tscn">main.tscn</a> · <a href="../../ui/app_root.gd">ui/app_root.gd</a><p>分清应用入口、页面容器和常驻服务；看主题、设置与正常退出。</p></div>
+ <div class="reading"><span class="term">02 / 当前局到底用了哪些配置？</span><a href="../../run/data/default_run.tres">run/data/default_run.tres</a><p>看实际池、地图、奖励轮数；不要只读定义脚本的默认值。</p></div>
+ <div class="reading"><span class="term">03 / 页面操作被交给谁？</span><a href="../../run/game_flow_controller.gd">run/game_flow_controller.gd</a><p>沿 _show_for_state 和页面回调走，关注来源、token 与失败重试。</p></div>
+ <div class="reading"><span class="term">04 / 谁接受命令、保存进度？</span><a href="../../run/model/run_session.gd">RunSession</a> · <a href="../../run/model/run_state.gd">RunState</a><p>重点读 enter_node、submit_battle_result、奖励和不期而遇提交。</p></div>
+ <div class="reading"><span class="term">05 / 新页何时才生效？</span><a href="../../ui/navigation/page_router.gd">ui/navigation/page_router.gd</a><p>对照 prepare / commit / is_current，解释不重挂新页的原因。</p></div>
+ <div class="reading"><span class="term">06 / 一场战斗如何建立？</span><a href="../../battle/battle_controller.gd">BattleController</a> · <a href="../../battle/model/battle_session.gd">BattleSession</a><p>先看 prepare / activate，再看 play_card、end_turn 与最终结果。</p></div>
+ <div class="reading"><span class="term">07 / 卡牌、费用、伤害具体改在哪里？</span><a href="../../battle/model/battle_state.gd">BattleState</a> · <a href="../../battle/actions/attack_damage_resolver.gd">AttackDamageResolver</a><p>看牌区移动与实例守恒；找到统一数值计算和效果顺序。</p></div>
+ <div class="reading"><span class="term">08 / 画面为什么不控制结算？</span><a href="../../battle/presentation/battle_presentation.gd">BattlePresentation</a> · <a href="../../battle/view/hand_view.gd">HandView</a><p>跟一次事件和卡面快照；观察离手节点、清理与渲染刷新。</p></div>
+ <div class="reading"><span class="term">09 / 内容怎样接入？</span><a href="../current/content-authoring.md">内容新增说明</a> · <a href="../../run/encounter/unexpected_encounter_executor.gd">事件执行器</a><p>对照三个 .tres 看机制组合；区分配置能力与新机制。</p></div>
+ <div class="reading"><span class="term">10 / 如何找到验证证据？</span><a href="../../tools/checks.json">检查注册表</a> · <a href="../current/development.md">开发与构建</a><p>从目标行为定位测试；工具输出要同时看完成标记、错误和退出码。</p></div>
+ </div>
+ <h3>改动定位速查</h3>
+ <div class="life-wrap"><table class="table"><thead><tr><th>想改什么</th><th>首选入口</th><th>不要误改</th></tr></thead><tbody><tr><td>开始界面的布局与标题</td><td><a href="../../run/screens/main_menu.tscn">run/screens/main_menu.tscn</a></td><td>main.tscn 是应用装配，不是菜单画布</td></tr><tr><td>地图底部提示</td><td><a href="../../run/map/map_view.tscn">map_view.tscn</a> 的 route_hint</td><td>动态生命 / 进度在 MapView，地图拓扑在 first_map.tres</td></tr><tr><td>卡面外观与手牌排列</td><td><a href="../../cards/card_face.tscn">card_face.tscn</a> / <a href="../../battle/view/hand_view.gd">HandView</a></td><td>不要改 CardDefinition 规则字段来修布局</td></tr><tr><td>伤害数值与卡牌机制</td><td>卡牌 .tres / CombatEffectDefinition / 规则模块</td><td>描述文字和飘字不是数值权威</td></tr><tr><td>奖励轮数、遭遇池</td><td><a href="../../run/data/default_run.tres">default_run.tres</a></td><td>先检查资源是否覆盖脚本默认值</td></tr><tr><td>动画 / 音效 / BGM</td><td>BattlePresentation / GameAudioManager / audio 资源</td><td>不把规则执行绑到 Tween 或音频完成信号</td></tr></tbody></table></div>
+ <div class="source">项目文档：<a href="../../README.md">README</a><a href="./架构与重构记录.md">架构记录</a><a href="./目录组织与整理记录.md">目录整理记录</a><a href="../current/ui-editing.md">界面编辑指南</a></div>
+</section>
+<footer class="closing"><span>MYCECARD / ARCHITECTURE FIELD GUIDE<br>依据当前本地代码核对 · 2026.10.21</span><span>讲清一个边界，举出一个失败情境，<br>比背下一串架构术语更有说服力。</span></footer>
+</main></div>
+<a class="back-top no-print" href="#overview" aria-label="返回顶部" style="display:grid;place-items:center;text-decoration:none">↑</a>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const layers = {
+ view:{name:'视图与表现',tag:'A / DISPLAY & FEEDBACK',text:'View 读取模型并展示，收集点击、查看、结束回合等意图。Presentation 播放卡面飞行、受击反馈、飘字和声音；它们不裁决数值与胜负。',owns:'控件、布局、页面输入、独立视觉快照与反馈。',not:'不直接扣 HP、发奖励、改变冒险阶段，也不自己重算伤害。',files:[['battle/view/battle_view.gd','BattleView'],['battle/presentation/battle_presentation.gd','BattlePresentation'],['cards/card_face.gd','CardFace']]},
+ flow:{name:'流程与适配',tag:'B / ORCHESTRATION',text:'GameFlowController 把页面意图交给 RunSession，按当前阶段展示页面；BattleController 把战斗输入交给 BattleSession，再桥接实际事件、视图刷新与战斗结果。',owns:'页面与会话的连接、显式上下文传递、调用顺序和失败展示。',not:'不另写伤害、费用、敌人行动规则；不让重试展示重复业务提交。',files:[['run/game_flow_controller.gd','GameFlowController'],['battle/battle_controller.gd','BattleController']]},
+ rules:{name:'规则与状态',tag:'C / SOURCE OF TRUTH',text:'RunSession 管整局命令，BattleSession 管单场命令；RunState 与 BattleState 保存各自事实并提供基础操作和验证。RefCounted 模型可以不挂场景树就运行。',owns:'合法性、牌区、生命、能量、效果顺序、回合、候选、阶段与结算身份。',not:'不读取按钮、不切场景、不创建 Tween、不播放音频。仍使用 Godot 类型，并非引擎无关。',files:[['run/model/run_session.gd','RunSession'],['battle/model/battle_session.gd','BattleSession'],['battle/model/battle_state.gd','BattleState']]},
+ content:{name:'内容定义',tag:'D / RESOURCE CONFIGURATION',text:'Definition 脚本定义配置类型与校验，.tres 保存实例。卡牌、角色、敌人、遭遇、地图、藏品和不期而遇都由资源组合。运行时将静态定义按只读契约使用。',owns:'基础数值、效果参数、稳定 ID、原画引用、地图拓扑与内容池。',not:'不保存某一张牌的临时费用、某场战斗的剩余血量，也不直接执行效果。',files:[['cards/card_definition.gd','CardDefinition'],['run/data/default_run.tres','default_run.tres'],['run/encounter/unexpected_encounter_option_definition.gd','选项定义']]},
+ services:{name:'应用装配与公共服务',tag:'E / APPLICATION LIFETIME',text:'AppRoot 从场景装配出常驻音频、浮层和设置；PageRouter 负责页面准备与提交。音频和浮层是外层服务，经明确引用交给需要它们的页面与表现。',owns:'应用级对象生命周期、导航、模态层级、焦点、混音、正常退出。',not:'服务不是全局业务数据仓库；规则模型不通过服务反向操纵 UI。当前也没有通用依赖注入容器。',files:[['ui/app_root.gd','AppRoot'],['ui/navigation/page_router.gd','PageRouter'],['ui/overlay/overlay_host.gd','OverlayHost'],['audio/audio_manager.gd','GameAudioManager']]}
+};
+function renderLayer(key){const d=layers[key];$('layer-detail').innerHTML=`<p class="eyebrow">${d.tag}</p><h3>${d.name}</h3><p>${d.text}</p><h4>这一层负责</h4><p>${d.owns}</p><h4>边界与限制</h4><p>${d.not}</p><div class="source">${d.files.map(([p,n])=>`<a href="../../${p}">${n} ↗</a>`).join(' ')}</div>`;document.querySelectorAll('[data-layer]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.layer===key)));}
+document.querySelectorAll('[data-layer]').forEach(b=>b.addEventListener('click',()=>renderLayer(b.dataset.layer)));renderLayer('rules');
+const traces={
+ card:{name:'打出一张牌',steps:[
+ ['输入适配','点击的是一个实际 CardInstance','CardView / HandView 把选中的实例交给 BattleView，再由 BattleController 接收；不是仅传一个“打击”的名称。','尚未修改模型。先查询 card_play_failure，拒绝非法输入。','battle/battle_controller.gd'],
+ ['视觉准备','在真实手牌移除前做独立快照','Controller 从 HandView 制作 CardFace 快照，保存起点矩形。规则拒绝则释放；规则接受才交给表现使用。','快照与业务卡实例分离，不靠原手牌节点活到动画结束。','battle/view/hand_view.gd'],
+ ['规则入口','BattleSession.play_card 再次裁决','检查当前阶段、未终局、未忙碌、实例仍在手中、费用足够及特殊效果前置条件。按钮可用性不是唯一防线。','命令保护开启；构建有序效果队列。','battle/model/battle_session.gd'],
+ ['状态提交','支付费用，进入结算中牌区','BattleState.begin_card_play 支付能量，将实际实例从手牌移到 resolving_card。按 FIFO 执行效果，统一计算攻击修正并产生实际事件。','顺序是规则语义；多段效果逐段读当前状态。','battle/model/battle_state.gd'],
+ ['规则收尾','归档卡牌并检查终局','完成出牌后按类型和词条归档，再检查胜败；生成带 battle_id 与 node_id 的 BattleResult。规则结算此时已完成。','双方同时死亡优先失败。错误中断没有通用回滚。','battle/model/battle_session.gd'],
+ ['表现与流程','先发送实际反馈，再刷新与报告','Controller 刷出暂存事件，Presentation 播动画和音效，再 render 界面；若终局，向 Flow 报告一次结果，Flow 提交 RunSession 并按新阶段切页。','动画不反向改变已结算数值；跨页短提示由应用浮层持有。','battle/battle_controller.gd']
+ ]},
+ reward:{name:'战后奖励 / 跳过',steps:[
+ ['战斗结果','只接受当前战斗的合法结果','Flow 读取 Controller 的 BattleResult；RunSession 核对 IN_BATTLE、battle_id、node_id、尚未处理和生命 / 胜负一致性。','错场、重复、非法生命结果均被拒绝。','run/model/run_session.gd'],
+ ['整局提交','普通胜利进入 CHOOSING_REWARD','回写生命与最大生命，记录处理身份；按藏品应用一次普通胜利治疗；生成并保存 RewardState 候选。','当前有效资源：1 轮，每轮 3 候选。Boss 胜利直接终局。','run/model/run_session.gd'],
+ ['页面展示','展示已有候选，不自己抽样','Flow 准备奖励页并注入已有状态，提交后展示。若页面失败，重试仍读取同一 RewardState。','页面重建不改变候选、HP 或步骤。','run/game_flow_controller.gd'],
+ ['玩家命令','选一张，或者跳过这一轮','choose_reward 只接受当前候选；skip_reward 用空选择消耗当前轮次。两者都校验阶段与页面绑定的 token。','选牌才加入 owned_cards；跳过不加牌，但同样推进轮次。','run/model/reward_state.gd'],
+ ['节点完成','轮次结束后回到地图','最后一轮记录历史、清除当前奖励，完成节点并解锁后继；新状态进入 IN_PROGRESS，由 Flow 显示地图。','旧 token 失效，不会再加一张牌或重复完成节点。','run/model/run_session.gd']
+ ]},
+ event:{name:'血契祭坛确认',steps:[
+ ['进入节点','事件和候选只生成一次','路线事件绑定来自新局；首次进入生成选项候选并保存在本局状态。祭坛获牌候选是 3 张稀有 / 史诗牌。','事件页翻页或重建读取现有候选。','run/model/run_state.gd'],
+ ['查询展示','当前生命是否允许支付？','执行器查询可用性与说明。8 生命费用必须支付后仍存活，因此至少 9 生命才能选。打开选牌还不是支付。','此时取消返回：不扣血，不加牌。','run/encounter/unexpected_encounter_executor.gd'],
+ ['规则验证','确认选中实际候选','resolve_unexpected 检查 token 和当前阶段；执行器评估选项、候选归属与费用，给出只读结果提案。','执行器不直接修改本局状态。','run/encounter/unexpected_encounter_executor.gd'],
+ ['同步应用','在一个同步路径支付与获得','RunState 应用 8 生命费用、加入所选卡、保存结果，进入 UNEXPECTED_RESULT；Session 递增步骤。','旧选牌回调不能重复支付或重复获得。','run/model/run_state.gd'],
+ ['继续冒险','结果页不重做效果','结果页读已保存实际结果；点击继续完成节点，进入地图阶段并解锁后继。','界面显示的实际结果来自已提交状态。','run/model/run_session.gd']
+ ]},
+ recovery:{name:'页面加载失败',steps:[
+ ['前提','业务可能已经成功','例如普通战斗结果已提交，生命、藏品治疗、奖励候选和步骤已经更新。接下来准备奖励页面。','区分“业务命令失败”与“展示失败”。','run/game_flow_controller.gd'],
+ ['隐藏准备','候选页在最终容器中初始化','PageRouter 检查场景根脚本，隐藏并禁用处理后初始化。失败则丢弃候选，不删除旧页。','不能先删旧页再赌新页一定可用。','ui/navigation/page_router.gd'],
+ ['错误入口','显示重试 / 返回导航浮层','Flow 保持当前业务状态，提供恢复操作。旧页仍可能可见，但来源 / 步骤守卫阻止过期提交。','错误提示属于恢复路径，不是重新发一次奖励。','ui/navigation/navigation_error.gd'],
+ ['重新展示','根据当前阶段重建页面','重试调用展示路径，读取同一个 RewardState。不会再次提交 BattleResult，也不会重抽候选或重复回血。','业务状态、候选和已处理身份保持不变。','run/game_flow_controller.gd'],
+ ['正式提交','成功才替换旧页','Router 先更新当前身份并防重入，再停止和移除旧页，显示候选。新页不重新挂载；战斗页随后才 activate。','旧页 _exit_tree 只清理旧会话，不误伤刚准备的新会话。','ui/navigation/page_router.gd']
+ ]}
+};
+let traceKey='card',traceStep=0;
+function renderTrace(){const t=traces[traceKey],s=t.steps[traceStep];$('trace-name').textContent=t.name;$('trace-count').textContent=`${String(traceStep+1).padStart(2,'0')} / ${String(t.steps.length).padStart(2,'0')}`;$('trace-progress').innerHTML=t.steps.map((v,i)=>`<button class="${i<=traceStep?'done':''}" data-step="${i}" aria-label="第 ${i+1} 步：${v[1]}" ${i===traceStep?'aria-current="step"':''}></button>`).join('');$('trace-content').innerHTML=`<span class="trace-role">${s[0]}</span><h3>${s[1]}</h3><p>${s[2]}</p><div class="trace-meta"><strong>状态 / 边界：</strong>${s[3]}</div>`;$('trace-source').href='../../'+s[4];$('trace-source').textContent=s[4].split('/').pop()+' ↗';$('trace-prev').disabled=traceStep===0;$('trace-next').disabled=traceStep===t.steps.length-1;}
+document.querySelectorAll('[data-trace]').forEach(b=>b.addEventListener('click',()=>{traceKey=b.dataset.trace;traceStep=0;selectTab(b,'data-trace');$('trace-panel').setAttribute('aria-labelledby',b.id);renderTrace();}));
+$('trace-next').addEventListener('click',()=>{traceStep++;renderTrace();});$('trace-prev').addEventListener('click',()=>{traceStep--;renderTrace();});$('trace-progress').addEventListener('click',e=>{const b=e.target.closest('[data-step]');if(b){traceStep=Number(b.dataset.step);renderTrace();}});renderTrace();
+$('print-traces').innerHTML=Object.values(traces).map(t=>`<h3>${t.name}</h3><ol>${t.steps.map(s=>`<li><strong>${s[1]}</strong>（${s[0]}）<br>${s[2]}<br><span class="muted">${s[3]}</span></li>`).join('')}</ol>`).join('');
+function selectTab(button,attr){document.querySelectorAll('['+attr+']').forEach(b=>{const selected=b===button;b.setAttribute('aria-selected',String(selected));b.tabIndex=selected?0:-1;});}
+document.querySelectorAll('[role=tablist]').forEach(list=>list.addEventListener('keydown',e=>{const tabs=[...list.querySelectorAll('[role=tab]')];let i=tabs.indexOf(document.activeElement);if(i<0)return;if(e.key==='ArrowRight')i=(i+1)%tabs.length;else if(e.key==='ArrowLeft')i=(i-1+tabs.length)%tabs.length;else if(e.key==='Home')i=0;else if(e.key==='End')i=tabs.length-1;else return;e.preventDefault();tabs[i].focus();tabs[i].click();}));
+function damageCalc(){const n=id=>Math.max(0,Math.min(999,Number($(id).value)||0));const b=n('damage-base'),s=n('damage-strength'),block=n('damage-block'),w=$('damage-weak').checked?.75:1,v=$('damage-vulnerable').checked?1.5:1,raw=Math.max(0,Math.floor((b+s)*w*v));$('damage-raw').textContent=raw;$('damage-hp').textContent=Math.max(0,raw-block);$('damage-work').textContent=`floor((${b} + ${s}) × ${w} × ${v}) = ${raw}；再减格挡 ${block}。`;}
+['damage-base','damage-strength','damage-block','damage-weak','damage-vulnerable'].forEach(id=>$(id).addEventListener('input',damageCalc));damageCalc();
+const speeches={
+ short:{label:'30 秒 · 项目概览',seconds:30,html:'<p class="answer">Mycecard 是我用于展示游戏工程能力的 Godot 回合制卡牌项目，玩法包括构筑、分支地图、战斗、不期而遇和战后奖励。架构上把<em>静态资源、整局会话、单场战斗和视听表现</em>分开；规则不依赖场景树，界面与数值实验共用实现。比较有代表性的设计是页面的准备 / 提交，以及战斗结果和奖励的单次提交，避免切页失败后重复结算。</p>'},
+ medium:{label:'2 分钟 · 架构主线',seconds:120,html:'<p class="answer">Mycecard 是一个本地单局的 Godot 卡牌构筑游戏。一局先选牌和藏品，再选择一条包含两场普通战斗与一次不期而遇的路线，最后挑战 Boss。</p><p class="answer">工程的主线是<em>分清状态与职责</em>。内容用 Resource 配置；RunSession 接受整局命令，RunState 保存牌组、生命、路线与阶段；BattleSession 管单场费用、效果、回合与胜负，BattleState 保存手牌和临时状态。流程层把页面意图转成命令，再按新状态显示页面。动画音效消费实际结果，不反向驱动规则。</p><p class="answer">一个关键问题是<em>业务成功但下一页加载失败</em>。普通胜利后先固定结果和奖励候选，再隐藏准备新页，成功才提交。重试只重新展示当前状态；页面身份、步骤 token 和战斗 ID 分别防止旧页、旧步骤和重复结果。战斗也分 prepare 与 activate，防止隐藏页提前抽牌。</p><p class="answer">这套边界使无界面的数值实验可以直接调用同一 BattleSession。验证覆盖规则、流程、生命周期、真实渲染和独立构建。当前仍有 RunState 较大、部分字段公开等改进点，也还没有存档和联网；不会为了术语而把项目包装成完整 DDD 或事件溯源系统。</p>'},
+ deep:{label:'5 分钟 · 深入提纲',seconds:300,html:'<ol class="numbered"><li><strong>0:00–0:30 / 产品与规模</strong><p>说清单局闭环、单敌人、Godot 与资源化内容。补充你本人实际承担的模块，不虚构团队或上线成绩。</p></li><li><strong>0:30–1:30 / 分层与状态归属</strong><p>用 RunSession / BattleSession 两个中心解释层级；区分 Definition、Instance、应用 Node 与 RefCounted 模型；说明跨场只回传生命与结果。</p></li><li><strong>1:30–2:30 / 沿一次出牌讲调用链</strong><p>输入 → 快照 → 合法性与费用 → 同步效果队列 → 实际事件 → 视图和表现。举一个多段效果或弱化 / 易伤 / 格挡的数值例子。</p></li><li><strong>2:30–3:40 / 一个真正的失败情境</strong><p>讲奖励页失败重试：固定候选、身份和 token、防重、prepare / commit，不重挂新页；承认这不是通用回滚。</p></li><li><strong>3:40–4:25 / 验证与复用</strong><p>模型无场景运行、工具严格检查、数值实验共用实现；区分无头布局断言和实际 GPU 观察。</p></li><li><strong>4:25–5:00 / 取舍和下一步</strong><p>同步规则便于验证但中途响应需新协议；Resource 好接入但依赖引擎。后续优先收紧写入口与 CI，有需求再做版本化存档或目标系统。</p></li></ol>'}
+};
+let speechKey='short',remaining=30,timer=null;
+function drawTime(){const mins=Math.floor(remaining/60),secs=remaining%60;$('timer-value').textContent=String(mins).padStart(2,'0')+':'+String(secs).padStart(2,'0');}
+function resetTimer(){clearInterval(timer);timer=null;remaining=speeches[speechKey].seconds;drawTime();$('timer-start').textContent='开始口述计时';$('timer-status').textContent='不录音；切换提纲会重置计时。';}
+document.querySelectorAll('[data-speech]').forEach(b=>b.addEventListener('click',()=>{speechKey=b.dataset.speech;selectTab(b,'data-speech');$('speech-panel').setAttribute('aria-labelledby',b.id);$('speech-content').innerHTML=speeches[speechKey].html;resetTimer();}));$('speech-content').innerHTML=speeches.short.html;
+$('timer-start').addEventListener('click',()=>{if(timer){clearInterval(timer);timer=null;$('timer-start').textContent='继续计时';$('timer-status').textContent='已暂停。';return;}if(remaining<=0)resetTimer();let end=Date.now()+remaining*1000;$('timer-start').textContent='暂停';$('timer-status').textContent='先讲观点，再讲例子。';timer=setInterval(()=>{remaining=Math.max(0,Math.ceil((end-Date.now())/1000));drawTime();if(remaining===0){clearInterval(timer);timer=null;$('timer-start').textContent='再练一次';$('timer-status').textContent='计时结束。检查是否说清主线、例子与边界。';}},200);});$('timer-reset').addEventListener('click',resetTimer);
+$('print-speeches').innerHTML=Object.values(speeches).map(s=>`<h3>${s.label}</h3>${s.html}`).join('');
+const qa=[...document.querySelectorAll('[data-qa]')];
+function filterQA(){const q=$('qa-search').value.trim().toLocaleLowerCase();let count=0;qa.forEach(d=>{d.hidden=!d.textContent.toLocaleLowerCase().includes(q);if(!d.hidden)count++;});$('qa-count').textContent=`${count} / ${qa.length} 个追问`;$('qa-empty').hidden=count>0;updateExpandLabel();}
+function updateExpandLabel(){const visible=qa.filter(d=>!d.hidden);$('qa-expand').textContent=visible.length&&visible.every(d=>d.open)?'全部收起':'全部展开';}
+$('qa-search').addEventListener('input',filterQA);$('qa-expand').addEventListener('click',()=>{const visible=qa.filter(d=>!d.hidden),open=!visible.every(d=>d.open);visible.forEach(d=>d.open=open);updateExpandLabel();});qa.forEach(d=>d.addEventListener('toggle',updateExpandLabel));filterQA();
+const questions=[
+ {q:'奖励页初始化失败，用户点击重试。正确做法是？',a:['重新提交 BattleResult，重新抽一轮奖励','按当前阶段读取既存 RewardState，重建页面','只把旧页按钮设为可点击'],correct:1,why:'业务已提交，重试属于展示恢复。重复提交会造成副作用风险；只改按钮不能恢复缺失页面，也没有解决来源和步骤身份。'},
+ {q:'两张“打击”都在手中，其中一张临时减费。费用和手牌控件应按什么区分？',a:['共享 CardDefinition.card_id','卡名和当前排序位置','各自 CardInstance 的身份与临时字段'],correct:2,why:'Definition 表示种类，不表示实际那一张。位置也会变化。实例身份用于手牌视图映射，临时费用保存在实例，不能污染共享资源。'},
+ {q:'新战斗页已 prepare，但尚未 commit。这时应该？',a:['保持 SETUP，不启动首回合与洗牌','先抽起手牌，显示前把音量关掉','让页面自己在 _ready 中开始战斗'],correct:0,why:'隐藏准备必须无业务启动副作用。提交后再 activate，才能避免准备失败也消费 RNG、推进回合或发反馈。关声音并不能撤回规则变化。'},
+ {q:'BattleEvent 带事件序号，RunRNG 有种子，这意味着？',a:['已经可以从事件完整重建状态','具备反馈排序和条件性复现基础，但没有完整回放','已具备联网同步和客户端预测'],correct:1,why:'反馈事件不是完整状态变更日志。完整回放还需要版本化配置、初态、命令和随机消费协议；联网更是另一套契约。'},
+ {q:'新增一个“恢复 12 生命或离开”的不期而遇，首选做法是？',a:['在视图按事件名称写新分支','复制旧视图并直接修改 RunState.current_health','配置现有选项资源，并加入不期而遇池'],correct:2,why:'治疗与离开已有机制，可组合配置。视图不应拥有实际治疗业务；新增机制才需要扩展执行器 / 规则及验证。'},
+ {q:'ActionQueue 执行到一半发生错误，当前实现的行为是？',a:['恢复到出牌前，保证原子回滚','保留已生效费用与效果，结算中状态阻止后续命令','等待动画完成后继续忽略错误'],correct:1,why:'这是当前明确边界，不是通用事务系统。讲架构时要分清初始化局部准备、页面提交和已部分执行的战斗命令。'},
+ {q:'为什么切换地图后 BGM 与声音设置可以继续？',a:['Audio 与设置属于应用寿命，不归页面持有','地图页在后台永远不释放','RunState 保存了所有 AudioStreamPlayer'],correct:0,why:'常驻应用服务与可替换页面分离。页面能释放，音频位置和进程内设置仍保留；业务模型不持有播放节点。'},
+ {q:'面试官让你马上加入战斗中存档，你最先要明确什么？',a:['把整个场景树序列化就可以','保存初始 seed 即可','存档稳定点与数据协议，包含实例、阶段、牌区和 RNG 当前状态等'],correct:2,why:'先明确保存时机和恢复契约，再做版本化快照与迁移。场景节点与反馈对象不应成为业务存档格式，初始 seed 也不包含当前操作历史。'}
+];
+let attempts=new Map();
+function renderQuiz(){attempts.clear();$('quiz-items').innerHTML=questions.map((q,i)=>`<div class="quiz-item" role="group" aria-labelledby="quiz-q-${i}"><h4 id="quiz-q-${i}"><span class="term">${String(i+1).padStart(2,'0')} / SCENARIO</span>${q.q}</h4><div class="quiz-options">${q.a.map((a,j)=>`<button data-question="${i}" data-answer="${j}">${String.fromCharCode(65+j)}. ${a}</button>`).join('')}</div><p class="quiz-feedback" id="quiz-feedback-${i}" aria-live="polite"></p></div>`).join('');$('quiz-score').textContent='0 / 8 已作答';$('quiz-summary').textContent='';}
+$('quiz-items').addEventListener('click',e=>{const b=e.target.closest('[data-question]');if(!b)return;const i=Number(b.dataset.question),a=Number(b.dataset.answer);if(attempts.has(i))return;attempts.set(i,a);const q=questions[i];document.querySelectorAll(`[data-question="${i}"]`).forEach(btn=>{const n=Number(btn.dataset.answer);btn.disabled=true;if(n===q.correct)btn.classList.add('correct');else if(n===a)btn.classList.add('chosen');});$('quiz-feedback-'+i).textContent=(a===q.correct?'判断正确。':'这题需要再理解。')+q.why;const right=[...attempts].filter(([n,ans])=>questions[n].correct===ans).length;$('quiz-score').textContent=`${attempts.size} / 8 已作答 · ${right} 题正确`;if(attempts.size===questions.length)$('quiz-summary').textContent=right===8?'全部正确。试着不看正文，口述你的理由。':`答对 ${right} / 8，回到对应章节复述原因。`;});$('quiz-reset').addEventListener('click',renderQuiz);renderQuiz();
+const toggle=$('menu-toggle');toggle.addEventListener('click',()=>{const open=!$('sidebar').classList.contains('open');$('sidebar').classList.toggle('open',open);toggle.setAttribute('aria-expanded',String(open));});document.querySelectorAll('.sidebar a').forEach(a=>a.addEventListener('click',()=>{$('sidebar').classList.remove('open');toggle.setAttribute('aria-expanded','false');}));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('sidebar').classList.contains('open')){$('sidebar').classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.focus();}});
+let scrolling=false;function updateScroll(){const max=document.documentElement.scrollHeight-innerHeight,p=max>0?Math.min(100,Math.round(scrollY/max*100)):100;$('read-progress').style.width=p+'%';$('read-label').textContent='阅读进度 '+p+'%';const sections=[...document.querySelectorAll('section[id]')];let current='overview';for(const s of sections){if(s.getBoundingClientRect().top<180)current=s.id;}document.querySelectorAll('.toc a').forEach(a=>{const active=a.hash==='#'+current;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});scrolling=false;}window.addEventListener('scroll',()=>{if(!scrolling){scrolling=true;requestAnimationFrame(updateScroll);}},{passive:true});window.addEventListener('resize',updateScroll);updateScroll();
+let printState=null;function preparePrint(){if(printState)return;printState=qa.map(d=>({open:d.open,hidden:d.hidden}));qa.forEach(d=>{d.open=true;d.hidden=false;});}function restorePrint(){if(!printState)return;qa.forEach((d,i)=>{d.open=printState[i].open;d.hidden=printState[i].hidden;});printState=null;filterQA();}window.addEventListener('beforeprint',preparePrint);window.addEventListener('afterprint',restorePrint);$('print-button').addEventListener('click',()=>window.print());
+</script>
+</body>
+</html>

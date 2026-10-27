@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://drcw0copl04t2" path="res://cards/card_definition.gd" id="1_card"]
 [ext_resource type="Script" uid="uid://c07wl5mo5epjy" path="res://battle/actions/combat_effect_definition.gd" id="2_effect"]
 [ext_resource type="Resource" path="res://battle/powers/data/blood_cloak.tres" id="3_power"]
-[ext_resource type="Texture2D" uid="uid://bkft2pnymj1er" path="res://assets/images/blood_cloak.png" id="4_artwork"]
+[ext_resource type="Texture2D" uid="uid://bkft2pnymj1er" path="res://assets/cards/blood_cloak.png" id="4_artwork"]
 
 [sub_resource type="Resource" id="ApplyPower"]
 script = ExtResource("2_effect")

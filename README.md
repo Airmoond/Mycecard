@@ -46,9 +46,12 @@ python tools/project.py release
 | --- | --- |
 | `battle/` | 战斗规则、运行状态、战场显示和表现 |
 | `run/` | 单局流程、地图、构筑、奖励和不期而遇 |
-| `cards/`、`characters/`、`combatants/`、`collections/` | 内容定义、运行实例和资源 |
+| `cards/` | 卡牌定义、牌组条目、卡面与卡牌资源 |
+| `characters/` | 可选角色配置：战斗角色引用、起始牌组与奖励池 |
+| `combatants/` | 公共战斗角色定义与视图，玩家和敌人的专属内容 |
+| `collections/` | 藏品定义、资源与图标 |
 | `ui/` | 共用控件、主题、页面导航和浮层 |
-| `assets/`、`audio/` | 美术、字体、音乐及音效 |
+| `assets/`、`audio/` | 按用途分类的美术、音乐及音效 |
 | `tests/`、`tools/` | 回归检查、构建工具和实验入口 |
 | `docs/` | 玩法、架构、内容编辑和开发说明 |
 | `卡牌标准模型/`、`敌人标准模型/`、`综合数值模型/` | 数值模型、历史基线和独立实验 |
@@ -57,6 +60,7 @@ python tools/project.py release
 
 - [玩法与内容](docs/current/gameplay.md)
 - [项目架构](docs/architecture/架构与重构记录.md)
+- [目录组织与整理记录](docs/architecture/目录组织与整理记录.md)
 - [界面修改入口](docs/current/ui-editing.md)
 - [新增与调整内容](docs/current/content-authoring.md)
 - [数值模型与实验](docs/current/numerical-baselines.md)
