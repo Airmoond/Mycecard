@@ -1,10 +1,14 @@
 ## 继承冻结的正式结算与贪心策略，只改敌人复制资源的数字进行训练。
 extends "res://综合数值模型/运行战斗评估.gd"
 
+## 普通敌人校准的样本数、训练种子、玩家条件及目标胜率配置。
 var settings:Dictionary
+## 当前测量所使用的数值候选，仅应用到复制后的遭遇与行动资源。
 var variant:Dictionary = {}
+## 本次校准测量过的全部候选及其汇总结果。
 var search:Array = []
 
+## 在父类遭遇副本基础上深复制行动效果，再按当前候选参数调整格挡或基础攻击。
 func _make_encounter(enemy_id:String, enemy_hp:int)->EncounterDefinition:
 	var encounter:EncounterDefinition = super._make_encounter(enemy_id,enemy_hp)
 	var actions:Array[EnemyActionDefinition] = []
@@ -19,6 +23,7 @@ func _make_encounter(enemy_id:String, enemy_hp:int)->EncounterDefinition:
 	encounter.enemy_definition.action_pattern = actions
 	return encounter
 
+## 用基础六张牌对指定候选运行训练种子样本，累计搜索记录并返回胜率、余血和回合均值。
 func _measure(enemy_id:String, hp:int, samples:int, numbers:Dictionary)->Dictionary:
 	variant = numbers
 	var wins:int = 0
@@ -35,6 +40,9 @@ func _measure(enemy_id:String, hp:int, samples:int, numbers:Dictionary)->Diction
 	search.append(record)
 	return record
 
+## 在隔离副本中粗筛并复测敌人参数，按接近目标胜率选择候选并保存训练数据。
+##
+## 指定敌人参数时保留先前文件中未参与本轮搜索的其他敌人定稿。
 func _run()->void:
 	if not preload("res://tools/history_guard.gd").require_sandbox():
 		quit(2)
@@ -69,6 +77,7 @@ func _run()->void:
 					best = value
 			print("粗调 %s %s：目前最接近HP%d，胜率%.3f" % [enemy_id,str(numbers),best.health,best.win_rate])
 			await process_frame
+		## 按胜率与目标值的绝对差从小到大排列粗筛候选，供后续训练复测。
 		coarse.sort_custom(func(a:Dictionary,b:Dictionary)->bool:return absf(a.win_rate-float(settings.target_win_rate)) < absf(b.win_rate-float(settings.target_win_rate)))
 		best = {}
 		for item in coarse.slice(0,4):

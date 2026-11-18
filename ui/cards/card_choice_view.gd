@@ -36,6 +36,7 @@ var card_definition:CardDefinition
 ##
 ## 防止页面切换完成前快速重复点击同一张奖励卡。
 var _selection_reported:bool = false
+## 此候选卡面与按钮占位使用的显示尺寸，节点准备前也可设置。
 var display_size:Vector2 = CardFace.BASE_SIZE
 
 

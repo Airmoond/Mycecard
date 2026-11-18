@@ -44,10 +44,12 @@ var _reward_card_views:Array[CardChoiceView] = []
 ## 单张CardChoiceView会阻止自身重复点击；该页面级标记进一步阻止玩家快速点击
 ## 两张不同卡牌，导致同一次奖励流程发出多个reward_selected信号。
 var _selection_reported:bool = false
+## 每次重建候选控件递增的代次，用于拒绝旧控件的延迟选择回调。
 var _view_generation:int = 0;
 
 @onready var skip_button:Button = $center_container/main_layout/skip_button;
 
+## 初始禁用跳过按钮，并连接跳过请求的本地处理方法。
 func _ready()->void:
 	skip_button.disabled = true;
 	skip_button.pressed.connect(_on_skip_pressed);
@@ -114,6 +116,7 @@ func _on_card_selected(card_definition:CardDefinition, generation:int = -1)->voi
 	reward_selected.emit(card_definition);
 
 
+## 在页面有效、有候选且尚未提交时锁定交互，再报告跳过本轮奖励。
 func _on_skip_pressed()->void:
 	if _selection_reported or reward_options.is_empty() or not is_inside_tree() or is_queued_for_deletion():
 		return;
@@ -121,6 +124,7 @@ func _on_skip_pressed()->void:
 	reward_skipped.emit();
 
 
+## 记录本轮已经报告选择，并禁用跳过与全部候选卡输入。
 func _lock_selection()->void:
 	_selection_reported = true;
 	skip_button.disabled = true;

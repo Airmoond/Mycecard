@@ -7,20 +7,29 @@ enum NodeState { LOCKED, AVAILABLE, COMPLETED, CURRENT }
 
 signal pressed(node_id:String);
 
+## 本控件绑定的只读静态地图节点。
 var node_definition:MapNodeDefinition;
+## 本次刷新显示的节点进度状态。
 var current_state:NodeState = NodeState.LOCKED;
+## 本次配置是否已报告点击，防止快速重复选择。
 var _press_reported:bool = false;
+## 本局实际内容对应的显示名称，可覆盖静态节点名称。
 var _display_name:String = "";
+## 本局实际节点类型的显示文本。
 var _type_label:String = "";
+## 节点是否属于本局已选择的路线。
 var _route_selected:bool = false;
+## 节点是否属于本局未选择、不可再进入的其他路线。
 var _route_excluded:bool = false;
 
 @onready var node_button:Button = $node_button;
 
+## 连接节点按钮点击处理，并在完成配置前禁用按钮。
 func _ready()->void:
 	node_button.pressed.connect(_on_node_button_pressed);
 	node_button.disabled = true;
 
+## 绑定节点与可视状态，重置点击防重和显示细节，刷新外观后保持不可交互。
 func setup(new_node_definition:MapNodeDefinition, new_state:NodeState)->void:
 	node_definition = new_node_definition;
 	current_state = new_state;
@@ -42,10 +51,12 @@ func set_display_details(display_name:String, type_label:String, route_selected:
 	node_button.tooltip_text = tooltip;
 	_refresh_visual();
 
+## 只有外部允许、节点已绑定、状态可进入且尚未报告点击时才启用按钮。
 func set_interactable(enabled:bool)->void:
 	node_button.disabled = not (enabled and node_definition != null
 		and current_state == NodeState.AVAILABLE and not _press_reported);
 
+## 根据节点进度及路线选择状态更新文字、颜色和按钮样式。
 func _refresh_visual()->void:
 	var state_text:String = "尚未解锁";
 	var border_color:Color = Color(0.53, 0.44, 0.28, 0.75);
@@ -86,6 +97,7 @@ func _refresh_visual()->void:
 	node_button.add_theme_stylebox_override("pressed", _make_style(background.darkened(0.1), border_color, 3));
 	node_button.add_theme_stylebox_override("focus", _make_style(Color(0.0, 0.0, 0.0, 0.0), Color(1.0, 0.89, 0.52), 3));
 
+## 创建指定背景、边框颜色和宽度的独立节点按钮样式。
 func _make_style(background:Color, border_color:Color, border_width:int)->StyleBoxFlat:
 	var style:StyleBoxFlat = StyleBoxFlat.new();
 	style.bg_color = background;
@@ -98,6 +110,7 @@ func _make_style(background:Color, border_color:Color, border_width:int)->StyleB
 	style.content_margin_bottom = 4.0;
 	return style;
 
+## 在节点已绑定且按钮可交互时锁定点击并发出一次节点标识。
 func _on_node_button_pressed()->void:
 	if node_definition == null:
 		push_error("尚未绑定地图节点定义，无法报告节点点击");

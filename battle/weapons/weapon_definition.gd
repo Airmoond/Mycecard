@@ -10,8 +10,11 @@ enum BreakDestination {
 	RETURN_TO_HAND
 }
 
+## 武器实例创建时的基础攻击力，不包含角色力量或本场强化，不能为负数。
 @export var base_attack:int = 0;
+## 武器实例创建时的最大耐久，必须大于零。
 @export var base_max_durability:int = 1;
+## 耐久耗尽或被替换时，原武器卡消耗或尝试回手的去向规则。
 @export var break_destination:BreakDestination = BreakDestination.EXHAUST;
 
 ## 武器攻击绕过目标格挡且不削减格挡；仍正常计算力量、虚弱和易伤。

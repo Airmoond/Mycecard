@@ -1,23 +1,30 @@
 ## 正式页面主题、音量入口、共用卡面与随机地图的整合检查；可选GPU截图。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0
+## 是否通过命令行启用实际 GPU 页面截图。
 var capture:bool = false
+## 启用截图时保存视觉检查图片的目录。
 var output_dir:String = "res://release/refactor/screenshots"
 
+## 读取是否启用 [code]--capture[/code] 截图，再延迟运行视觉整合检查。
 func _initialize()->void:
 	capture = "--capture" in OS.get_cmdline_user_args()
 	_run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(value:bool, message:String)->void:
 	if not value:
 		failures += 1
 		push_error(message)
 
+## 等待四个处理帧，让页面布局和延迟更新稳定。
 func frames()->void:
 	for _frame in range(4):
 		await process_frame
 
+## 等待布局稳定；启用截图时等待实际绘制完成，将当前视口保存为指定名称的 PNG。
 func save_screen(name:String)->void:
 	await frames()
 	if not capture:
@@ -29,6 +36,7 @@ func save_screen(name:String)->void:
 	if not picture.is_empty():
 		picture.save_png(output_dir.path_join(name + ".png"))
 
+## 运行共用视觉组件集成检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	root.mode = Window.MODE_WINDOWED
 	root.size = Vector2i(1920, 1080)

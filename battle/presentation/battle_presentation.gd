@@ -2,16 +2,26 @@
 class_name BattlePresentation
 extends Node
 
+## 是否播放装饰、动画和音效；关闭时仍保留实际结果记录。
 var enabled:bool = true
+## 本次表现会话的标识，用于构造音效去重事件标识。
 var session_id:String = ""
+## 最近接收的实际结果记录，最多保留 128 条。
 var observed_results:Array[Dictionary] = []
+## 本次表现会话内用于分配反馈标识的递增序号。
 var _sequence:int = 0
+## 此表现节点已经开始的会话次数。
 var _session_number:int = 0
+## 此战斗页面拥有的独立反馈画布，随页面退出释放。
 var _layer:CanvasLayer
+## 本场临时文字、高亮和卡面快照的挂载容器。
 var _surface:Control
+## 播放战斗音效的共享音频服务，可以为空。
 var _audio:GameAudioManager
+## 拥有跨页终局提示的应用浮层服务，可以为空。
 var _overlay_host:OverlayHost
 
+## 创建不接收鼠标的战斗反馈画布，查找可用音频服务并开始新的表现会话。
 func _ready()->void:
 	session_id = "battle_%d" % get_instance_id()
 	_layer = CanvasLayer.new()
@@ -86,11 +96,13 @@ func present_event(event:BattleEvent, rect:Rect2)->void:
 	if not observed_results.is_empty():
 		observed_results[-1].merge({"battle_id":event.battle_id, "sequence":event.sequence, "source_id":event.source_id, "target_id":event.target_id})
 
+## 为界面或战斗提示分配事件标识；启用表现且音频服务有效时请求播放音效。
 func play_feedback(sound_id:StringName)->void:
 	_sequence += 1
 	if enabled and is_instance_valid(_audio):
 		_audio.play_sfx(sound_id, "%s:%d:%s" % [session_id, _sequence, sound_id])
 
+## 播放无效操作反馈，并在启用表现时于指定区域显示拒绝原因。
 func reject(reason:String, rect:Rect2)->void:
 	play_feedback(&"ui_invalid")
 	if enabled:
@@ -117,6 +129,7 @@ func animate_card(snapshot:Control, start_rect:Rect2, target_rect:Rect2)->void:
 	tween.tween_property(snapshot, "modulate:a", 0.0, 0.24)
 	tween.chain().tween_callback(snapshot.queue_free)
 
+## 在指定全局区域生成向上漂移并淡出的文字，动画完成后释放标签。
 func _float_text(text:String, color:Color, rect:Rect2)->void:
 	var label:Label = Label.new()
 	label.text = text
@@ -134,6 +147,7 @@ func _float_text(text:String, color:Color, rect:Rect2)->void:
 	tween.tween_property(label, "modulate:a", 0.0, 0.52).set_delay(0.1)
 	tween.chain().tween_callback(label.queue_free)
 
+## 在指定全局区域创建短暂边框高亮，淡出完成后释放面板。
 func _flash(rect:Rect2, color:Color)->void:
 	var panel:Panel = Panel.new()
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -155,6 +169,7 @@ func configure_services(audio:GameAudioManager, host:OverlayHost)->void:
 	_audio = audio
 	_overlay_host = host
 
+## 播放胜败提示，并在启用表现且共享浮层有效时显示跨页面终局短提示。
 func finish(victory:bool)->void:
 	play_feedback(&"victory" if victory else &"defeat")
 	if enabled and is_instance_valid(_overlay_host):

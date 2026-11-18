@@ -2,13 +2,16 @@
 ## 运行方式：Godot --headless --path <项目目录> --script res://tests/battle_card_flow_test.gd
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行卡牌流转、固有、保留及失血检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_draw_during_resolution();
 	_test_card_destinations();
@@ -30,6 +33,7 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
@@ -48,6 +52,7 @@ func _card(exhausts:bool = false, power:bool = false, retains:bool = false)->Car
 	return card;
 
 
+## 用指定卡牌实例创建战斗状态，进入玩家阶段、恢复能量并抽取测试手牌。
 func _state(cards:Array[CardInstance])->BattleState:
 	var player:CombatantState = CombatantState.new();
 	_expect(player.combatant_init_from_definition(load("res://combatants/players/data/player.tres")), "玩家初始化失败");
@@ -81,6 +86,7 @@ func _test_draw_during_resolution()->void:
 	_expect(state.resolving_card == null, "归档后应清空结算中引用");
 
 
+## 验证普通、消耗及能力牌的归档优先级、洗牌排除范围和牌数守恒。
 func _test_card_destinations()->void:
 	var ordinary:CardInstance = _card();
 	var exhaust:CardInstance = _card(true);
@@ -100,6 +106,7 @@ func _test_card_destinations()->void:
 	_expect(state.resolving_card == null and state.exhaust_pile.is_empty() and state.played_power_cards.is_empty(), "重建战斗应清空新增区域");
 
 
+## 验证保留牌在回合结束时留手，未打出的消耗牌按普通弃牌处理。
 func _test_retained_hand()->void:
 	var ordinary:CardInstance = _card();
 	var exhaust:CardInstance = _card(true);
@@ -113,6 +120,7 @@ func _test_retained_hand()->void:
 	_expect(not state.is_invalid_battle(), "回合结束后应保持牌数守恒");
 
 
+## 验证费用不足时拒绝出牌，不扣能量、不移动卡牌。
 func _test_unaffordable_card()->void:
 	var card:CardInstance = _card(true);
 	var state:BattleState = _state([card]);
@@ -136,6 +144,7 @@ func _test_lethal_card_is_archived_before_result()->void:
 	), "测试战斗应成功启动");
 	controller.battle_state.enemy_state.current_health = 1;
 	var results:Array[bool] = [];
+	## 胜利回调验证结算中的卡已经归档到消耗区，再记录结果。
 	controller.battle_finished.connect(func(victory:bool, _health:int, _max_health:int)->void:
 		results.append(victory);
 		_expect(controller.battle_state.resolving_card == null, "发出胜利信号前必须归档卡牌");
@@ -161,6 +170,7 @@ func _energy_definition()->CardDefinition:
 	return definition;
 
 
+## 创建正式战斗页面并使用单张指定定义启动回能测试，返回控制器。
 func _energy_controller(definition:CardDefinition)->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
@@ -172,6 +182,7 @@ func _energy_controller(definition:CardDefinition)->BattleController:
 	return controller;
 
 
+## 验证回能牌先付费、后增能量及消耗归档，额外能量不跨回合保留。
 func _test_energy_card()->void:
 	for starting_energy in [0, 1, 3]:
 		var definition:CardDefinition = _energy_definition();
@@ -194,6 +205,7 @@ func _test_energy_card()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证重复回能按效果次数结算，但卡牌只归档一次。
 func _test_repeated_energy_effect()->void:
 	var definition:CardDefinition = _energy_definition();
 	definition.effects[0].amount = 2;
@@ -210,6 +222,7 @@ func _test_repeated_energy_effect()->void:
 	controller.get_parent().queue_free();
 
 
+## 按指定数量构建固有与普通牌定义列表，并可为固有牌附加保留词条。
 func _opening_definitions(innate_count:int, ordinary_count:int, retains:bool = false)->Array[CardDefinition]:
 	var innate:CardDefinition = load("res://cards/data/strike.tres").duplicate();
 	innate.is_innate = true;
@@ -223,6 +236,7 @@ func _opening_definitions(innate_count:int, ordinary_count:int, retains:bool = f
 	return definitions;
 
 
+## 复制遭遇以设置基础抽牌数和手牌上限，使用指定定义列表启动起手测试。
 func _opening_controller(definitions:Array[CardDefinition], draw_count:int = 5, hand_limit:int = 10)->BattleController:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.cards_per_turn = draw_count;
@@ -250,6 +264,7 @@ func _test_innate_opening()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证固有牌超过手牌容量时留在牌堆顶部，后续抽取仍保持顺序与牌数。
 func _test_innate_overflow()->void:
 	var controller:BattleController = _opening_controller(_opening_definitions(5, 2), 2, 3);
 	var state:BattleState = controller.battle_state;
@@ -265,6 +280,7 @@ func _test_innate_overflow()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证固有与保留组合复用原实例，下一回合抽牌仍受手牌容量限制。
 func _test_innate_and_retained_hand()->void:
 	var controller:BattleController = _opening_controller(_opening_definitions(2, 8, true), 3, 4);
 	var state:BattleState = controller.battle_state;
@@ -277,6 +293,7 @@ func _test_innate_and_retained_hand()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证短牌组不产生额外卡牌，且每场新战斗重新创建实例并安排固有起手。
 func _test_short_opening_and_new_battle()->void:
 	var definitions:Array[CardDefinition] = _opening_definitions(1, 1);
 	var controller:BattleController = _opening_controller(definitions);
@@ -307,6 +324,7 @@ func _health_loss_definition()->CardDefinition:
 	return definition;
 
 
+## 验证直接失血在支付费用后生效、绕过格挡且不改变最大生命。
 func _test_health_loss_and_cost()->void:
 	for energy in [0, 3]:
 		var controller:BattleController = _opening_controller([_health_loss_definition()]);
@@ -330,6 +348,7 @@ func _test_health_loss_and_cost()->void:
 	_expect(target.lose_health(5) == 3 and target.current_health == 0, "过量失血返回实际损失，生命不低于0");
 
 
+## 验证失血致死中断后续效果，但仍完成卡牌归档并只报告一次失败。
 func _test_lethal_health_loss()->void:
 	for exhausts in [false, true]:
 		var definition:CardDefinition = _health_loss_definition();
@@ -350,6 +369,7 @@ func _test_lethal_health_loss()->void:
 		state.enemy_state.current_health = 1;
 		_expect(controller._card_is_playable(card), "失血属于效果，生命不足不会额外禁止出牌");
 		var results:Array[bool] = [];
+		## 失败回调验证直接失血致死的卡已按词条归档，且报告生命为零。
 		controller.battle_finished.connect(func(victory:bool, health:int, _max_health:int)->void:
 			results.append(victory);
 			var final_pile:Array[CardInstance] = state.exhaust_pile if exhausts else state.discard_pile;
@@ -367,6 +387,7 @@ func _test_lethal_health_loss()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证重复失血逐段执行，并在其中一段致死后停止剩余效果。
 func _test_repeated_health_loss()->void:
 	for health in [5, 3]:
 		var definition:CardDefinition = _health_loss_definition();
@@ -382,6 +403,7 @@ func _test_repeated_health_loss()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证先击杀敌人后失血致死仍按玩家失败处理，效果保持配置顺序。
 func _test_health_loss_after_lethal_damage()->void:
 	var definition:CardDefinition = _health_loss_definition();
 	definition.effects.reverse();# 先击杀敌人，随后自身失血致死。
@@ -390,6 +412,7 @@ func _test_health_loss_after_lethal_damage()->void:
 	state.player_state.current_health = 1;
 	state.enemy_state.current_health = 1;
 	var results:Array[bool] = [];
+	## 记录战斗结果，用于核对先击杀敌人后失血致死的最终判定。
 	controller.battle_finished.connect(func(victory:bool, _health:int, _max_health:int)->void: results.append(victory));
 	controller._on_card_selected(state.hand[0]);
 	_expect(state.player_state.current_health == 0 and state.enemy_state.current_health == 0, "效果仍按配置的先后顺序执行");

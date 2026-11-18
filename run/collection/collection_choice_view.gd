@@ -5,17 +5,23 @@ extends Control
 signal collection_selected(collection:CollectionDefinition);
 signal back_requested;
 
+## 本次页面配置复制的藏品候选列表，元素仍引用只读定义。
 var collection_options:Array[CollectionDefinition] = [];
+## 本页创建的藏品选择按钮，用于统一禁用。
 var choice_buttons:Array[Button] = [];
+## 本次配置后是否已报告选择或返回，防止重复提交。
 var _selection_reported:bool = false;
+## 每次成功配置递增的代次，用于拒绝旧按钮回调。
 var _setup_generation:int = 0;
 
 @onready var options_container:HBoxContainer = %options_container;
 @onready var back_button:Button = %back_button;
 
+## 连接返回按钮，将输入交给页面级防重处理。
 func _ready()->void:
 	back_button.pressed.connect(_on_back_pressed);
 
+## 验证三个不重复的藏品候选后复制列表、重置提交代次并重建选项；无效时返回 [code]false[/code]。
 func setup(options:Array[CollectionDefinition])->bool:
 	if options.size() != 3:
 		push_error("开局藏品页面需要三个不同的候选");
@@ -38,6 +44,7 @@ func setup(options:Array[CollectionDefinition])->bool:
 		_create_option(collection, _setup_generation);
 	return true;
 
+## 为藏品创建图标、名称、说明和选择按钮，并将回调绑定到本次页面配置代次。
 func _create_option(collection:CollectionDefinition, generation:int)->void:
 	var panel:PanelContainer = PanelContainer.new();
 	panel.name = "collection_%s" % collection.collection_id;
@@ -89,6 +96,7 @@ func _create_option(collection:CollectionDefinition, generation:int)->void:
 	layout.add_child(button);
 	choice_buttons.append(button);
 
+## 校验页面有效性、配置代次和候选身份，锁定所有按钮后发出一次选择意图。
 func _on_collection_selected(collection:CollectionDefinition, generation:int)->void:
 	if _selection_reported or generation != _setup_generation or not is_inside_tree() or is_queued_for_deletion():
 		return;
@@ -98,6 +106,7 @@ func _on_collection_selected(collection:CollectionDefinition, generation:int)->v
 	_disable_buttons();
 	collection_selected.emit(collection);
 
+## 在页面有效且尚未提交时锁定按钮并发出一次返回意图。
 func _on_back_pressed()->void:
 	if _selection_reported or not is_inside_tree() or is_queued_for_deletion():
 		return;
@@ -105,6 +114,7 @@ func _on_back_pressed()->void:
 	_disable_buttons();
 	back_requested.emit();
 
+## 禁用所有藏品选择按钮及返回按钮。
 func _disable_buttons()->void:
 	for button in choice_buttons:
 		button.disabled = true;

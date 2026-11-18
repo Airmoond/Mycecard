@@ -2,16 +2,20 @@
 extends SceneTree
 
 const DEFAULT:RunDefinition = preload("res://run/data/default_run.tres");
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0;
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	call_deferred("_run");
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(condition:bool, message:String)->void:
 	if not condition:
 		failures += 1;
 		push_error(message);
 
+## 运行整局会话命令、身份与防重检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_fixed_randomness();
 	_test_complete_route_and_rewards();
@@ -24,6 +28,7 @@ func _run()->void:
 	print("RunSession模型检查完成，失败数：%d" % failures);
 	quit(1 if failures else 0);
 
+## 初始化指定种子的会话并完成构筑及藏品选择，同时核对候选身份、步骤防重和状态合法性。
 func session_ready(definition:RunDefinition = DEFAULT, seed_value:int = 360101)->RunSession:
 	var session:RunSession = RunSession.new();
 	expect(session.initialize(definition, seed_value), "合法配置可初始化会话");
@@ -49,6 +54,7 @@ func session_ready(definition:RunDefinition = DEFAULT, seed_value:int = 360101)-
 	expect(not session.state.is_invalid(), "开局完成后状态合法");
 	return session;
 
+## 根据当前战斗请求创建身份匹配的测试结果；失败结果的玩家生命固定为零。
 func result_for(session:RunSession, victory:bool = true, health:int = 20, maximum:int = 50)->BattleResult:
 	var request:Dictionary = session.get_battle_request();
 	var result:BattleResult = BattleResult.new();
@@ -59,6 +65,7 @@ func result_for(session:RunSession, victory:bool = true, health:int = 20, maximu
 	result.player_max_health = maximum;
 	return result;
 
+## 按地图节点顺序提取本局实际类型及内容标识，用于比较随机绑定。
 func _signature(state:RunState)->Array[String]:
 	var result:Array[String] = [];
 	for node in state.definition.map_definition.nodes:
@@ -67,6 +74,7 @@ func _signature(state:RunState)->Array[String]:
 		result.append("%s:%d:%s" % [node.node_id, state.get_node_type(node.node_id), encounter.encounter_id if encounter != null else event.encounter_id if event != null else ""]);
 	return result;
 
+## 验证同种子得到同内容，战斗随机调用不干扰奖励随机流，查询不重抽绑定。
 func _test_fixed_randomness()->void:
 	var first:RunSession = session_ready(DEFAULT, 360111);
 	var second:RunSession = session_ready(DEFAULT, 360111);
@@ -89,6 +97,7 @@ func _test_fixed_randomness()->void:
 			break;
 	expect(_signature(first.state) == signature, "查询与推进不会重抽地图绑定");
 
+## 验证按所选路线推进、逐轮领取及跳过奖励、节点完成和终局命令拒绝。
 func _test_complete_route_and_rewards()->void:
 	var definition:RunDefinition = DEFAULT.duplicate();
 	definition.reward_selection_count = 3;
@@ -135,6 +144,7 @@ func _test_complete_route_and_rewards()->void:
 	expect(battles == 2 and events == 1 and state.owned_cards.size() == initial_count + added and state.current_health == 3 and not state.is_invalid(), "整局两普通战斗一事件，Boss不触发圣杯");
 	expect(not session.skip_reward() and not session.enter_node("start"), "终局不接受旧选择或地图命令");
 
+## 验证失败结算、错节点与重复结果拒绝，以及上一局结果不能写入新会话。
 func _test_defeat_and_stale_result()->void:
 	var session:RunSession = session_ready(load("res://tests/fixtures/linear_run.tres"), 360131);
 	expect(session.enter_node("goblin_battle"), "旧线性地图可进入实际战斗阶段");
@@ -151,6 +161,7 @@ func _test_defeat_and_stale_result()->void:
 	session.enter_node("goblin_battle");
 	expect(not session.submit_battle_result(old_result) and session.state.status == RunState.RunStatus.IN_BATTLE, "上一局战斗身份不能写入同名新节点");
 
+## 复制正式配置并限定事件类别，返回使用指定种子推进到事件的会话。
 func event_session(kind:int, seed_value:int = 360141)->RunSession:
 	var definition:RunDefinition = DEFAULT.duplicate();
 	var content_pool:Array[UnexpectedEncounterDefinition] = [];
@@ -160,6 +171,7 @@ func event_session(kind:int, seed_value:int = 360141)->RunSession:
 	definition.unexpected_encounter_pool = content_pool;
 	return session_at_event(definition, seed_value);
 
+## 完成开局后沿路线推进普通战斗及奖励，直到进入不期而遇；未找到时记录失败。
 func session_at_event(definition:RunDefinition, seed_value:int)->RunSession:
 	var session:RunSession = session_ready(definition, seed_value);
 	for node_id in definition.map_definition.get_route_node_ids("a"):
@@ -172,6 +184,7 @@ func session_at_event(definition:RunDefinition, seed_value:int)->RunSession:
 	expect(false, "每条路线必有一个不期而遇");
 	return session;
 
+## 验证事件费用不足时状态不变，成功时支付与收益一次提交，并报告实际治疗量。
 func _test_events_and_atomic_cost()->void:
 	var session:RunSession = event_session(UnexpectedEncounterDefinition.Kind.ALTAR);
 	var state:RunState = session.state;
@@ -197,6 +210,7 @@ func _test_events_and_atomic_cost()->void:
 	expect(session.resolve_unexpected("heal", null, -1, session.step_token), "营地执行配置的治疗操作");
 	expect(state.current_health == 49 and session.last_command_result["actual_heal"] == 7 and state._normal_victory_collection_nodes.size() == healed_nodes, "治疗封顶报告实际值且事件不触发圣杯");
 
+## 验证按索引只删除指定副本，拒绝目标不匹配或删除最后一张牌。
 func _test_remove_one_copy()->void:
 	var session:RunSession = event_session(UnexpectedEncounterDefinition.Kind.FOUNTAIN);
 	var state:RunState = session.state;
@@ -212,6 +226,7 @@ func _test_remove_one_copy()->void:
 	expect(not session.get_option_view_data()[0]["enabled"] and not session.resolve_unexpected("remove", strike, 0), "最后一张受规则及界面资格查询保护");
 	expect(session.resolve_unexpected("leave"), "不能删牌仍可无代价离开");
 
+## 用新增资源选项验证既有操作可直接扩展事件内容，无需按内容名增加规则分支。
 func _test_content_only_extension()->void:
 	var content:UnexpectedEncounterDefinition = UnexpectedEncounterDefinition.new();
 	content.encounter_id = "test_new_content";
@@ -237,6 +252,7 @@ func _test_content_only_extension()->void:
 	expect(queries.size() == 2 and queries[0]["option_id"] == "recover_new" and queries[0]["selection_kind"] == UnexpectedEncounterOptionDefinition.SelectionKind.NONE, "通用查询返回新内容任意选项ID和操作方式");
 	expect(session.resolve_unexpected("recover_new") and session.state.current_health == 24 and session.get_unexpected_result_view_data()["template"] == rest.result_text, "局部执行器不认识内容名也能执行既有治疗操作");
 
+## 验证同节点多个选牌选项分别保存固定候选，但整节点只允许提交一次。
 func _test_independent_option_candidates()->void:
 	var content:UnexpectedEncounterDefinition = UnexpectedEncounterDefinition.new();
 	content.encounter_id = "test_two_choices";
@@ -272,6 +288,7 @@ func _test_independent_option_candidates()->void:
 	expect(session.get_unexpected_candidates(rare.option_id) == rare_cards and session.resolve_unexpected(rare.option_id, rare_cards[0], -1, token), "拒绝跨组候选不重抽，当前组选牌可提交");
 	expect(not session.resolve_unexpected(common.option_id, common_cards[0]) and not session.state.is_invalid(), "选定一项后整个节点只提交一次");
 
+## 验证无法执行的节点及不一致战斗结果不改变进度、步骤或随机状态。
 func _test_rejected_commands_are_atomic()->void:
 	var session:RunSession = session_ready(DEFAULT, 360181);
 	var state:RunState = session.state;

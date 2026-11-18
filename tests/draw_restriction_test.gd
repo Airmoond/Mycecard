@@ -1,13 +1,16 @@
 ## 背水一战：先抽后禁、重复使用、统一抽牌入口、回合恢复及永恒回手。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行回合内抽牌限制检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_draw_then_block();
 	_test_repeat_and_other_effects();
@@ -20,12 +23,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 创建作用于自身的指定类型与数值效果。
 func _effect(kind:CombatEffectDefinition.EffectType, amount:int = 0)->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = kind;
@@ -34,6 +39,7 @@ func _effect(kind:CombatEffectDefinition.EffectType, amount:int = 0)->CombatEffe
 	return effect;
 
 
+## 创建固有零费测试牌，按顺序先抽牌、再施加本回合禁抽。
 func _card()->CardDefinition:
 	var definition:CardDefinition = load("res://cards/data/defend.tres").duplicate();
 	definition.card_id = "test_prevent_draw";
@@ -45,6 +51,7 @@ func _card()->CardDefinition:
 	return definition;
 
 
+## 用特殊卡和指定数量填充牌启动正式战斗，并配置测试手牌上限。
 func _controller(specials:Array[CardDefinition], filler_count:int = 10, hand_limit:int = 10)->BattleController:
 	var definitions:Array[CardDefinition] = specials.duplicate();
 	for index in range(filler_count):
@@ -59,6 +66,7 @@ func _controller(specials:Array[CardDefinition], filler_count:int = 10, hand_lim
 	return controller;
 
 
+## 验证先完成配置的抽牌再禁止后续抽牌，归档和牌区守恒不受影响。
 func _test_draw_then_block()->void:
 	var controller:BattleController = _controller([_card()]);
 	var state:BattleState = controller.battle_state;
@@ -73,6 +81,7 @@ func _test_draw_then_block()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证禁抽后仍可再次出牌，只有抽牌被阻挡，后续其他效果照常执行。
 func _test_repeat_and_other_effects()->void:
 	var other:CardDefinition = _card();
 	other.card_id = "test_draw_and_block";
@@ -93,6 +102,7 @@ func _test_repeat_and_other_effects()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证禁抽时不洗回弃牌堆，也不阻断队列中的后续非抽牌效果。
 func _test_no_reshuffle()->void:
 	var controller:BattleController = _controller([_card()], 0);
 	var state:BattleState = controller.battle_state;
@@ -106,6 +116,7 @@ func _test_no_reshuffle()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证下回合先解除禁抽再抽牌，界面提示及新战斗状态同步重置。
 func _test_turn_and_battle_reset()->void:
 	var controller:BattleController = _controller([_card()]);
 	var state:BattleState = controller.battle_state;
@@ -119,6 +130,7 @@ func _test_turn_and_battle_reset()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证禁抽牌自身的前序抽牌仍受余牌与手牌上限约束，不足数量也施加限制。
 func _test_limited_first_draw()->void:
 	for filler_count in [0, 1, 10]:
 		var controller:BattleController = _controller([_card()], filler_count, 2);
@@ -129,6 +141,7 @@ func _test_limited_first_draw()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证禁抽不阻挡武器损坏后的直接回手或满手弃置，并保持牌数守恒。
 func _test_weapon_return()->void:
 	for full_hand in [false, true]:
 		var weapon:CardDefinition = CardDefinition.new();

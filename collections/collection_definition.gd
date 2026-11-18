@@ -4,15 +4,23 @@ extends Resource
 
 enum EffectType { STARTING_STRENGTH, EARLY_TURN_BLOCK, NORMAL_VICTORY_HEAL }
 
+## 藏品的稳定标识，用于候选去重与配置验证。
 @export var collection_id:String
+## 显示给玩家的藏品名称。
 @export var display_name:String
+## 显示给玩家的完整藏品效果说明。
 @export_multiline var description:String
+## 藏品选择页和查看器使用的图标，必须配置。
 @export var icon:Texture2D
+## 决定藏品在战斗开始、回合开始或普通胜利后生效的规则类型。
 @export var effect_type:EffectType = EffectType.STARTING_STRENGTH
+## 藏品效果的正数数值，按类型表示力量、格挡或治疗量。
 @export var amount:int = 1
+## 回合开始格挡效果允许触发的前若干回合；其他效果必须为 [code]0[/code]。
 @export var turn_limit:int = 0
 
 
+## 检查藏品基础信息、图标、效果数值与回合限制；发现首个错误时报告并返回 [code]true[/code]。
 func is_invalid()->bool:
 	if collection_id.is_empty() or display_name.is_empty() or description.is_empty():
 		push_error("藏品 ID、名称和效果说明不能为空");

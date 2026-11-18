@@ -1,8 +1,10 @@
 ## 新Boss生命对照与独立验证；继承正式结算及冻结的贪心策略。
 extends "res://综合数值模型/运行战斗评估.gd"
 
+## Boss 实验的敌人、生命候选、牌组、训练与验证样本配置。
 var settings:Dictionary
 
+## 根据标签构建基础、参考或指定种子的随机合法开局牌组。
 func _deck(label:String, random_seed:int)->Array[CardDefinition]:
 	if label == "随机合法开局":
 		return _draft(random_seed)
@@ -12,6 +14,7 @@ func _deck(label:String, random_seed:int)->Array[CardDefinition]:
 			deck.append(cards[id])
 	return deck
 
+## 对指定 Boss 生命、玩家生命和牌组运行连续种子样本，汇总胜率、余血、回合及代表轨迹。
 func _measure(enemy_id:String, hp:int, player_hp:int, label:String, samples:int, seed_start:int)->Dictionary:
 	var rows:Array = []
 	var examples:Array = []
@@ -32,6 +35,7 @@ func _measure(enemy_id:String, hp:int, player_hp:int, label:String, samples:int,
 		raw.clear()
 	return {"enemy_id":enemy_id,"health":hp,"player_health":player_hp,"label":label,"samples":samples,"wins":wins,"win_rate":wins/float(samples),"mean_remaining_health":life/samples,"mean_turns":turns/samples,"outcomes":rows,"examples":examples}
 
+## 在隔离副本中按命令行模式执行 Boss 生命对照或独立验证，并保存汇总及伤后入场样本。
 func _run()->void:
 	if not preload("res://tools/history_guard.gd").require_sandbox():
 		quit(2)

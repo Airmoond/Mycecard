@@ -3,6 +3,9 @@ class_name AttackDamageResolver
 extends RefCounted
 
 
+## 返回基础伤害叠加力量，再应用虚弱和易伤倍率后的攻击伤害。
+##
+## 所有倍率计算完成后向下取整，最终结果不小于 [code]0[/code]。
 static func calculate(base_damage:int, strength:int, is_weak:bool, is_vulnerable:bool)->int:
 	var damage:float = base_damage + strength;
 	if is_weak:

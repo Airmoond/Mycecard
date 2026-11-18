@@ -1,14 +1,18 @@
 ## 剩余草案卡的正式配置、组合结算、真实分页选择与奖励流转。
 extends SceneTree
 
+## 本组检查覆盖的新增正式战士卡标识。
 const NEW_IDS:Array[String] = ["shield_slam", "blood_sacrifice", "technical_fighting", "overpower", "blood_cloak", "pommel_strike", "iron_wave", "shrug_it_off", "intimidate", "trade_wounds"];
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行战士补充卡牌检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_catalog();
 	_test_simple_cards();
@@ -26,16 +30,19 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 按标识加载正式卡牌定义。
 func _card(id:String)->CardDefinition:
 	return load("res://cards/data/%s.tres" % id);
 
 
+## 复制遭遇并设置独立测试敌人生命，用指定牌组启动正式卡组合检查。
 func _controller(cards:Array[CardDefinition])->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
@@ -63,6 +70,7 @@ func _put_in_hand(state:BattleState, id:String)->CardInstance:
 	return null;
 
 
+## 验证新增卡资源、身份与卡池归属，以及调整后的正式双重打击配置。
 func _test_catalog()->void:
 	var character:CharacterDefinition = load("res://characters/data/warrior.tres");
 	var names:Array[String] = ["盾牌猛击", "血祭", "技巧型格斗", "力量碾压", "血红披风", "剑柄打击", "铁斩波", "耸肩无视", "颤栗", "以伤换伤"];
@@ -78,6 +86,7 @@ func _test_catalog()->void:
 	_expect(_card("double_strike").effects[0].amount == 5 and _card("double_strike").effects[0].repeat_count == 2, "双重打击更新为5点两次");
 
 
+## 验证正式简单伤害、格挡及减益卡的数值、目标和归档。
 func _test_simple_cards()->void:
 	for values in [["overpower", 3, 32, 0, 0], ["iron_wave", 1, 5, 5, 0], ["intimidate", 1, 0, 0, 3], ["double_strike", 1, 10, 0, 0]]:
 		var controller:BattleController = _controller([_card(values[0])]);
@@ -89,6 +98,7 @@ func _test_simple_cards()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证正式抽牌卡的费用、前序效果、抽牌数量及结算中卡牌隔离。
 func _test_draw_cards()->void:
 	for values in [["pommel_strike", 9, 0, 0, 1], ["shrug_it_off", 0, 8, 0, 1], ["technical_fighting", 0, 0, 2, 3]]:
 		var deck:Array[CardDefinition] = [_card(values[0])];
@@ -104,6 +114,7 @@ func _test_draw_cards()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证正式盾牌猛击读取当前格挡和攻击修正，战斗外显示动态值 [code]X[/code]。
 func _test_shield_slam()->void:
 	var controller:BattleController = _controller([_card("shield_slam")]);
 	var state:BattleState = controller.battle_state;
@@ -120,6 +131,7 @@ func _test_shield_slam()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证正式血祭支付最大生命、夹取当前生命并获得格挡，上限不足时拒绝。
 func _test_blood_sacrifice()->void:
 	var controller:BattleController = _controller([_card("blood_sacrifice")]);
 	var state:BattleState = controller.battle_state;
@@ -136,6 +148,7 @@ func _test_blood_sacrifice()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证正式血红披风各自注册能力，并在后续玩家回合按顺序失血换格挡。
 func _test_cloak()->void:
 	var controller:BattleController = _controller([_card("blood_cloak"), _card("blood_cloak"), _card("defend")]);
 	var state:BattleState = controller.battle_state;
@@ -147,6 +160,7 @@ func _test_cloak()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证正式以伤换伤先直接失血再造成攻击伤害，不触发攻击牌回能，致死时中断。
 func _test_trade_wounds()->void:
 	var controller:BattleController = _controller([_card("trade_wounds")]);
 	var state:BattleState = controller.battle_state;
@@ -188,6 +202,7 @@ func _reward_seed(definition:RunDefinition, target:CardDefinition, chosen:CardDe
 	return -1;
 
 
+## 通过真实分页构筑和奖励取得新增卡，验证下一场创建对应实例。
 func _test_draft_and_rewards()->void:
 	for id in NEW_IDS:
 		var target:CardDefinition = _card(id);
@@ -237,6 +252,7 @@ func _test_draft_and_rewards()->void:
 		await process_frame;
 
 
+## 验证新增卡在候选和手牌卡面中的完整文字与元数据。
 func _test_text()->void:
 	var views:Array[Control] = [];
 	for id in NEW_IDS:

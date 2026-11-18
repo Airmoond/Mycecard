@@ -1,16 +1,20 @@
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0;
 const DEFAULT:RunDefinition = preload("res://run/data/default_run.tres");
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	call_deferred("_run");
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(condition:bool, message:String)->void:
 	if not condition:
 		failures += 1;
 		push_error(message);
 
+## 初始化指定冒险、完成构筑及开始节点藏品选择，返回已开放路线的局内状态。
 func drafted(definition:RunDefinition = DEFAULT)->RunState:
 	var state:RunState = RunState.new();
 	expect(state.run_state_init(definition), "第六阶段配置能够创建新局");
@@ -21,6 +25,7 @@ func drafted(definition:RunDefinition = DEFAULT)->RunState:
 	state.choose_collection(definition.collection_pool[0]);
 	return state;
 
+## 创建并沿路线推进到指定类别的不期而遇，保存固定候选后返回状态。
 func event_state(kind:int)->RunState:
 	var definition:RunDefinition = DEFAULT.duplicate();
 	for content in DEFAULT.unexpected_encounter_pool:
@@ -39,6 +44,7 @@ func event_state(kind:int)->RunState:
 	expect(state.begin_unexpected_encounter(), "进入不期而遇并生成固定候选");
 	return state;
 
+## 运行随机内容局内状态检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_random_bindings();
 	_test_camp();
@@ -48,6 +54,7 @@ func _run()->void:
 	print("第六阶段局内状态检查完成，失败数：%d" % failures);
 	quit(1 if failures else 0);
 
+## 验证每条路线的实际类型、敌人和事件一次性只读绑定，静态地图不被改写。
 func _test_random_bindings()->void:
 	var map:MapDefinition = DEFAULT.map_definition;
 	var original_types:Array[int] = [];
@@ -85,6 +92,7 @@ func _test_random_bindings()->void:
 	for index in range(map.nodes.size()):
 		expect(map.nodes[index].node_type == original_types[index] and (map.nodes[index].route_id.is_empty() or map.nodes[index].heal_amount == 0), "随机结果不回写地图且没有旧自动15回血");
 
+## 验证营地固定候选、筛选和一次性选择，选牌不隐式附带旧休整治疗。
 func _test_camp()->void:
 	var state:RunState = event_state(UnexpectedEncounterDefinition.Kind.CAMP);
 	var node_id:String = state.current_node_id;
@@ -105,6 +113,7 @@ func _test_camp()->void:
 	expect(not state.resolve_unexpected_encounter("card", choice.duplicate()), "同名外部卡不是候选原引用");
 	expect(state.resolve_unexpected_encounter("card", choice) and state.current_health == 20 and state.owned_cards.back() == choice and state.owned_cards.size() == count + 1, "营地选牌不自动恢复15生命");
 
+## 验证祭坛稀有度候选、生命支付前置与失败原子性，以及低生命无代价离开。
 func _test_altar()->void:
 	var state:RunState = event_state(UnexpectedEncounterDefinition.Kind.ALTAR);
 	var choice:CardDefinition = state.unexpected_candidates[state.current_node_id][0];
@@ -120,6 +129,7 @@ func _test_altar()->void:
 	state.current_health = 1;
 	expect(state.resolve_unexpected_encounter("leave") and state.current_health == 1 and state.owned_cards.size() == count, "低生命可离开无代价");
 
+## 验证泉水按真实牌组下标只删除一个副本，拒绝错位及最后一张牌的删除。
 func _test_fountain()->void:
 	var state:RunState = event_state(UnexpectedEncounterDefinition.Kind.FOUNTAIN);
 	var strike:CardDefinition = load("res://cards/data/strike.tres");
@@ -138,6 +148,7 @@ func _test_fountain()->void:
 	expect(not state.resolve_unexpected_encounter("remove", strike, 0), "保留最后一张卡，避免创建空战斗牌组");
 	expect(state.resolve_unexpected_encounter("leave") and state.owned_cards.size() == 1, "无法删最后一张时仍可离开");
 
+## 验证不期而遇不触发战后藏品治疗、各节点状态独立、重开清理及旧地图兼容。
 func _test_reset_and_legacy()->void:
 	var state:RunState = event_state(UnexpectedEncounterDefinition.Kind.CAMP);
 	state.selected_collection = load("res://collections/data/ember_chalice.tres");

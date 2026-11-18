@@ -5,7 +5,9 @@ extends Control
 const MAP_NODE_VIEW_SCENE:PackedScene = preload("res://run/map/map_node_view.tscn");
 const COLLECTION_INSPECTOR_SCENE:PackedScene = preload("res://ui/inspect/collection_inspector.tscn");
 const CARD_INSPECTOR_SCENE:PackedScene = preload("res://ui/inspect/card_inspector.tscn");
+## 地图节点位置所采用的设计画布尺寸。
 const DESIGN_SIZE:Vector2 = Vector2(1024.0, 600.0);
+## 节点控件缩放前的统一尺寸。
 const NODE_SIZE:Vector2 = Vector2(145.0, 86.0);
 const CONNECTION_WIDTH:float = 3.0;
 const CONNECTION_COLOR:Color = Color(0.45, 0.33, 0.18, 0.65);
@@ -15,15 +17,25 @@ const EXCLUDED_CONNECTION_COLOR:Color = Color(0.42, 0.38, 0.31, 0.28);
 
 signal node_selected(node_id:String);
 
+## 本页显示的只读地图拓扑，必须与局内状态使用同一配置。
 var map_definition:MapDefinition;
+## 提供本局实际内容绑定、生命、牌组及地图进度的状态对象。
 var run_state:RunState;
+## 按节点标识索引的现有地图节点控件。
 var _node_views:Dictionary = {};
+## 本次刷新是否已经报告节点选择，防止切页前重复操作。
 var _selection_reported:bool = false;
+## 从设计画布到实际页面的等比缩放系数。
 var _layout_scale:float = 1.0;
+## 设计画布在实际页面中的居中起点。
 var _layout_origin:Vector2 = Vector2.ZERO;
+## 是否已有等待执行的延迟布局请求。
 var _layout_queued:bool = false;
+## 本页当前拥有的藏品查看器。
 var _collection_inspector:CollectionInspector;
+## 本页当前拥有的整局牌组查看器。
 var _card_inspector:CardInspector;
+## 提供页面模态挂载与全局输入阻挡状态的共享浮层服务。
 var _overlay_host:OverlayHost;
 
 @onready var connection_layer:Control = $connection_layer;
@@ -36,11 +48,13 @@ var _overlay_host:OverlayHost;
 @onready var collection_button:Button = $top_bar/collection_button;
 @onready var route_hint:Label = $route_hint;
 
+## 连接地图尺寸变化，以及牌组和藏品查看按钮。
 func _ready()->void:
 	resized.connect(_queue_layout);
 	collection_button.pressed.connect(_open_collection_inspector);
 	deck_button.pressed.connect(_open_deck_inspector);
 
+## 验证地图与局内状态引用一致后绑定并刷新；缺少参数或地图不匹配时返回 [code]false[/code]。
 func setup(new_map_definition:MapDefinition, new_run_state:RunState)->bool:
 	if new_map_definition == null or new_run_state == null:
 		push_error("地图页面缺少地图定义或局内状态");
@@ -53,6 +67,7 @@ func setup(new_map_definition:MapDefinition, new_run_state:RunState)->bool:
 	refresh_map();
 	return true;
 
+## 重建节点显示并重置页面选择锁，刷新局内信息、布局和查看器交互状态，不重新生成随机内容。
 func refresh_map()->void:
 	if map_definition == null or run_state == null:
 		return;
@@ -63,6 +78,7 @@ func refresh_map()->void:
 	_layout_map();
 	_refresh_inspector_interactions();
 
+## 移除并排队释放连线、节点和注释控件，清空节点索引。
 func _clear_dynamic_content()->void:
 	for layer:Control in [connection_layer, node_layer, annotation_layer]:
 		for child in layer.get_children():
@@ -70,6 +86,7 @@ func _clear_dynamic_content()->void:
 			child.queue_free();
 	_node_views.clear();
 
+## 根据本局状态更新生命、牌组张数和藏品入口，并为非分支地图设置路线提示。
 func _refresh_run_info()->void:
 	health_label.text = "生命：%d / %d" % [run_state.current_health, run_state.max_health];
 	deck_label.text = "牌组：%d张" % run_state.owned_cards.size();
@@ -84,6 +101,7 @@ func _refresh_run_info()->void:
 		route_hint.text = "选择下一处可进入的地图节点";
 		return;
 
+## 将已知路线标识转换为方位名称；未知标识原样返回。
 func _route_name(route_id:String)->String:
 	match route_id:
 		"a": return "上方";
@@ -91,6 +109,7 @@ func _route_name(route_id:String)->String:
 		"c": return "下方";
 	return route_id;
 
+## 按本局实际内容和进度创建节点控件，设置名称、状态、工具提示及交互条件。
 func _create_node_views()->void:
 	for node_definition in map_definition.nodes:
 		var view:MapNodeView = MAP_NODE_VIEW_SCENE.instantiate();
@@ -107,6 +126,7 @@ func _create_node_views()->void:
 		view.set_interactable(run_state.can_enter_node(node_definition.node_id) and not _has_inspector());
 		_node_views[node_definition.node_id] = view;
 
+## 返回节点在本局实际类型对应的显示名称。
 func _node_type_name(node_definition:MapNodeDefinition)->String:
 	match run_state.get_node_type(node_definition.node_id):
 		MapNodeDefinition.NodeType.START: return "出发";
@@ -116,6 +136,7 @@ func _node_type_name(node_definition:MapNodeDefinition)->String:
 		MapNodeDefinition.NodeType.BOSS: return "最终 Boss";
 	return "地图节点";
 
+## 生成节点内容、敌人生命、休整治疗及路线排除状态的工具提示。
 func _node_tooltip(node_definition:MapNodeDefinition)->String:
 	var text:String = run_state.get_node_display_name(node_definition.node_id);
 	var encounter:EncounterDefinition = run_state.get_node_encounter(node_definition.node_id);
@@ -130,6 +151,7 @@ func _node_tooltip(node_definition:MapNodeDefinition)->String:
 		text += "\n本局已选择另一条路线";
 	return text;
 
+## 按已完成、当前位置、可进入的优先顺序返回节点可视状态，否则返回锁定。
 func _get_node_visual_state(node_id:String)->MapNodeView.NodeState:
 	if run_state.completed_node_ids.has(node_id):
 		return MapNodeView.NodeState.COMPLETED;
@@ -139,6 +161,7 @@ func _get_node_visual_state(node_id:String)->MapNodeView.NodeState:
 		return MapNodeView.NodeState.AVAILABLE;
 	return MapNodeView.NodeState.LOCKED;
 
+## 返回节点是否属于本局已选择路线以外的非公共支线。
 func _is_excluded_route(node_definition:MapNodeDefinition)->bool:
 	return (
 		not run_state.selected_route_id.is_empty()
@@ -167,15 +190,18 @@ func _layout_map()->void:
 	_create_connection_lines();
 	_create_annotations();
 
+## 节点已准备且没有排队布局时，安排一次延迟重排以合并连续尺寸变化。
 func _queue_layout()->void:
 	if _layout_queued or not is_node_ready():
 		return;
 	_layout_queued = true;
 	_layout_map.call_deferred();
 
+## 将地图设计坐标转换为当前缩放和居中后的页面坐标。
 func _design_point(point:Vector2)->Vector2:
 	return _layout_origin + point * _layout_scale;
 
+## 按现有节点位置重新绘制拓扑连线，线段端点位于节点矩形边缘。
 func _create_connection_lines()->void:
 	for old_line in connection_layer.get_children():
 		connection_layer.remove_child(old_line);
@@ -195,6 +221,7 @@ func _create_connection_lines()->void:
 			line.add_point(_node_edge_point(target_view, -direction));
 			connection_layer.add_child(line);
 
+## 根据路线排除、节点完成及当前可进入状态返回连线颜色。
 func _connection_color(source:MapNodeDefinition, target:MapNodeDefinition)->Color:
 	if _is_excluded_route(source) or _is_excluded_route(target):
 		return EXCLUDED_CONNECTION_COLOR;
@@ -208,9 +235,11 @@ func _connection_color(source:MapNodeDefinition, target:MapNodeDefinition)->Colo
 			return ACTIVE_CONNECTION_COLOR;
 	return CONNECTION_COLOR;
 
+## 返回节点控件在缩放后的页面坐标系中的中心。
 func _get_node_view_center(node_view:MapNodeView)->Vector2:
 	return node_view.position + node_view.size * node_view.scale * 0.5;
 
+## 返回节点中心沿指定方向与缩放矩形边缘的交点；方向为零时返回中心。
 func _node_edge_point(view:MapNodeView, direction:Vector2)->Vector2:
 	var center:Vector2 = _get_node_view_center(view);
 	if direction == Vector2.ZERO:
@@ -220,6 +249,7 @@ func _node_edge_point(view:MapNodeView, direction:Vector2)->Vector2:
 		half_size.y / maxf(absf(direction.y), 0.001));
 	return center + direction * factor;
 
+## 为分支地图重建各列说明，随机内容模式使用位置名称而非固定战斗或休整名称。
 func _create_annotations()->void:
 	for old_annotation in annotation_layer.get_children():
 		annotation_layer.remove_child(old_annotation);
@@ -241,6 +271,7 @@ func _create_annotations()->void:
 		label.position = _design_point(Vector2(110.0 + 200.0 * index, 64.0)) - Vector2(72.5, 0.0) * _layout_scale;
 		annotation_layer.add_child(label);
 
+## 校验页面、选择防重、输入阻挡和节点可进入条件，锁定交互后报告一次节点选择。
 func _on_map_node_pressed(node_id:String)->void:
 	if _selection_reported or _has_inspector() or not is_inside_tree() or is_queued_for_deletion():
 		return;
@@ -258,9 +289,11 @@ func _on_map_node_pressed(node_id:String)->void:
 func _has_inspector()->bool:
 	return is_instance_valid(_collection_inspector) or is_instance_valid(_card_inspector) or (_overlay_host != null and _overlay_host.has_blocking_modal());
 
+## 返回局内状态已绑定、页面有效且没有待处理选择或输入阻挡的结果。
 func _can_open_inspector()->bool:
 	return run_state != null and not _selection_reported and not _has_inspector() and is_inside_tree() and not is_queued_for_deletion();
 
+## 统一更新牌组、藏品和节点按钮，确保查看器打开或节点选择后背景不可操作。
 func _refresh_inspector_interactions()->void:
 	var blocked:bool = run_state == null or _selection_reported or _has_inspector() or not is_inside_tree() or is_queued_for_deletion();
 	collection_button.disabled = blocked;
@@ -289,12 +322,14 @@ func _open_deck_inspector()->void:
 	_card_inspector.closed.connect(_on_card_inspector_closed.bind(_card_inspector));
 	_refresh_inspector_interactions();
 
+## 仅接受当前牌组查看器的关闭通知，清除引用并恢复交互显示。
 func _on_card_inspector_closed(source:CardInspector = null)->void:
 	if source != null and source != _card_inspector:
 		return;
 	_card_inspector = null;
 	_refresh_inspector_interactions();
 
+## 允许浏览时创建藏品查看器，登记页面所有权并刷新背景交互状态。
 func _open_collection_inspector()->void:
 	if not _can_open_inspector():
 		return;
@@ -307,17 +342,20 @@ func _open_collection_inspector()->void:
 	_collection_inspector.closed.connect(_on_collection_inspector_closed.bind(_collection_inspector));
 	_refresh_inspector_interactions();
 
+## 仅接受当前藏品查看器的关闭通知，清除引用并恢复交互显示。
 func _on_collection_inspector_closed(source:CollectionInspector = null)->void:
 	if source != null and source != _collection_inspector:
 		return;
 	_collection_inspector = null;
 	_refresh_inspector_interactions();
 
+## 保存共享浮层服务，并在尚未连接时订阅输入阻挡状态变化。
 func configure_overlay(host:OverlayHost)->void:
 	_overlay_host = host
 	if host != null and not host.blocking_changed.is_connected(_on_overlay_blocking_changed):
 		host.blocking_changed.connect(_on_overlay_blocking_changed)
 
+## 页面仍有效地位于场景树中时，按新的浮层状态刷新交互条件。
 func _on_overlay_blocking_changed(_blocked:bool)->void:
 	if is_inside_tree() and not is_queued_for_deletion():
 		_refresh_inspector_interactions()

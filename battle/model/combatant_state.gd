@@ -43,8 +43,11 @@ var powers:Array[PowerDefinition] = [];
 
 ## 层数表示剩余整轮数，重复施加只延长时间，不增加倍率。
 var weak_turns:int = 0;
+## 易伤的剩余整轮数，重复施加延长时间而不叠加伤害倍率。
 var vulnerable_turns:int = 0;
+## 本次虚弱是否需要跳过下一次轮末递减，由首次施加来源决定。
 var _weak_skip_first_tick:bool = false;
+## 本次易伤是否需要跳过下一次轮末递减，由首次施加来源决定。
 var _vulnerable_skip_first_tick:bool = false;
 
 
@@ -116,6 +119,7 @@ func gain_strength(amount:int)->void:
 	strength += amount;
 
 
+## 清空持续能力、力量、虚弱和易伤，并重置首次递减的跳过标记。
 func _reset_statuses()->void:
 	powers.clear();
 	strength = 0;
@@ -132,6 +136,7 @@ func apply_weak(turns:int, from_enemy:bool)->void:
 	weak_turns += turns;
 
 
+## 增加易伤剩余轮数；首次由敌人施加时记录跳过当轮递减，已有易伤保持原递减安排。
 func apply_vulnerable(turns:int, from_enemy:bool)->void:
 	if vulnerable_turns == 0:
 		_vulnerable_skip_first_tick = from_enemy;
@@ -182,6 +187,7 @@ func apply_power(power:PowerDefinition)->void:
 			powers.append(power);
 
 
+## 返回角色是否已持有指定类型的持续能力。
 func has_power(power_type:PowerDefinition.PowerType)->bool:
 	for power in powers:
 		if power.power_type == power_type:

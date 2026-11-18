@@ -1,16 +1,20 @@
 ## 内容目录约定、迁移后的资源入口和稳定 UID 回归。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(value:bool, message:String)->void:
 	if not value:
 		_failures += 1
 		push_error(message)
 
+## 运行内容目录约定与资源入口检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	for domain:String in ["battle", "cards", "characters", "collections", "combatants", "run"]:
 		_check_data_directories("res://" + domain)
@@ -46,6 +50,7 @@ func _run()->void:
 	print("内容目录检查完成，失败数：%d" % _failures)
 	quit(0 if _failures == 0 else 1)
 
+## 递归检查领域目录可访问，并确认名为 [code]data[/code] 的目录不包含定义脚本或脚本 UID 文件。
 func _check_data_directories(directory:String)->void:
 	var folder:DirAccess = DirAccess.open(directory)
 	_expect(folder != null, "领域目录存在：" + directory)

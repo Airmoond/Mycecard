@@ -1,13 +1,16 @@
 ## 易伤、虚弱的数值、整轮时序、目标与预览检查。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行虚弱、易伤与攻击倍率检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_damage_formula();
 	_test_stacking_and_first_tick();
@@ -23,12 +26,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 按指定类型、数值和目标创建减益或伤害测试效果。
 func _effect(type:CombatEffectDefinition.EffectType, amount:int, target:CombatEffectDefinition.TargetType = CombatEffectDefinition.TargetType.OPPONENT)->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = type;
@@ -37,6 +42,7 @@ func _effect(type:CombatEffectDefinition.EffectType, amount:int, target:CombatEf
 	return effect;
 
 
+## 复制基础卡牌并配置指定效果列表，创建独立零费状态测试牌。
 func _card(effects:Array[CombatEffectDefinition])->CardDefinition:
 	var definition:CardDefinition = load("res://cards/data/defend.tres").duplicate();
 	definition.card_id = "test_status";
@@ -47,6 +53,7 @@ func _card(effects:Array[CombatEffectDefinition])->CardDefinition:
 	return definition;
 
 
+## 用指定效果列表创建合法的敌人测试行动。
 func _action(effects:Array[CombatEffectDefinition])->EnemyActionDefinition:
 	var action:EnemyActionDefinition = EnemyActionDefinition.new();
 	action.action_id = "test_action";
@@ -55,6 +62,7 @@ func _action(effects:Array[CombatEffectDefinition])->EnemyActionDefinition:
 	return action;
 
 
+## 复制遭遇及敌人定义，使用指定行动循环和牌组启动正式战斗。
 func _controller(definitions:Array[CardDefinition], actions:Array[EnemyActionDefinition])->BattleController:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();
@@ -66,6 +74,7 @@ func _controller(definitions:Array[CardDefinition], actions:Array[EnemyActionDef
 	return controller;
 
 
+## 按定义引用查找当前手牌实例；未找到时返回 [code]null[/code]。
 func _in_hand(controller:BattleController, definition:CardDefinition)->CardInstance:
 	for card in controller.battle_state.hand:
 		if card.definition == definition:
@@ -73,10 +82,12 @@ func _in_hand(controller:BattleController, definition:CardDefinition)->CardInsta
 	return null;
 
 
+## 创建对对手造成六点伤害的基础测试行动。
 func _attack()->EnemyActionDefinition:
 	return _action([_effect(CombatEffectDefinition.EffectType.DAMAGE, 6)]);
 
 
+## 验证力量、虚弱和易伤组合后只在最后向下取整，且伤害不小于零。
 func _test_damage_formula()->void:
 	_expect(AttackDamageResolver.calculate(8, 2, true, true) == 11, "8基础加2力量，同时虚弱和易伤应为11");
 	_expect(AttackDamageResolver.calculate(7, 0, true, true) == 7, "7基础同时虚弱易伤不能在中途取整");
@@ -85,6 +96,7 @@ func _test_damage_formula()->void:
 	_expect(AttackDamageResolver.calculate(0, 0, true, true) == 0, "0基础伤害仍为0");
 
 
+## 验证减益叠加只延长时间，首次由敌人施加的跳过递减标记按状态分别保存。
 func _test_stacking_and_first_tick()->void:
 	var target:CombatantState = CombatantState.new();
 	target.combatant_init("测试", 50);
@@ -105,6 +117,7 @@ func _test_stacking_and_first_tick()->void:
 	_expect(target.weak_turns == 1 and target.vulnerable_turns == 0, "两种状态分别记录首次施加，不共享标记");
 
 
+## 验证玩家施加敌人减益后立即更新意图，并在整轮结束时按期递减及隐藏。
 func _test_player_debuffs_enemy()->void:
 	var debuff:CardDefinition = _card([_effect(CombatEffectDefinition.EffectType.APPLY_WEAK, 1), _effect(CombatEffectDefinition.EffectType.APPLY_VULNERABLE, 1)]);
 	var strike:CardDefinition = load("res://cards/data/strike.tres");
@@ -122,6 +135,7 @@ func _test_player_debuffs_enemy()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证敌人首次施加的减益保留至下一玩家回合，后续叠加不重新跳过递减。
 func _test_enemy_debuffs_player()->void:
 	var debuff:EnemyActionDefinition = _action([_effect(CombatEffectDefinition.EffectType.APPLY_WEAK, 1), _effect(CombatEffectDefinition.EffectType.APPLY_VULNERABLE, 1)]);
 	var strike:CardDefinition = load("res://cards/data/strike.tres");
@@ -143,6 +157,7 @@ func _test_enemy_debuffs_player()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证玩家自施减益立即影响后续效果，且不跳过本轮首次递减。
 func _test_player_self_debuffs()->void:
 	var definition:CardDefinition = _card([
 		_effect(CombatEffectDefinition.EffectType.APPLY_WEAK, 1, CombatEffectDefinition.TargetType.SELF),
@@ -159,6 +174,7 @@ func _test_player_self_debuffs()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证攻击和减益按配置顺序生效，意图预览与多段实际伤害一致。
 func _test_effect_order_and_preview()->void:
 	var repeated:CombatEffectDefinition = _effect(CombatEffectDefinition.EffectType.DAMAGE, 3);
 	repeated.repeat_count = 2;
@@ -181,6 +197,7 @@ func _test_effect_order_and_preview()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证武器攻击与提示共用虚弱、易伤和最终取整规则，不改变耐久消耗。
 func _test_weapon_statuses()->void:
 	var definition:CardDefinition = _card([]);
 	definition.card_type = CardDefinition.CardType.WEAPON;
@@ -199,6 +216,7 @@ func _test_weapon_statuses()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证非攻击伤害不受攻击修正但抵消格挡，直接失血同时绕过格挡。
 func _test_non_attack_and_health_loss()->void:
 	var damage:CombatEffectDefinition = _effect(CombatEffectDefinition.EffectType.DAMAGE, 6);
 	damage.is_attack_damage = false;
@@ -217,6 +235,7 @@ func _test_non_attack_and_health_loss()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证新战斗及角色重新初始化清除减益和首次递减标记。
 func _test_new_battle_reset()->void:
 	var definition:CardDefinition = load("res://cards/data/defend.tres");
 	var controller:BattleController = _controller([definition], [_attack()]);

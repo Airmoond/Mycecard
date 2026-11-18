@@ -4,13 +4,17 @@ extends Control
 
 const CARD_SCENE:PackedScene = preload("res://ui/cards/card_choice_view.tscn");
 # 每页一行完整卡面，让小窗口也能同时看到翻页和返回入口。
+## 事件选牌子页每页展示的卡牌数量。
 const PAGE_SIZE:int = 3;
 
 signal option_selected(option_id:String, card:CardDefinition, deck_index:int);
 signal continue_requested;
 
+## 本页只读展示的局内状态，实际规则由外部会话修改。
 var run_state:RunState;
+## 按按钮标识登记的当前选项、翻页和返回控件。
 var option_buttons:Dictionary = {};
+## 当前选牌页创建的卡面控件。
 var card_views:Array[CardChoiceView] = [];
 @onready var title_label:Label = %title_label;
 @onready var story_label:Label = %story_label;
@@ -23,15 +27,24 @@ var card_views:Array[CardChoiceView] = [];
 @onready var _reading_panel:PanelContainer = %reading_panel;
 @onready var _reading_row:HBoxContainer = %reading_row;
 @onready var _illustration_frame:PanelContainer = %illustration_frame;
+## 本页单独复制的纸面样式，用于调整边距而不修改共享主题。
 var _paper_style:StyleBoxFlat;
+## 是否使用适合较矮窗口的紧凑布局。
 var _compact:bool = false;
+## 本次页面配置是否已经报告选项或继续请求。
 var _submitted:bool = false;
+## 动态内容重建代次，旧按钮和卡面回调必须匹配此值。
 var _generation:int = 0;
+## 当前选牌子页的从零开始的页码。
 var _page_index:int = 0;
+## 当前选牌子页对应的选项标识；选项总览时为空字符串。
 var _mode:String = "";
+## 当前选项需要的卡牌输入类型，决定是否报告牌组下标。
 var _selection_kind:int = UnexpectedEncounterOptionDefinition.SelectionKind.NONE;
+## 阅读区标签的基础字号，用于尺寸改变后重新适配。
 var _base_font_sizes:Dictionary = {};
 
+## 复制本页纸面样式、记录基础字号，并连接尺寸变化以适配事件布局。
 func _ready()->void:
 	_paper_style = _reading_panel.get_theme_stylebox("panel").duplicate();
 	_reading_panel.add_theme_stylebox_override("panel", _paper_style);
@@ -63,20 +76,24 @@ func _fit_layout()->void:
 		_fit_button(button);
 	_fit_cards();
 
+## 按紧凑布局状态设置事件按钮的最小高度和字号。
 func _fit_button(button:Button)->void:
 	button.custom_minimum_size.y = 44 if _compact else 48;
 	button.add_theme_font_size_override("font_size", 18 if _compact else 20);
 
+## 按紧凑布局状态等比设置当前候选卡面的显示尺寸。
 func _fit_cards()->void:
 	var width:float = 160.0 if _compact else 180.0;
 	for view in card_views:
 		view.set_display_size(Vector2(width, width * CardFace.BASE_SIZE.y / CardFace.BASE_SIZE.x));
 
+## 设置故事阅读区与标题的可见性，并把滚动位置恢复到顶部。
 func _set_reading_visible(value:bool)->void:
 	_reading_panel.visible = value;
 	_heading_label.visible = value;
 	_scroll.scroll_vertical = 0;
 
+## 创建居中、指定文本和字号的标签，交由调用者挂载。
 func _label(value:String, font_size:int)->Label:
 	var label:Label = Label.new();
 	label.text = value;
@@ -84,6 +101,7 @@ func _label(value:String, font_size:int)->Label:
 	label.add_theme_font_size_override("font_size", font_size);
 	return label;
 
+## 绑定处于事件选择或结果阶段的局内状态，刷新内容、生命与牌组信息，并展示对应子页。
 func setup(state:RunState)->bool:
 	if state == null or state.status not in [RunState.RunStatus.CHOOSING_UNEXPECTED, RunState.RunStatus.UNEXPECTED_RESULT]:
 		return false;
@@ -103,6 +121,7 @@ func setup(state:RunState)->bool:
 		_show_options();
 	return true;
 
+## 递增界面代次，移除旧动态控件并清空按钮及卡面引用。
 func _clear_content()->void:
 	_generation += 1;
 	for child in content_container.get_children():
@@ -111,6 +130,7 @@ func _clear_content()->void:
 	option_buttons.clear();
 	card_views.clear();
 
+## 创建并登记选项按钮，连接回调后挂载到指定容器或默认内容区。
 func _button(id:String, text:String, callback:Callable, enabled:bool = true, parent:Container = null)->void:
 	var button:Button = Button.new();
 	button.name = "option_%s" % id;
@@ -122,6 +142,7 @@ func _button(id:String, text:String, callback:Callable, enabled:bool = true, par
 	(content_container if parent == null else parent).add_child(button);
 	option_buttons[id] = button;
 
+## 展示当前事件的选项及不可用原因，清除选牌模式并绑定当前界面代次。
 func _show_options()->void:
 	_clear_content();
 	_set_reading_visible(true);
@@ -133,6 +154,7 @@ func _show_options()->void:
 			text += "\n（%s）" % option.disabled_reason;
 		_button(option.option_id, text, _on_option.bind(option.option_id, _generation), option.enabled);
 
+## 只处理有效代次的可用选项；需要选牌时进入候选页，否则直接报告选择。
 func _on_option(id:String, generation:int)->void:
 	if not _can_submit(generation):
 		return;
@@ -148,6 +170,7 @@ func _on_option(id:String, generation:int)->void:
 			_submit(id, null, -1, generation);
 		return;
 
+## 按当前选项和页码展示固定候选，创建翻页及返回入口，不支付费用或修改牌组。
 func _show_cards()->void:
 	_clear_content();
 	_set_reading_visible(false);
@@ -177,6 +200,7 @@ func _show_cards()->void:
 	_button("back", "返回选项 · 尚未支付或改变牌组", _back_to_options.bind(_generation));
 	_fit_cards();
 
+## 在请求有效且目标页存在时切换候选页，不重新生成候选。
 func _change_page(delta:int, generation:int)->void:
 	if not _can_submit(generation):
 		return;
@@ -187,16 +211,20 @@ func _change_page(delta:int, generation:int)->void:
 	_page_index = next;
 	_show_cards();
 
+## 请求代次有效且尚未提交时返回事件选项页。
 func _back_to_options(generation:int)->void:
 	if _can_submit(generation):
 		_show_options();
 
+## 报告当前选项和卡牌；移除牌组卡牌时附带真实下标，获得卡牌时下标为 [code]-1[/code]。
 func _on_card_selected(card:CardDefinition, index:int, generation:int)->void:
 	_submit(_mode, card, index if _selection_kind == UnexpectedEncounterOptionDefinition.SelectionKind.DECK_CARD else -1, generation);
 
+## 返回本页尚未提交、代次匹配且仍有效地位于场景树中的结果。
 func _can_submit(generation:int)->bool:
 	return not _submitted and generation == _generation and is_inside_tree() and not is_queued_for_deletion();
 
+## 校验代次后锁定控件并发出一次选项意图，实际支付与收益由外部会话提交。
 func _submit(id:String, card:CardDefinition, index:int, generation:int)->void:
 	if not _can_submit(generation):
 		return;
@@ -204,12 +232,14 @@ func _submit(id:String, card:CardDefinition, index:int, generation:int)->void:
 	_disable_controls();
 	option_selected.emit(id, card, index);
 
+## 禁用全部已登记选项按钮与当前候选卡输入。
 func _disable_controls()->void:
 	for button:Button in option_buttons.values():
 		button.disabled = true;
 	for view in card_views:
 		view.set_interactable(false);
 
+## 用已提交结果填充文案模板，并展示继续旅程按钮。
 func _show_result()->void:
 	_clear_content();
 	_set_reading_visible(true);
@@ -219,6 +249,7 @@ func _show_result()->void:
 	content_container.add_child(summary);
 	_button("continue", "继续旅程", _on_continue.bind(_generation));
 
+## 校验代次后锁定控件并发出一次继续意图，不自行完成地图节点。
 func _on_continue(generation:int)->void:
 	if not _can_submit(generation):
 		return;

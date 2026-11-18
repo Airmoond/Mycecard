@@ -3,6 +3,7 @@
 class_name StartingDraftView
 extends Control
 
+## 每页构筑候选数量，按两行三列展示。
 const CARDS_PER_PAGE:int = 6;
 const CARD_SCENE:PackedScene = preload("res://ui/cards/card_choice_view.tscn");
 const DECK_ROW_SCENE:PackedScene = preload("res://run/draft/deck_card_row.tscn");
@@ -15,9 +16,13 @@ const RARITY_NAMES:Dictionary = {
 signal card_selected(card:CardDefinition);
 signal back_requested;
 
+## 本轮复制的完整构筑候选列表，翻页不改变顺序或重新抽取。
 var candidates:Array[CardDefinition] = [];
+## 当前页的从零开始的索引。
 var page_index:int = 0;
+## 本轮是否已报告选牌或返回，报告后拒绝进一步选择和翻页。
 var _selection_reported:bool = false;
+## 当前页拥有的候选卡控件，翻页时禁用并释放。
 var _card_views:Array[CardChoiceView] = [];
 
 @onready var title_label:Label = %title_label;
@@ -30,6 +35,7 @@ var _card_views:Array[CardChoiceView] = [];
 @onready var back_button:Button = %back_button;
 
 
+## 连接翻页、返回和窗口尺寸变化通知。
 func _ready()->void:
 	previous_button.pressed.connect(_change_page.bind(-1));
 	next_button.pressed.connect(_change_page.bind(1));
@@ -49,10 +55,12 @@ func setup(rarity:int, options:Array[CardDefinition], owned_cards:Array[CardDefi
 	_refresh_page();
 
 
+## 返回按每页固定卡牌数量计算的总页数。
 func get_page_count()->int:
 	return ceili(float(candidates.size()) / CARDS_PER_PAGE);
 
 
+## 在尚未提交选择且目标页有效时切换页码并刷新显示。
 func _change_page(direction:int)->void:
 	var next_index:int = page_index + direction;
 	if _selection_reported or next_index < 0 or next_index >= get_page_count():
@@ -94,6 +102,7 @@ func _resize_cards()->void:
 		view.set_display_size(card_size);
 
 
+## 首次选牌时锁定当前卡牌、翻页和返回按钮，再报告所选卡牌定义。
 func _on_card_selected(card:CardDefinition)->void:
 	if _selection_reported:
 		return;
@@ -106,6 +115,7 @@ func _on_card_selected(card:CardDefinition)->void:
 	card_selected.emit(card);
 
 
+## 尚未报告选择或返回时发出一次返回意图，不修改实际牌组。
 func _on_back_pressed()->void:
 	if _selection_reported:
 		return;

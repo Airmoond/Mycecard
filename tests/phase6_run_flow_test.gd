@@ -1,17 +1,21 @@
 ## 正式三实例在三个中间位置的真实冒险闭环、子页返回、防重复与多轮跳过。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0;
 const DEFAULT:RunDefinition = preload("res://run/data/default_run.tres");
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(condition:bool, message:String)->void:
 	if not condition:
 		failures += 1;
 		push_error(message);
 
+## 复制正式冒险配置，只保留指定类别的不期而遇内容，供真实流程定向检查。
 func config(kind:int)->RunDefinition:
 	var definition:RunDefinition = DEFAULT.duplicate();
 	var pool:Array[UnexpectedEncounterDefinition] = [];
@@ -21,6 +25,7 @@ func config(kind:int)->RunDefinition:
 	definition.unexpected_encounter_pool = pool;
 	return definition;
 
+## 探测满足指定事件位置的会话种子，再通过正式应用完成构筑与藏品选择，返回流程控制器。
 func start(definition:RunDefinition, position:int = -1)->GameFlowController:
 	var selected_seed:int = 961000;
 	if position >= 0:
@@ -48,6 +53,7 @@ func start(definition:RunDefinition, position:int = -1)->GameFlowController:
 	flow._handle_collection_selected(load("res://collections/data/ember_chalice.tres"));
 	return flow;
 
+## 运行随机内容冒险流程检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	root.size = Vector2i(1280, 720);
 	for kind in [UnexpectedEncounterDefinition.Kind.CAMP, UnexpectedEncounterDefinition.Kind.ALTAR, UnexpectedEncounterDefinition.Kind.FOUNTAIN]:
@@ -60,6 +66,7 @@ func _run()->void:
 	print("第六阶段真实流程检查完成，失败数：%d" % failures);
 	quit(1 if failures else 0);
 
+## 在指定路线位置运行给定事件类别，检查真实战斗、候选子页、结果提交和重开。
 func _test_adventure(kind:int, position:int)->void:
 	var flow:GameFlowController = start(config(kind), position);
 	var state:RunState = flow.run_state;
@@ -148,6 +155,7 @@ func _test_adventure(kind:int, position:int)->void:
 	flow.get_parent().queue_free();
 	await process_frame;
 
+## 验证生命不足时祭坛不可支付、离开无代价，以及各治疗事件的实际效果。
 func _test_heal_leave_and_affordability()->void:
 	for kind in [UnexpectedEncounterDefinition.Kind.CAMP, UnexpectedEncounterDefinition.Kind.ALTAR, UnexpectedEncounterDefinition.Kind.FOUNTAIN]:
 		var flow:GameFlowController = start(config(kind), 0);
@@ -167,6 +175,7 @@ func _test_heal_leave_and_affordability()->void:
 		flow.get_parent().queue_free();
 		await process_frame;
 
+## 验证多轮领取与跳过只消费当前轮，旧页面信号不能继续推进下一轮。
 func _test_multiple_rewards()->void:
 	var definition:RunDefinition = load("res://tests/fixtures/linear_run.tres").duplicate();
 	definition.reward_selection_count = 3;

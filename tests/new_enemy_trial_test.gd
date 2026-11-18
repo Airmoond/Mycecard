@@ -3,21 +3,26 @@
 extends SceneTree
 
 const TRIAL_SCENE:PackedScene = preload("res://综合数值模型/新敌人实验/敌人试炼.tscn");
+## 试炼入口应提供的三种新增普通敌人标识。
 const ENEMY_IDS:Array[String] = ["bulwark_sentinel", "hexbound_acolyte", "ragebound_brute"];
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 递归收集指定节点及其后代中的按钮。
 func _buttons(node:Node)->Array[Button]:
 	var result:Array[Button] = [];
 	if node is Button:
@@ -27,6 +32,7 @@ func _buttons(node:Node)->Array[Button]:
 	return result;
 
 
+## 核对试炼三个敌人入口的名称、正式生命、可用状态和信号，并确认旧战斗已移除。
 func _check_selection(trial:Control)->void:
 	var choices:Array[Button] = _buttons(trial);
 	_expect(choices.size() == 3, "试炼选择页应显示三个敌人选择按钮");
@@ -42,6 +48,7 @@ func _check_selection(trial:Control)->void:
 	_expect(trial.get_node_or_null("battle") == null, "返回选择页后应移除上一场战斗界面");
 
 
+## 汇总各牌区，验证试炼只包含三张打击和三张防御且状态合法。
 func _check_base_deck(state:BattleState)->void:
 	var all_cards:Array[CardInstance] = [];
 	all_cards.append_array(state.draw_pile);
@@ -61,6 +68,7 @@ func _check_base_deck(state:BattleState)->void:
 	_expect(not state.is_invalid_battle(), "试炼牌组实例与正式战斗状态应完整合法");
 
 
+## 运行普通敌人试炼界面与真实战斗检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	var trial:Control = TRIAL_SCENE.instantiate();
 	root.add_child(trial);

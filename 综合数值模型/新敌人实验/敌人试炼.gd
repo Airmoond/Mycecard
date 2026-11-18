@@ -1,17 +1,22 @@
 ## 人工试玩三种新敌人的入口；基础6张、50生命，复用正式战斗界面。
 extends Control
 
+## 试炼允许选择的三种新增普通敌人标识，顺序与机制说明对应。
 const ENEMIES:Array[String] = ["bulwark_sentinel", "hexbound_acolyte", "ragebound_brute"]
+## 当前战斗页的试炼状态与结果标签。
 var result_label:Label
 
+## 进入试炼时显示敌人选择页面。
 func _ready()->void:
 	_show_selection()
 
+## 将当前页面子节点移出场景树并排队释放，用于在选择与战斗之间切换。
 func _clear_page()->void:
 	for child in get_children():
 		remove_child(child)
 		child.queue_free()
 
+## 重建三种敌人的选择入口，显示正式生命及机制说明。
 func _show_selection()->void:
 	_clear_page()
 	var backdrop:ColorRect = ColorRect.new()
@@ -45,6 +50,7 @@ func _show_selection()->void:
 		button.pressed.connect(_start_fight.bind(ENEMIES[i]))
 		list.add_child(button)
 
+## 清理选择页，挂载正式战斗页面及返回入口，以角色基础牌组和 50 生命启动指定遭遇。
 func _start_fight(enemy_id:String)->void:
 	_clear_page()
 	var page:Control = load("res://battle/battle.tscn").instantiate()
@@ -76,5 +82,6 @@ func _start_fight(enemy_id:String)->void:
 	controller.battle_finished.connect(_on_finished)
 	controller.start_battle(load("res://battle/encounters/data/%s_encounter.tres" % enemy_id),character.combatant_definition,deck,50,50)
 
+## 将本场真实胜败、剩余生命及最大生命更新到试炼结果标签。
 func _on_finished(victory:bool, health:int, max_health:int)->void:
 	result_label.text = "%s · 剩余生命 %d / %d" % ["胜利" if victory else "失败",health,max_health]

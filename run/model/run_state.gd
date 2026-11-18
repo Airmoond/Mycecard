@@ -5,22 +5,39 @@ extends RefCounted
 ## 旧枚举编号保持稳定；IN_PROGRESS 表示可进入地图节点。
 enum RunStatus { SETUP, IN_PROGRESS, VICTORY, DEFEAT, DRAFTING, CHOOSING_COLLECTION, CHOOSING_UNEXPECTED, UNEXPECTED_RESULT, IN_BATTLE, CHOOSING_REWARD }
 
+## 本局引用的只读冒险定义。
 var definition:RunDefinition
+## 跨战斗保留的玩家当前生命，失败阶段为 [code]0[/code]。
 var current_health:int = 0
+## 本局实际最大生命，可与角色静态定义中的初始上限不同。
 var max_health:int = 0
+## 本局实际拥有的牌组；同一定义可出现多次，每个元素代表一张牌。
 var owned_cards:Array[CardDefinition] = []
+## 正在处理的地图节点标识；空字符串表示没有处理中节点。
 var current_node_id:String = ""
+## 当前允许进入的地图节点标识。
 var available_node_ids:Array[String] = []
+## 按完成顺序保存的节点标识。
 var completed_node_ids:Array[String] = []
+## 当前冒险阶段，决定可接受的命令及需要展示的页面。
 var status:RunStatus = RunStatus.SETUP
+## 开局构筑的从零开始的轮次。
 var draft_round:int = 0
+## 会话为当前构筑轮保存的只读候选，构筑结束后为空。
 var draft_candidates:Array[CardDefinition] = [];
+## 会话配置的内容与战斗随机流；直接初始化基础状态时可以为空。
 var random:RunRNG;
+## 所属整局会话的身份标识；基础状态测试可以不配置。
 var session_id:String = "";
+## 当前待提交结果的战斗身份，非战斗阶段为空字符串。
 var active_battle_id:String = "";
+## 按战斗身份保存的已接受只读结果快照，用于防止重复提交。
 var processed_battle_results:Dictionary = {};
+## 最近接受的只读战斗结果快照。
 var last_battle_result:Dictionary = {};
+## 当前普通战斗的奖励进度；不在奖励阶段时为空。
 var reward_state:RewardState;
+## 按节点标识保存的已完成奖励记录。
 var reward_history:Dictionary = {};
 
 ## 首次进入一条支线时确定，直到新冒险才清空。
@@ -31,27 +48,32 @@ var node_encounters:Dictionary = {}
 
 ## 九个位置的实际类型与不期而遇定义一次抽定；所有共享资源保持只读。
 var node_types:Dictionary = {}
+## 按节点标识保存的本局只读不期而遇绑定。
 var node_unexpected_encounters:Dictionary = {}
 ## 候选与结果按位置独立保存，同名内容在不同路线互不共享可变状态。
 var unexpected_candidates:Dictionary = {}
 ## 每个选牌选项独立保存；unexpected_candidates 是第一组选牌候选的兼容读取。
 var unexpected_option_candidates:Dictionary = {};
+## 各不期而遇节点已提交的一次性只读结果。
 var unexpected_results:Dictionary = {}
 
 ## 开始节点选择的藏品不会进入牌组；候选仅抽取一次直到完成选择。
 var selected_collection:CollectionDefinition
+## 开始节点本次展示的只读藏品候选；完成选择后清空。
 var collection_candidates:Array[CollectionDefinition] = []
 
 ## 圣杯按普通节点记录触发，重复战斗回调和奖励页面重建不能再次回血。
 var _normal_victory_collection_nodes:Array[String] = []
 
 
+## 返回当前构筑轮对应的稀有度；轮次超出构筑范围时返回 [code]-1[/code]。
 func get_draft_rarity()->int:
 	if draft_round < 0 or draft_round >= RunDefinition.DRAFT_RARITIES.size():
 		return -1;
 	return RunDefinition.DRAFT_RARITIES[draft_round];
 
 
+## 验证当前阶段、角色卡池及稀有度后将卡牌加入牌组；完成最后一轮时开放地图阶段。
 func choose_starting_card(card:CardDefinition)->bool:
 	if status != RunStatus.DRAFTING or definition == null or card == null:
 		return false;
@@ -151,14 +173,17 @@ func get_node_type(node_id:String)->int:
 	return node_types.get(node_id, node.node_type);
 
 
+## 返回指定节点在本局的实际类型是否为普通战斗或 Boss。
 func node_requires_encounter(node_id:String)->bool:
 	return get_node_type(node_id) in [MapNodeDefinition.NodeType.BATTLE, MapNodeDefinition.NodeType.BOSS];
 
 
+## 返回指定节点本局绑定的不期而遇定义；没有绑定时为 [code]null[/code]。
 func get_unexpected_encounter(node_id:String)->UnexpectedEncounterDefinition:
 	return node_unexpected_encounters.get(node_id) as UnexpectedEncounterDefinition;
 
 
+## 返回指定战斗节点本局绑定的遭遇，未绑定时读取固定遭遇；节点不存在或非战斗时返回 [code]null[/code]。
 func get_node_encounter(node_id:String)->EncounterDefinition:
 	if definition == null or definition.map_definition == null:
 		return null;
@@ -170,6 +195,7 @@ func get_node_encounter(node_id:String)->EncounterDefinition:
 	return node.encounter_definition;
 
 
+## 优先返回绑定敌人或不期而遇的名称，否则使用静态节点名称；节点不存在时返回空字符串。
 func get_node_display_name(node_id:String)->String:
 	if definition == null or definition.map_definition == null:
 		return "";
@@ -227,6 +253,7 @@ func resolve_unexpected_encounter(option_id:String, card:CardDefinition = null, 
 	return true;
 
 
+## 尝试完成已提交结果的不期而遇节点；完成失败时恢复结果阶段并返回 [code]false[/code]。
 func continue_unexpected_encounter()->bool:
 	if status != RunStatus.UNEXPECTED_RESULT or not unexpected_results.has(current_node_id):
 		return false;
@@ -289,6 +316,7 @@ func apply_normal_victory_collection()->int:
 	return heal(selected_collection.amount);
 
 
+## 检查生命、牌组、构筑、地图进度、内容绑定和会话阶段是否一致，返回是否存在无效状态。
 func is_invalid()->bool:
 	if definition == null or definition.is_invalid():
 		push_error("局内状态缺少合法冒险定义");
@@ -360,6 +388,7 @@ func is_invalid()->bool:
 	return false;
 
 
+## 检查藏品持有、候选、开始节点进度及普通胜利治疗记录是否与配置和阶段一致。
 func _collection_state_is_invalid()->bool:
 	var map:MapDefinition = definition.map_definition;
 	if definition.collection_pool.is_empty():
@@ -405,6 +434,7 @@ func _collection_state_is_invalid()->bool:
 	return false;
 
 
+## 检查每个实际战斗节点的遭遇绑定及所属池，并验证同一路线的两种普通敌人不重复。
 func _encounter_bindings_are_invalid()->bool:
 	var expected_count:int = 0;
 	var map:MapDefinition = definition.map_definition;
@@ -444,6 +474,7 @@ func _encounter_bindings_are_invalid()->bool:
 	return false;
 
 
+## 检查随机路线类型、不期而遇绑定、候选、结果记录及当前阶段之间的一致性。
 func _unexpected_state_is_invalid()->bool:
 	var map:MapDefinition = definition.map_definition;
 	if map.randomize_route_contents:
@@ -604,6 +635,7 @@ func _branch_progress_is_invalid()->bool:
 	return false;
 
 
+## 返回节点是否在当前可进入列表中，并满足阶段、藏品前置和支线限制；不修改进度。
 func can_enter_node(node_id:String)->bool:
 	if definition == null or status != RunStatus.IN_PROGRESS or not current_node_id.is_empty() or node_id.is_empty():
 		return false;
@@ -621,6 +653,7 @@ func can_enter_node(node_id:String)->bool:
 	return true;
 
 
+## 在允许进入时记录当前节点并移出可进入列表；首次进入支线时同时锁定路线。
 func enter_node(node_id:String)->bool:
 	if not can_enter_node(node_id):
 		return false;
@@ -634,6 +667,7 @@ func enter_node(node_id:String)->bool:
 	return true;
 
 
+## 将当前节点记为完成并开放允许的后继节点，然后清除当前节点；前置状态不满足时返回 [code]false[/code]。
 func complete_current_node()->bool:
 	if status != RunStatus.IN_PROGRESS or current_node_id.is_empty():
 		return false;
@@ -655,6 +689,7 @@ func complete_current_node()->bool:
 	return true;
 
 
+## 在地图进行阶段将合法卡牌定义加入本局牌组，返回是否成功。
 func add_card(card:CardDefinition)->bool:
 	if status != RunStatus.IN_PROGRESS:
 		return false;
@@ -665,6 +700,7 @@ func add_card(card:CardDefinition)->bool:
 	return true;
 
 
+## 在地图进行阶段恢复正数生命，不超过最大生命，并返回实际恢复量。
 func heal(amount:int)->int:
 	if status != RunStatus.IN_PROGRESS or amount <= 0:
 		return 0;
@@ -673,6 +709,7 @@ func heal(amount:int)->int:
 	return actual;
 
 
+## 返回已完成节点中是否包含静态 Boss 节点。
 func _has_completed_boss()->bool:
 	for node_id in completed_node_ids:
 		var node:MapNodeDefinition = definition.map_definition.get_node_by_id(node_id);
@@ -681,6 +718,7 @@ func _has_completed_boss()->bool:
 	return false;
 
 
+## 在玩家存活、Boss 已完成且没有处理中节点时进入胜利阶段，并清空地图入口。
 func mark_victory()->bool:
 	if status != RunStatus.IN_PROGRESS or current_health <= 0 or not current_node_id.is_empty() or not _has_completed_boss():
 		return false;

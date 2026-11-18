@@ -1,14 +1,18 @@
 ## 正式史诗武器与强化资源：出牌组合、奖励接入和卡面文字。
 extends SceneTree
 
+## 本组检查覆盖的两张武器及一张强化卡标识。
 const CARD_IDS:Array[String] = ["bloodthirsty_sword", "lethal_blade", "war_god_blessing"];
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行战士武器卡牌检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_catalog();
 	_test_sword_trigger();
@@ -22,16 +26,19 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 按标识加载正式武器、强化或基础卡定义。
 func _card(id:String)->CardDefinition:
 	return load("res://cards/data/%s.tres" % id);
 
 
+## 用指定牌组挂载并启动正式武器卡测试战斗。
 func _controller(cards:Array[CardDefinition])->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
@@ -54,6 +61,7 @@ func _put_in_hand(state:BattleState, id:String)->CardInstance:
 	return null;
 
 
+## 验证正式武器与强化卡的资源、费用、类型和史诗卡池归属。
 func _test_catalog()->void:
 	var character:CharacterDefinition = load("res://characters/data/warrior.tres");
 	_expect(not character.is_invalid() and character.reward_card_pool.size() == 27, "正式卡池共27张且合法");
@@ -70,6 +78,7 @@ func _test_catalog()->void:
 	_expect(CardPoolSampler.filter_pool(character.reward_card_pool, [CardDefinition.CardRarity.EPIC]).size() == 8, "史诗分组具备8张正式候选");
 
 
+## 验证正式嗜血长剑的装备费用、真实攻击入口及攻击后触发顺序。
 func _test_sword_trigger()->void:
 	var deck:Array[CardDefinition] = [_card("bloodthirsty_sword")];
 	for index in range(7):
@@ -92,6 +101,7 @@ func _test_sword_trigger()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证战神祝福要求装备武器，支付后强化并消耗，换装时不污染共享资源。
 func _test_blessing_and_replacement()->void:
 	var controller:BattleController = _controller([_card("bloodthirsty_sword"), _card("war_god_blessing"), _card("lethal_blade")]);
 	var state:BattleState = controller.battle_state;
@@ -114,6 +124,7 @@ func _test_blessing_and_replacement()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证正式致命之刃无视格挡、消耗耐久，并在损坏或致命攻击后保持归档守恒。
 func _test_blade_break()->void:
 	var controller:BattleController = _controller([_card("lethal_blade")]);
 	var state:BattleState = controller.battle_state;
@@ -126,6 +137,7 @@ func _test_blade_break()->void:
 	controller._on_end_turn_button_pressed();
 	state.enemy_state.gain_block(20);
 	var results:Array[bool] = [];
+	## 记录胜败并验证正式致命之刃在报告胜利前已经损坏消耗。
 	controller.battle_finished.connect(func(victory:bool, _health:int, _max_health:int)->void:
 		results.append(victory);
 		_expect(state.exhaust_pile.has(blade) and state.equipped_weapon == null, "致命攻击先损坏消耗再报告胜利");
@@ -135,6 +147,7 @@ func _test_blade_break()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证通过正式奖励取得的武器和祝福进入 Boss 战并按组合规则结算。
 func _test_reward_to_battle()->void:
 	var main:Node = load("res://main.tscn").instantiate();
 	var flow:GameFlowController = main.get_node("game_flow_controller");
@@ -173,6 +186,7 @@ func _test_reward_to_battle()->void:
 	main.queue_free();
 
 
+## 验证武器与强化卡在手牌及候选卡面中的完整描述和元数据。
 func _test_card_text()->void:
 	var views:Array[Control] = [];
 	for id in CARD_IDS:

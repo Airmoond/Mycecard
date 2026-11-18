@@ -1,13 +1,16 @@
 ## 保留格挡能力的费用、归档、持续效果与跨战斗生命周期检查。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行保留格挡能力检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_player_retention();
 	_test_insufficient_energy();
@@ -21,12 +24,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 创建对自身施加正式保留格挡能力的效果。
 func _power_effect()->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = CombatEffectDefinition.EffectType.APPLY_POWER;
@@ -35,6 +40,7 @@ func _power_effect()->CombatEffectDefinition:
 	return effect;
 
 
+## 创建两费保留格挡能力牌的独立测试定义。
 func _power_card()->CardDefinition:
 	var definition:CardDefinition = load("res://cards/data/defend.tres").duplicate();
 	definition.card_id = "test_retain_block";
@@ -46,6 +52,7 @@ func _power_card()->CardDefinition:
 	return definition;
 
 
+## 按指定类型、数值和目标创建测试效果。
 func _effect(type:CombatEffectDefinition.EffectType, amount:int, target:CombatEffectDefinition.TargetType)->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = type;
@@ -54,6 +61,7 @@ func _effect(type:CombatEffectDefinition.EffectType, amount:int, target:CombatEf
 	return effect;
 
 
+## 将指定效果列表封装成具有合法身份及意图文字的敌人测试行动。
 func _action(effects:Array[CombatEffectDefinition])->EnemyActionDefinition:
 	var action:EnemyActionDefinition = EnemyActionDefinition.new();
 	action.action_id = "test_power_action";
@@ -62,6 +70,7 @@ func _action(effects:Array[CombatEffectDefinition])->EnemyActionDefinition:
 	return action;
 
 
+## 复制遭遇并按需设置行动模式，使用指定牌组挂载并启动正式战斗。
 func _controller(cards:Array[CardDefinition], actions:Array[EnemyActionDefinition] = [])->BattleController:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();
@@ -75,6 +84,7 @@ func _controller(cards:Array[CardDefinition], actions:Array[EnemyActionDefinitio
 	return controller;
 
 
+## 按定义引用查找当前手牌实例；未找到时返回 [code]null[/code]。
 func _in_hand(controller:BattleController, definition:CardDefinition)->CardInstance:
 	for card in controller.battle_state.hand:
 		if card.definition == definition:
@@ -82,6 +92,7 @@ func _in_hand(controller:BattleController, definition:CardDefinition)->CardInsta
 	return null;
 
 
+## 验证能力支付、归档及后续玩家回合的格挡保留，并与无能力状态对照。
 func _test_player_retention()->void:
 	var definition:CardDefinition = _power_card();
 	_expect(not definition.is_invalid() and definition.effects[0].amount == 0, "持续能力不应要求填写无意义的数值");
@@ -105,6 +116,7 @@ func _test_player_retention()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证费用不足不能支付、移牌或施加保留格挡能力。
 func _test_insufficient_energy()->void:
 	var definition:CardDefinition = _power_card();
 	var controller:BattleController = _controller([definition]);
@@ -117,6 +129,7 @@ func _test_insufficient_energy()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证重复能力去重，但各来源牌仍分别扣费并按词条归档。
 func _test_duplicates_and_exhaust()->void:
 	var first:CardDefinition = _power_card();
 	var second:CardDefinition = _power_card();
@@ -137,6 +150,7 @@ func _test_duplicates_and_exhaust()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证显式清空格挡仍可执行，且能力归角色所有、不修改共享定义。
 func _test_force_clear_and_independence()->void:
 	var first:CombatantState = CombatantState.new();
 	var second:CombatantState = CombatantState.new();
@@ -155,6 +169,7 @@ func _test_force_clear_and_independence()->void:
 	_expect(power.display_name == "坚城" and not power.is_invalid(), "施加能力不修改静态定义");
 
 
+## 验证敌人意图和敌人回合也支持同一保留格挡能力。
 func _test_enemy_retention()->void:
 	var controller:BattleController = _controller([load("res://cards/data/defend.tres")], [
 		_action([_power_effect(), _effect(CombatEffectDefinition.EffectType.BLOCK, 12, CombatEffectDefinition.TargetType.SELF)]),
@@ -168,6 +183,7 @@ func _test_enemy_retention()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证新战斗及角色重新初始化清除能力与旧归档，卡牌重新进入牌组。
 func _test_new_battle_reset()->void:
 	var definition:CardDefinition = _power_card();
 	var controller:BattleController = _controller([definition]);
@@ -183,6 +199,7 @@ func _test_new_battle_reset()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证前序失血致死后不施加能力，但仍完成卡牌归档和失败结算。
 func _test_lethal_effect_order()->void:
 	var definition:CardDefinition = _power_card();
 	definition.effects.push_front(_effect(CombatEffectDefinition.EffectType.LOSE_HEALTH, 50, CombatEffectDefinition.TargetType.SELF));

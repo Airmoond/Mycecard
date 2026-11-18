@@ -2,9 +2,11 @@
 class_name CardDescriptionLabel
 extends RichTextLabel
 
+## 每次拟合文字时重新尝试的基准字号，不随临时缩小而降低。
 @onready var _base_font_size:int = get_theme_font_size("normal_font_size");
 
 
+## 连接尺寸变化通知，并延迟按实际可用高度拟合文字。
 func _ready()->void:
 	resized.connect(_fit_text);
 	_fit_text.call_deferred();
@@ -17,11 +19,13 @@ func set_base_font_size(value:int)->void:
 		_fit_text();
 
 
+## 替换描述文本，并从基准字号重新拟合显示高度。
 func set_description(value:String)->void:
 	text = value;
 	_fit_text();
 
 
+## 从基准字号逐步缩小文字，直到内容高度适合当前区域或字号降至 [code]1[/code]。
 func _fit_text()->void:
 	var font_size:int = _base_font_size;
 	add_theme_font_size_override("normal_font_size", font_size);

@@ -1,13 +1,16 @@
 ## 鲜血狂宴：按实际失血治疗，验证格挡、过量伤害、费用、归档和胜负时序。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行按实际伤害治疗检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_healing_amount();
 	_test_max_health();
@@ -22,12 +25,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 创建作用于对手的伤害效果，并可设置按实际伤害治疗行动者。
 func _damage(amount:int, heals:bool = true)->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = CombatEffectDefinition.EffectType.DAMAGE;
@@ -37,6 +42,7 @@ func _damage(amount:int, heals:bool = true)->CombatEffectDefinition:
 	return effect;
 
 
+## 创建独立的两费消耗吸血攻击牌定义，用于检查伤害与治疗时序。
 func _card()->CardDefinition:
 	var definition:CardDefinition = load("res://cards/data/strike.tres").duplicate();
 	definition.card_id = "test_damage_healing";
@@ -48,6 +54,7 @@ func _card()->CardDefinition:
 	return definition;
 
 
+## 创建行动者直接失去指定生命的测试效果。
 func _health_loss(amount:int)->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = CombatEffectDefinition.EffectType.LOSE_HEALTH;
@@ -56,6 +63,7 @@ func _health_loss(amount:int)->CombatEffectDefinition:
 	return effect;
 
 
+## 挂载正式战斗页面，以受伤玩家和指定卡牌启动测试，并可替换敌人效果。
 func _controller(definition:CardDefinition, enemy_effects:Array[CombatEffectDefinition] = [])->BattleController:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres");
 	if not enemy_effects.is_empty():
@@ -73,6 +81,7 @@ func _controller(definition:CardDefinition, enemy_effects:Array[CombatEffectDefi
 	return controller;
 
 
+## 验证回血只取目标实际生命损失，排除格挡与过量伤害，并保持定义只读。
 func _test_healing_amount()->void:
 	# 每行依次为敌人格挡、敌人生命、预期实际失血。
 	for values in [[0, 30, 10], [3, 30, 7], [30, 30, 0], [3, 4, 4]]:
@@ -90,6 +99,7 @@ func _test_healing_amount()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证治疗返回实际恢复量且不超过上限，治疗封顶不减少攻击伤害。
 func _test_max_health()->void:
 	var target:CombatantState = CombatantState.new();
 	target.combatant_init("治疗目标", 50);
@@ -104,6 +114,7 @@ func _test_max_health()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证伤害先应用类别与倍率再抵消格挡，治疗直接使用实际失血而不重复乘倍率。
 func _test_modifiers()->void:
 	for is_attack in [true, false]:
 		var definition:CardDefinition = _card();
@@ -123,6 +134,7 @@ func _test_modifiers()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证多段吸血分别读取各段实际生命损失，不混入普通伤害或前段残值。
 func _test_multihit()->void:
 	var definition:CardDefinition = _card();
 	var repeated:CombatEffectDefinition = _damage(5);
@@ -137,6 +149,7 @@ func _test_multihit()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证致命攻击在胜利报告前完成回血和消耗归档，并将治疗后生命延续到下一场。
 func _test_lethal_attack()->void:
 	var definition:CardDefinition = _card();
 	var controller:BattleController = _controller(definition);
@@ -145,6 +158,7 @@ func _test_lethal_attack()->void:
 	state.enemy_state.gain_block(3);
 	var card:CardInstance = state.hand[0];
 	var health_results:Array[int] = [];
+	## 在胜利通知当场检查治疗后生命和消耗归档，验证跨战斗回写使用最终数值。
 	controller.battle_finished.connect(func(victory:bool, health:int, _max_health:int)->void:
 		health_results.append(health);
 		_expect(victory and health == 24, "胜利信号必须携带治疗后的生命，供整局流程回写");
@@ -158,6 +172,7 @@ func _test_lethal_attack()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证费用不足时不扣费、不移牌，也不造成伤害或治疗。
 func _test_insufficient_energy()->void:
 	var controller:BattleController = _controller(_card());
 	var state:BattleState = controller.battle_state;
@@ -169,6 +184,7 @@ func _test_insufficient_energy()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证前序失血致死中断治疗，而前序吸血立即生效后才处理后续失血。
 func _test_health_loss_order()->void:
 	var definition:CardDefinition = _card();
 	definition.effects.push_front(_health_loss(20));
@@ -184,6 +200,7 @@ func _test_health_loss_order()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证敌人同样按其造成的实际失血恢复生命，并在意图中说明。
 func _test_enemy_healing()->void:
 	var controller:BattleController = _controller(load("res://cards/data/defend.tres"), [_damage(6)]);
 	var state:BattleState = controller.battle_state;

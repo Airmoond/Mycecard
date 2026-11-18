@@ -2,8 +2,11 @@
 class_name MapDefinition
 extends Resource
 
+## 此地图配置的稳定标识。
 @export var map_id:String
+## 组成地图的只读节点定义；节点标识必须互不重复。
 @export var nodes:Array[MapNodeDefinition] = []
+## 初始化地图进度时开放的起点标识，分支地图只允许一个起点。
 @export var starting_node_ids:Array[String] = []
 
 ## 第五阶段地图固定为开始 → 三条战斗、战斗、休整支线 → 共用 Boss。
@@ -14,6 +17,7 @@ extends Resource
 @export var randomize_route_contents:bool = false
 
 
+## 返回指定标识对应的节点定义；没有匹配项时返回 [code]null[/code]。
 func get_node_by_id(node_id:String)->MapNodeDefinition:
 	for node in nodes:
 		if node != null and node.node_id == node_id:
@@ -21,10 +25,12 @@ func get_node_by_id(node_id:String)->MapNodeDefinition:
 	return null;
 
 
+## 返回地图中是否存在指定标识的节点。
 func has_node(node_id:String)->bool:
 	return get_node_by_id(node_id) != null;
 
 
+## 按开始节点的出口顺序返回不重复的支线标识；不满足分支地图前提时返回空数组。
 func get_route_ids()->Array[String]:
 	var result:Array[String] = [];
 	if not is_branch_map or starting_node_ids.size() != 1:
@@ -60,6 +66,7 @@ func get_route_node_ids(route_id:String)->Array[String]:
 	return result;
 
 
+## 检查节点、起点、连接、可达性和分支拓扑；发现首个错误时报告并返回 [code]true[/code]。
 func is_invalid()->bool:
 	if randomize_route_contents and not is_branch_map:
 		push_error("随机支线内容必须使用三路线地图");
@@ -104,6 +111,7 @@ func is_invalid()->bool:
 	return false;
 
 
+## 检查开始、三条独立三节点支线与共同 Boss 的结构是否符合当前地图模式。
 func _branch_structure_is_invalid(boss_count:int)->bool:
 	if nodes.size() != 11 or starting_node_ids.size() != 1 or boss_count != 1:
 		push_error("分支地图必须包含 11 个节点、一个开始和一个最终 Boss");
@@ -147,6 +155,7 @@ func _branch_structure_is_invalid(boss_count:int)->bool:
 	return false;
 
 
+## 从全部起点遍历后继，返回是否能够到达地图中的每个节点。
 func _all_nodes_are_reachable()->bool:
 	var pending:Array[String] = starting_node_ids.duplicate();
 	var visited:Dictionary = {};

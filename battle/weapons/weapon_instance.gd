@@ -4,11 +4,14 @@ class_name WeaponInstance
 extends RefCounted
 
 
+## 此武器实例引用的只读静态定义。
 var definition:WeaponDefinition;
 
 ## 包含武器自身强化，不包含角色力量等攻击结算修正。
 var current_attack:int;
+## 本场强化后的最大耐久，回手重装时仍保留。
 var max_durability:int;
+## 当前剩余耐久；装备时恢复至本场最大值，每次武器攻击消耗一点。
 var current_durability:int;
 
 

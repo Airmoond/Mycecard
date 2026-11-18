@@ -1,13 +1,16 @@
 ## 血红披风：下回合开始触发、每份独立、坚城并存、致死中断与能力生命周期。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行回合开始失血换格挡能力检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_activation_and_repetition();
 	_test_retained_block();
@@ -20,12 +23,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 创建施加正式回合开始失血换格挡能力的测试效果。
 func _power_effect()->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = CombatEffectDefinition.EffectType.APPLY_POWER;
@@ -33,6 +38,7 @@ func _power_effect()->CombatEffectDefinition:
 	return effect;
 
 
+## 创建具有回合开始能力的独立测试卡定义。
 func _card()->CardDefinition:
 	var definition:CardDefinition = load("res://cards/data/defend.tres").duplicate();
 	definition.card_id = "test_blood_cloak";
@@ -43,6 +49,7 @@ func _card()->CardDefinition:
 	return definition;
 
 
+## 将指定效果列表封装为合法敌人测试行动。
 func _action(effects:Array[CombatEffectDefinition])->EnemyActionDefinition:
 	var action:EnemyActionDefinition = EnemyActionDefinition.new();
 	action.action_id = "test_cloak_action";
@@ -51,6 +58,7 @@ func _action(effects:Array[CombatEffectDefinition])->EnemyActionDefinition:
 	return action;
 
 
+## 复制遭遇并配置安全或指定敌人行动，扩充测试牌组后启动正式战斗。
 func _controller(cards:Array[CardDefinition], actions:Array[EnemyActionDefinition] = [])->BattleController:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();
@@ -70,12 +78,14 @@ func _controller(cards:Array[CardDefinition], actions:Array[EnemyActionDefinitio
 	return controller;
 
 
+## 遍历当前手牌副本，依次通过控制器打出其中的能力牌。
 func _play_powers(controller:BattleController)->void:
 	for card in controller.battle_state.hand.duplicate():
 		if card.definition.card_type == CardDefinition.CardType.POWER:
 			controller._on_card_selected(card);
 
 
+## 验证打出时只注册能力，从后续每个玩家回合开始持续触发。
 func _test_activation_and_repetition()->void:
 	var controller:BattleController = _controller([_card()]);
 	var state:BattleState = controller.battle_state;
@@ -97,6 +107,7 @@ func _test_activation_and_repetition()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证先保留旧格挡再增加能力格挡，直接失血不被保留格挡抵消。
 func _test_retained_block()->void:
 	for retains in [false, true]:
 		var controller:BattleController = _controller([_card()]);
@@ -111,6 +122,7 @@ func _test_retained_block()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证每份能力分别结算失血与格挡，来源牌消耗不移除能力或改写定义。
 func _test_stacking()->void:
 	var first:CardDefinition = _card();
 	var second:CardDefinition = _card();
@@ -126,6 +138,7 @@ func _test_stacking()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证回合开始失血致死时保留先前效果，中断后续格挡、抽牌与重复结果。
 func _test_lethal_interruption()->void:
 	for values in [[1, 3, 0], [2, 2, 10]]:
 		var cards:Array[CardDefinition] = [];
@@ -136,6 +149,7 @@ func _test_lethal_interruption()->void:
 		_play_powers(controller);
 		state.player_state.current_health = values[0];
 		var results:Array[bool] = [];
+		## 在失败通知当场核对生命、已生效格挡与未继续抽牌的牌区状态。
 		controller.battle_finished.connect(func(victory:bool, health:int, _max_health:int)->void:
 			results.append(victory);
 			_expect(not victory and health == 0 and state.player_state.current_block == values[2], "致死后保留此前已获得格挡，不再执行后续格挡");
@@ -149,6 +163,7 @@ func _test_lethal_interruption()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证费用不足不能注册能力，新战斗清除旧能力并恢复来源牌。
 func _test_cost_and_new_battle()->void:
 	var definition:CardDefinition = _card();
 	var controller:BattleController = _controller([definition]);
@@ -164,6 +179,7 @@ func _test_cost_and_new_battle()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证能力仅在持有者自身回合开始触发，敌人意图考虑即将获得的格挡，致死时停止行动。
 func _test_owner_turn()->void:
 	var block_attack:CombatEffectDefinition = CombatEffectDefinition.new();
 	block_attack.effect_type = CombatEffectDefinition.EffectType.DAMAGE;

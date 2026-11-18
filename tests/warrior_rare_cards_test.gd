@@ -1,14 +1,18 @@
 ## 六张正式稀有卡的资源、组合结算、奖励到下一战与卡面文字检查。
 extends SceneTree
 
+## 本组检查覆盖的六张正式稀有卡标识。
 const CARD_IDS:Array[String] = ["battle_trance", "ancient_ritual", "strength_power", "open_wound", "thorns", "uppercut"];
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行战士稀有卡牌检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_catalog();
 	_test_draw_restriction();
@@ -22,16 +26,19 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 按标识加载正式卡牌定义。
 func _card(id:String)->CardDefinition:
 	return load("res://cards/data/%s.tres" % id);
 
 
+## 挂载正式战斗页面，以指定牌组启动稀有卡测试。
 func _controller(cards:Array[CardDefinition])->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
@@ -40,6 +47,7 @@ func _controller(cards:Array[CardDefinition])->BattleController:
 	return controller;
 
 
+## 按定义引用查找指定战斗状态的手牌；未找到时返回 [code]null[/code]。
 func _in_hand(state:BattleState, definition:CardDefinition)->CardInstance:
 	for card in state.hand:
 		if card.definition == definition:
@@ -47,6 +55,7 @@ func _in_hand(state:BattleState, definition:CardDefinition)->CardInstance:
 	return null;
 
 
+## 验证正式稀有卡资源身份、费用、类型、卡池归属及稀有度分组。
 func _test_catalog()->void:
 	var character:CharacterDefinition = load("res://characters/data/warrior.tres");
 	_expect(not character.is_invalid() and character.reward_card_pool.size() == 27, "战士卡池包含9张普通、6张稀有、8张史诗、4张传说，ID均唯一且资源合法");
@@ -62,6 +71,7 @@ func _test_catalog()->void:
 	_expect(CardPoolSampler.filter_pool(character.reward_card_pool, [CardDefinition.CardRarity.RARE]).size() == 6, "稀有分组现在具备6张正式候选");
 
 
+## 验证正式背水一战先抽牌后禁抽、正常弃置及下一回合解禁。
 func _test_draw_restriction()->void:
 	var definition:CardDefinition = _card("battle_trance");
 	var deck:Array[CardDefinition] = [definition];
@@ -87,6 +97,7 @@ func _test_draw_restriction()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证古代仪典支付后回能并消耗，以及力量能力牌的支付、归档和后续伤害。
 func _test_energy_and_strength()->void:
 	var ritual:CardDefinition = _card("ancient_ritual");
 	var strength:CardDefinition = _card("strength_power");
@@ -103,6 +114,7 @@ func _test_energy_and_strength()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证正式伤害与减益卡的目标、数值、效果顺序和普通弃置。
 func _test_damage_and_statuses()->void:
 	for values in [["open_wound", 2, 8, 0, 2, 0], ["thorns", 1, 0, 7, 1, 0], ["uppercut", 2, 13, 0, 1, 1]]:
 		var definition:CardDefinition = _card(values[0]);
@@ -115,6 +127,7 @@ func _test_damage_and_statuses()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证开局与奖励获得的正式稀有卡进入后续战斗，且不污染源角色卡池。
 func _test_reward_to_next_battle()->void:
 	for id in CARD_IDS:
 		var definition:CardDefinition = _card(id);
@@ -152,6 +165,7 @@ func _test_reward_to_next_battle()->void:
 	_expect(load("res://characters/data/warrior.tres").reward_card_pool.size() == 27, "整局测试不修改正式角色卡池");
 
 
+## 验证正式稀有卡在候选和手牌中的完整文案及基础伤害替换。
 func _test_card_text()->void:
 	var views:Array[Control] = [];
 	for id in CARD_IDS:

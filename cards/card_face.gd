@@ -2,8 +2,11 @@
 class_name CardFace
 extends Control
 
+## 共用卡面布局的基础尺寸，显示尺寸以此为缩放参照。
 const BASE_SIZE:Vector2 = Vector2(180, 252)
+## 按卡牌类型枚举索引的显示名称。
 const TYPE_NAMES:Array[String] = ["攻击", "技能", "能力", "武器"]
+## 按稀有度枚举索引的宝石与样式颜色。
 const RARITY_COLORS:Array[Color] = [Color.WHITE, Color("3b82f6"), Color("a855f7"), Color("ffa500")]
 
 @onready var cost_label:Label = $cost_label
@@ -12,12 +15,18 @@ const RARITY_COLORS:Array[Color] = [Color.WHITE, Color("3b82f6"), Color("a855f7"
 @onready var description_label:CardDescriptionLabel = $description_label
 @onready var rarity_gem:Polygon2D = $rarity_gem
 @onready var missing_art:Label = $missing_art
+## 当前请求的卡面显示尺寸，可在节点准备前设置。
 var _display_size:Vector2 = BASE_SIZE
+## 子控件在基础卡面上的位置和尺寸快照。
 var _base_rects:Dictionary = {}
+## 标签在基础卡面上的字号，用于按显示宽度重新缩放。
 var _base_fonts:Dictionary = {}
+## 多边形装饰的原始位置与缩放。
 var _base_polygons:Dictionary = {}
+## 基础卡面尺寸下描述文字尝试使用的字号。
 @export var description_base_font_size:int = 12
 
+## 记录子控件的基础矩形、字号和多边形变换，禁用鼠标拦截并应用当前显示尺寸。
 func _ready()->void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for child in get_children():
@@ -69,6 +78,7 @@ func show_card(definition:CardDefinition, energy_cost:int)->void:
 			child.add_theme_stylebox_override("normal", style)
 	set_description(definition.format_description())
 
+## 更新自适应卡牌描述，并同步完整规则文本到工具提示。
 func set_description(value:String)->void:
 	description_label.set_description(value)
 	tooltip_text = "标准扩展包\n" + value

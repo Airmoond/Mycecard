@@ -1,19 +1,24 @@
 ## 进入起点三选一、真实跨节点效果、圣杯胜利时序、防重与地图只读查看。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(condition:bool, message:String)->void:
 	if not condition:
 		failures += 1
 		push_error(message)
 
+## 按标识加载正式藏品定义。
 func item(id:String)->CollectionDefinition:
 	return load("res://collections/data/%s.tres" % id)
 
+## 创建第五阶段固定内容局内状态，并完成全部开局构筑。
 func drafted_state()->RunState:
 	var state:RunState = RunState.new()
 	expect(state.run_state_init(load("res://tests/fixtures/phase5_run.tres")), "藏品固定流程配置可初始化")
@@ -21,6 +26,7 @@ func drafted_state()->RunState:
 		state.choose_starting_card(CardPoolSampler.filter_pool(state.definition.character_definition.reward_card_pool, [rarity])[0])
 	return state
 
+## 装配正式应用并使用固定流程配置，完成三轮构筑后返回流程控制器。
 func flow_start()->GameFlowController:
 	var main:Node = load("res://main.tscn").instantiate()
 	root.add_child(main)
@@ -31,6 +37,7 @@ func flow_start()->GameFlowController:
 		(flow.current_page as StartingDraftView)._card_views[0].pressed.emit()
 	return flow
 
+## 在当前藏品候选中找到指定资源并触发对应选择按钮；不存在时记录失败。
 func choose(flow:GameFlowController, collection:CollectionDefinition)->void:
 	var page:CollectionChoiceView = flow.current_page
 	var index:int = page.collection_options.find(collection)
@@ -38,6 +45,7 @@ func choose(flow:GameFlowController, collection:CollectionDefinition)->void:
 	if index >= 0:
 		page.choice_buttons[index].pressed.emit()
 
+## 运行藏品冒险流程检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_state_and_configuration()
 	await _test_choice_layout_and_back()
@@ -50,6 +58,7 @@ func _run()->void:
 	print("藏品冒险流程检查完成，失败数：%d" % failures)
 	quit(0 if failures == 0 else 1)
 
+## 验证藏品必须在开始节点选择、选择状态合法性及无藏品旧配置兼容。
 func _test_state_and_configuration()->void:
 	var state:RunState = drafted_state()
 	var bindings:Dictionary = state.node_encounters.duplicate()
@@ -94,6 +103,7 @@ func _test_state_and_configuration()->void:
 	var legacy:RunState = RunState.new()
 	expect(legacy.run_state_init(load("res://tests/fixtures/linear_run.tres")), "没有藏品池的旧配置保持兼容")
 
+## 验证藏品选择页布局、触发时机、返回与重新开始时的干净状态。
 func _test_choice_layout_and_back()->void:
 	var flow:GameFlowController = flow_start()
 	var state:RunState = flow.run_state
@@ -125,6 +135,7 @@ func _test_choice_layout_and_back()->void:
 	flow.get_parent().queue_free()
 	await process_frame
 
+## 验证地图藏品查看的空态、背景节点锁定及 Esc 关闭恢复。
 func _test_map_inspection()->void:
 	var flow:GameFlowController = flow_start()
 	var map:MapView = flow.current_page
@@ -158,6 +169,7 @@ func _test_map_inspection()->void:
 	flow.get_parent().queue_free()
 	await process_frame
 
+## 使用指定藏品运行冒险并可模拟失败，检查跨战斗效果、防重及重开清理。
 func _test_adventure(id:String, defeat:bool)->void:
 	var flow:GameFlowController = flow_start()
 	flow._handle_map_node_selected("start")

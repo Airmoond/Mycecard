@@ -1,20 +1,28 @@
 ## Boss单场试玩，支持基础牌、参考构筑及随机合法开局，复用正式战斗界面。
 extends Control
 
+## Boss 选择入口的正式敌人标识，顺序与机制说明对应。
 const ENEMIES:Array[String] = ["ironcrown_tyrant","calamity_hierophant","ruin_guard"]
+## 参考构筑在六张基础牌之外添加的三张正式卡标识。
 const REFERENCE:Array[String] = ["eternity","war_god_blessing","uppercut"]
+## 当前构筑选项：[code]0[/code] 为基础，[code]1[/code] 为参考，[code]2[/code] 为随机合法开局。
 var deck_choice:int = 1
+## 当前选择的入场生命，为 [code]50[/code] 或 [code]35[/code]，最大生命始终为 [code]50[/code]。
 var starting_health:int = 50
+## 当前战斗页显示构筑信息和战斗结果的标签。
 var result_label:Label
 
+## 进入 Boss 试炼时显示构筑、生命和敌人选择页面。
 func _ready()->void:
 	_show_selection()
 
+## 将现有页面子节点移出场景树并排队释放，保留构筑与生命选择字段。
 func _clear_page()->void:
 	for child in get_children():
 		remove_child(child)
 		child.queue_free()
 
+## 重建 Boss 选择页，并恢复当前构筑和入场生命选项。
 func _show_selection()->void:
 	_clear_page()
 	var backdrop:ColorRect = ColorRect.new()
@@ -39,6 +47,7 @@ func _show_selection()->void:
 		deck_select.add_item(label)
 	deck_select.selected = deck_choice
 	deck_select.add_theme_font_size_override("font_size",20)
+	## 保存所选构筑下标，返回选择页时继续使用。
 	deck_select.item_selected.connect(func(index:int)->void:deck_choice=index)
 	list.add_child(deck_select)
 	var health_select:OptionButton = OptionButton.new()
@@ -47,6 +56,7 @@ func _show_selection()->void:
 	health_select.add_item("伤后入场：35 / 50")
 	health_select.selected = 0 if starting_health == 50 else 1
 	health_select.add_theme_font_size_override("font_size",20)
+	## 将生命选项映射为 50 或 35 点入场生命，不修改最大生命。
 	health_select.item_selected.connect(func(index:int)->void:starting_health=50 if index==0 else 35)
 	list.add_child(health_select)
 	var descriptions:Array[String] = ["攻守切换与三连斩，第四轮整顿防御","虚弱、易伤衔接连续攻击，第四轮重聚法障","现有Boss，用于对照试玩"]
@@ -59,6 +69,7 @@ func _show_selection()->void:
 		button.pressed.connect(_start_fight.bind(ENEMIES[i]))
 		list.add_child(button)
 
+## 按当前构筑选项展开基础牌组，并添加参考三张牌或传说、史诗、稀有各一张随机牌。
 func _build_deck()->Array[CardDefinition]:
 	var character:CharacterDefinition = load("res://characters/data/warrior.tres")
 	var deck:Array[CardDefinition] = []
@@ -73,6 +84,7 @@ func _build_deck()->Array[CardDefinition]:
 			deck.append(CardPoolSampler.sample(character.reward_card_pool,3,[rarity])[0])
 	return deck
 
+## 按当前选择构建牌组并挂载正式战斗页，以指定入场生命和 50 最大生命启动 Boss 遭遇。
 func _start_fight(enemy_id:String)->void:
 	var deck:Array[CardDefinition] = _build_deck()
 	_clear_page()
@@ -101,5 +113,6 @@ func _start_fight(enemy_id:String)->void:
 	controller.battle_finished.connect(_on_finished)
 	controller.start_battle(load("res://battle/encounters/data/%s_encounter.tres" % enemy_id),character.combatant_definition,deck,starting_health,50)
 
+## 将本场胜败和真实剩余生命更新到试炼结果标签。
 func _on_finished(victory:bool, health:int, max_health:int)->void:
 	result_label.text = "%s · 剩余生命 %d / %d" % ["胜利" if victory else "失败",health,max_health]

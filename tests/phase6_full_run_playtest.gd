@@ -2,9 +2,13 @@
 ## 不替换敌人/卡牌/遭遇，不改生命、能量、牌堆，不调用伤害或结算捷径。
 extends SceneTree
 
+## 自动试玩单场战斗允许的最大回合数，防止未结束战斗无限运行。
 const MAX_TURNS:int = 100;
+## 自动试玩单场战斗允许的最大操作次数。
 const MAX_ACTIONS:int = 1200;
+## 完整冒险试玩使用的固定随机种子样本。
 const SEEDS:Array[int] = [20261005, 20261006, 20261007, 20261008];
+## 试玩策略为各正式卡牌配置的构筑优先级。
 const BUILD_PRIORITY:Dictionary = {
 	"eternity":100.0, "war_god_blessing":98.0, "fortress":90.0,
 	"blood_cloak":88.0, "strength_power":86.0, "thorns":82.0,
@@ -14,17 +18,22 @@ const BUILD_PRIORITY:Dictionary = {
 	"pommel_strike":60.0, "iron_wave":58.0, "trade_wounds":55.0
 };
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0;
+## 各固定种子试玩生成的路线、选择、战斗和胜败报告。
 var reports:Array[Dictionary] = [];
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(value:bool, message:String)->void:
 	if not value:
 		failures += 1;
 		push_error(message);
 
+## 运行完整冒险自动试玩检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	root.size = Vector2i(1280, 720);
 	for seed_value:int in SEEDS:
@@ -48,6 +57,7 @@ func _run()->void:
 	await create_timer(0.5).timeout; # 仅等待测试退出时的音频线程清理，不改变正式切页时序。
 	quit(0 if failures == 0 else 1);
 
+## 用指定种子经正式页面和战斗入口试玩完整冒险，记录路线、选择及胜败并返回报告。
 func _play_run(seed_value:int)->Dictionary:
 	var main:Node = load("res://main.tscn").instantiate();
 	root.add_child(main);
@@ -129,6 +139,7 @@ func _play_run(seed_value:int)->Dictionary:
 	await process_frame;
 	return report;
 
+## 根据构筑优先级及已拥有卡牌，从候选中选择评分最高的定义。
 func _best_definition(cards:Array[CardDefinition], owned:Array[CardDefinition])->CardDefinition:
 	var best:CardDefinition = cards[0];
 	var best_value:float = -INF;
@@ -146,6 +157,7 @@ func _best_definition(cards:Array[CardDefinition], owned:Array[CardDefinition])-
 			best = card;
 	return best;
 
+## 通过当前事件页面选择选项及必要卡牌，确认结果后继续，并将实际选择写入试玩报告。
 func _play_unexpected(flow:GameFlowController, report:Dictionary)->void:
 	var state:RunState = flow.run_state;
 	var page:UnexpectedEncounterView = flow.current_page;
@@ -182,6 +194,7 @@ func _play_unexpected(flow:GameFlowController, report:Dictionary)->void:
 	(flow.current_page as UnexpectedEncounterView).option_buttons["continue"].pressed.emit();
 	expect(flow.current_page is MapView, "不期而遇确认结果后真实返回地图");
 
+## 按当前敌人效果的伤害预览合计对玩家的攻击量，并计入重复次数。
 func _incoming_damage(state:BattleState)->int:
 	var action:EnemyActionDefinition = state.enemy_state.current_action;
 	var preview:Array[int] = AttackDamageResolver.preview_effect_damage(action.effects, state.enemy_state, state.player_state, state.enemy_state.current_block);
@@ -243,12 +256,14 @@ func _card_value(card:CardInstance, state:BattleState)->float:
 			value += mini(maxi(0, attack - state.enemy_state.current_block), state.player_state.max_health - state.player_state.current_health) * 1.8;
 	return value;
 
+## 返回卡牌是否包含力量、武器强化或易伤效果，供试玩策略决定武器攻击前的出牌次序。
 func _prepare_weapon(card:CardInstance)->bool:
 	for effect:CombatEffectDefinition in card.definition.effects:
 		if effect.effect_type in [CombatEffectDefinition.EffectType.GAIN_STRENGTH, CombatEffectDefinition.EffectType.ENHANCE_WEAPON, CombatEffectDefinition.EffectType.APPLY_VULNERABLE]:
 			return true;
 	return false;
 
+## 在回合和操作上限内通过正式控制器出牌、攻击及结束回合，核对每步状态并返回战斗记录。
 func _play_battle(flow:GameFlowController, node_id:String)->Dictionary:
 	var page:Control = flow.current_page;
 	var controller:BattleController = page.get_node("battle_controller");

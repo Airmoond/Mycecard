@@ -1,23 +1,28 @@
 ## 卡面标识、样式实例隔离及完整文案的排版回归。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 按标识加载正式卡牌定义。
 func _card(id:String)->CardDefinition:
 	return load("res://cards/data/%s.tres" % id);
 
 
+## 挂载手牌控件并创建、绑定指定定义的独立卡牌实例。
 func _hand(definition:CardDefinition)->CardView:
 	var view:CardView = load("res://cards/card_view.tscn").instantiate();
 	root.add_child(view);
@@ -27,6 +32,7 @@ func _hand(definition:CardDefinition)->CardView:
 	return view;
 
 
+## 运行共用卡面与完整描述检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_metadata_and_isolation();
 	await _test_all_descriptions();
@@ -37,6 +43,7 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 验证卡牌类型、扩展包和稀有度显示，且单张卡的样式不污染共享场景。
 func _test_metadata_and_isolation()->void:
 	var views:Array[CardView] = [];
 	var cases:Array = [
@@ -62,6 +69,7 @@ func _test_metadata_and_isolation()->void:
 	fresh.queue_free();
 
 
+## 遍历正式卡牌，检查手牌与奖励卡的完整规则、元数据、布局和工具提示。
 func _test_all_descriptions()->void:
 	var definitions:Array[CardDefinition] = load("res://characters/data/warrior.tres").reward_card_pool.duplicate();
 	definitions.append_array([_card("strike"), _card("defend")]);
@@ -89,6 +97,7 @@ func _test_all_descriptions()->void:
 		view.queue_free();
 
 
+## 验证长描述随空间缩小拟合、增大恢复，并在动态文本变化后同步字号和提示。
 func _test_resize_and_refresh()->void:
 	var view:CardView = _hand(_card("eternity"));
 	var label:CardDescriptionLabel = view.card_face.description_label;
@@ -119,6 +128,7 @@ func _click(position:Vector2)->void:
 		root.push_input(event, true);
 
 
+## 验证手牌与奖励复用同一卡面，费用与描述隔离，点击仍到达各自外层输入。
 func _test_shared_face_and_input()->void:
 	await process_frame;
 	var definition:CardDefinition = _card("strike");
@@ -137,7 +147,9 @@ func _test_shared_face_and_input()->void:
 	_expect(reward.card_face.description_label.text == "造成6点伤害" and definition.description == "造成{damage_0}点伤害", "动态预览不污染静态卡面或原资源");
 	var hand_selected:Array[CardInstance] = [];
 	var reward_selected:Array[CardDefinition] = [];
+	## 收集手牌点击报告的实际实例，验证共用卡面没有截获外层输入。
 	hand.card_selected.connect(func(card:CardInstance)->void: hand_selected.append(card));
+	## 收集候选卡点击报告的定义，验证选择与禁用防重。
 	reward.card_selected.connect(func(card:CardDefinition)->void: reward_selected.append(card));
 	await process_frame;
 	# 分别点击费用、名称、插画、描述、类型和扩展包区域。

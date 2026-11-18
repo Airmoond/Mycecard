@@ -1,13 +1,16 @@
 ## 开局逐轮选择、完整分页、单次提交和正常冒险闭环。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行开局构筑检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_state();
 	_test_configuration();
@@ -22,16 +25,19 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 按标识加载正式卡牌定义。
 func _card(id:String)->CardDefinition:
 	return load("res://cards/data/%s.tres" % id);
 
 
+## 装配正式应用并设置固定内容冒险，返回用于测试构筑与流程的控制器。
 func _main()->GameFlowController:
 	var main:Node = load("res://main.tscn").instantiate();
 	root.add_child(main);
@@ -40,6 +46,7 @@ func _main()->GameFlowController:
 	return flow;
 
 
+## 验证开局初始牌组、逐轮稀有度选择，以及只有三轮完成后才开放地图。
 func _test_state()->void:
 	var state:RunState = RunState.new();
 	_expect(state.run_state_init(load("res://run/data/default_run.tres")), "合法配置可初始化");
@@ -57,6 +64,7 @@ func _test_state()->void:
 	_expect(state.status == RunState.RunStatus.IN_PROGRESS and state.can_enter_node("start") and not state.is_invalid(), "三轮完成才开放地图");
 
 
+## 验证每个构筑稀有度至少一张候选，奖励容量按非传说卡池独立检查。
 func _test_configuration()->void:
 	var definition:RunDefinition = load("res://tests/fixtures/phase5_run.tres").duplicate();
 	definition.character_definition = definition.character_definition.duplicate();
@@ -111,6 +119,7 @@ func _test_page_refresh()->void:
 	map.refresh_map();
 	_expect(map.node_layer.get_child_count() == 11 and map.connection_layer.get_child_count() == 12, "重复刷新地图不叠加节点和连线");
 	var node_selections:Array[String] = [];
+	## 收集地图节点意图，验证反复刷新后仍只报告一次选择。
 	map.node_selected.connect(func(id:String)->void: node_selections.append(id));
 	var first:MapNodeView = map._node_views["start"];
 	first.node_button.pressed.emit();
@@ -125,6 +134,7 @@ func _test_page_refresh()->void:
 	reward.refresh_options();
 	_expect(reward.options_container.get_child_count() == 3 and reward.reward_options == options, "奖励刷新不叠加视图、不改变候选");
 	var selections:Array[CardDefinition] = [];
+	## 收集奖励卡定义，验证重建候选与一次提交限制。
 	reward.reward_selected.connect(func(card:CardDefinition)->void: selections.append(card));
 	reward._reward_card_views[0].pressed.emit();
 	reward.refresh_options();
@@ -136,6 +146,7 @@ func _test_page_refresh()->void:
 	reward.queue_free();
 
 
+## 验证完整候选稳定分页、窗口适配与非首页选牌，提交后禁止继续翻页。
 func _test_paging_and_layout()->void:
 	var candidates:Array[CardDefinition] = [];
 	for index in range(13):
@@ -169,6 +180,7 @@ func _test_paging_and_layout()->void:
 		_expect(bounds.encloses(page.back_button.get_global_rect()) and bounds.encloses(page.title_label.get_global_rect()), "标题和侧栏按钮没有溢出");
 		_expect(page._card_views[0].global_position.y == page._card_views[2].global_position.y and page._card_views[3].global_position.y > page._card_views[0].global_position.y, "网格按两行三列排布");
 	var selections:Array[CardDefinition] = [];
+	## 收集分页构筑选择，验证非首页点击报告正确候选且只提交一次。
 	page.card_selected.connect(func(card:CardDefinition)->void: selections.append(card));
 	page.next_button.pressed.emit();
 	page._card_views[1].pressed.emit();
@@ -178,6 +190,7 @@ func _test_paging_and_layout()->void:
 	page.queue_free();
 
 
+## 通过真实构筑、地图、战斗和奖励页面完成冒险，检查跨阶段数据与卡池只读性。
 func _test_complete_adventure()->void:
 	var flow:GameFlowController = _main();
 	flow.current_page.start_requested.emit();
@@ -240,6 +253,7 @@ func _test_complete_adventure()->void:
 	await process_frame;
 
 
+## 验证构筑中返回菜单释放未完成冒险，重新开始时轮次、选择及页码归零。
 func _test_return_and_restart()->void:
 	var flow:GameFlowController = _main();
 	flow._start_new_run();

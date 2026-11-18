@@ -1,20 +1,25 @@
 ## 手牌增量更新：重复卡实例、稳定节点/连接、动态预览、残影与重开隔离。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(value:bool, message:String)->void:
 	if not value:
 		_failures += 1
 		push_error(message)
 
+## 等待三个处理帧，使布局和排队释放完成。
 func _frames()->void:
 	for _frame in range(3):
 		await process_frame
 
+## 运行手牌控件生命周期检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	for window_size:Vector2i in [Vector2i(1920, 1080), Vector2i(1280, 720), Vector2i(1024, 600)]:
 		root.size = window_size
@@ -25,6 +30,7 @@ func _run()->void:
 		print("HandView生命周期检查失败：%d" % _failures)
 	quit(0 if _failures == 0 else 1)
 
+## 验证十张重复卡实例的稳定控件及连接、动态预览、独立出牌快照与重开清理。
 func _test_window()->void:
 	var page:BattleView = load("res://battle/battle.tscn").instantiate()
 	root.add_child(page)

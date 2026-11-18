@@ -3,22 +3,28 @@
 extends SceneTree
 
 const TRIAL_SCENE:PackedScene = preload("res://综合数值模型/Boss实验/Boss试炼.tscn");
+## 试炼应提供的三种正式 Boss 标识。
 const ENEMY_IDS:Array[String] = ["ironcrown_tyrant", "calamity_hierophant", "ruin_guard"];
+## 参考构筑应各包含一张的附加卡牌标识。
 const REFERENCE_IDS:Array[String] = ["eternity", "war_god_blessing", "uppercut"];
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 递归收集节点下的普通按钮，排除构筑和生命选择用的 [OptionButton]。
 func _buttons(node:Node)->Array[Button]:
 	var result:Array[Button] = [];
 	if (node is Button) and not (node is OptionButton):
@@ -28,6 +34,7 @@ func _buttons(node:Node)->Array[Button]:
 	return result;
 
 
+## 按正式敌人名称查找 Boss 选择按钮；没有匹配按钮时返回 [code]null[/code]。
 func _enemy_button(trial:Control, enemy_id:String)->Button:
 	var enemy:EnemyDefinition = load("res://combatants/enemies/data/%s.tres" % enemy_id);
 	for button in _buttons(trial):
@@ -36,6 +43,7 @@ func _enemy_button(trial:Control, enemy_id:String)->Button:
 	return null;
 
 
+## 检查 Boss 选择、构筑及生命控件的数量、显示、信号连接和返回后状态。
 func _check_selection(trial:Control)->void:
 	var choices:Array[Button] = _buttons(trial);
 	_expect(choices.size() == 3, "Boss试炼选择页应显示两名新Boss及遗迹守卫三个按钮");
@@ -59,6 +67,7 @@ func _check_selection(trial:Control)->void:
 	_expect(trial.get_node_or_null("battle") == null, "返回选择页后应移除上一场战斗界面");
 
 
+## 汇总战斗各牌区的实际卡牌实例，用于检查试炼构筑完整性。
 func _collect_cards(state:BattleState)->Array[CardInstance]:
 	var all_cards:Array[CardInstance] = [];
 	all_cards.append_array(state.draw_pile);
@@ -73,6 +82,7 @@ func _collect_cards(state:BattleState)->Array[CardInstance]:
 	return all_cards;
 
 
+## 按选定构筑检查基础牌、参考或随机附加卡、显示文案及战斗状态合法性。
 func _check_deck(state:BattleState, deck_choice:int, trial:Control)->void:
 	var all_cards:Array[CardInstance] = _collect_cards(state);
 	var counts:Dictionary = {"strike":0, "defend":0};
@@ -106,6 +116,7 @@ func _check_deck(state:BattleState, deck_choice:int, trial:Control)->void:
 	_expect(not state.is_invalid_battle(), "Boss试炼全部牌区、实例与正式战斗状态应完整合法");
 
 
+## 运行Boss 试炼界面与真实战斗检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	seed(726331);
 	var trial:Control = TRIAL_SCENE.instantiate();

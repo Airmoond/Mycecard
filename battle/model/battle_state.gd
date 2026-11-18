@@ -12,9 +12,11 @@ signal presentation_result(kind:StringName, amount:int)
 ## 独立战斗随机源。显式传入时与冒险候选抽样互不消费彼此的序列。
 var _random_source:RandomNumberGenerator = RandomNumberGenerator.new()
 
+## 随机化本状态自有的战斗随机源。
 func _init()->void:
 	_random_source.randomize()
 
+## 使用非空的外部随机源替换洗牌随机源；传入空引用时保持原随机源。
 func set_random_source(source:RandomNumberGenerator)->void:
 	if source != null:
 		_random_source = source

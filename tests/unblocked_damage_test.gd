@@ -1,13 +1,16 @@
 ## 无视格挡伤害的独立入口，以及武器修正、范围、耐久与胜负收尾。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行无视格挡攻击检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_damage_entry();
 	_test_weapon_comparison();
@@ -21,12 +24,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 创建可切换无视格挡开关的独立测试武器卡定义。
 func _weapon(ignores_block:bool = true)->CardDefinition:
 	var definition:CardDefinition = CardDefinition.new();
 	definition.card_id = "test_unblocked_weapon";
@@ -41,6 +46,7 @@ func _weapon(ignores_block:bool = true)->CardDefinition:
 	return definition;
 
 
+## 挂载正式战斗页面并用指定牌组启动无视格挡测试。
 func _controller(cards:Array[CardDefinition])->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
@@ -49,6 +55,7 @@ func _controller(cards:Array[CardDefinition])->BattleController:
 	return controller;
 
 
+## 按定义引用查找手牌实例；未找到时返回 [code]null[/code]。
 func _in_hand(controller:BattleController, definition:CardDefinition)->CardInstance:
 	for card in controller.battle_state.hand:
 		if card.definition == definition:
@@ -56,6 +63,7 @@ func _in_hand(controller:BattleController, definition:CardDefinition)->CardInsta
 	return null;
 
 
+## 对照普通伤害，验证无视格挡入口直接扣生命、保留格挡并返回实际生命损失。
 func _test_damage_entry()->void:
 	var target:CombatantState = CombatantState.new();
 	target.combatant_init("受击者", 50);
@@ -67,6 +75,7 @@ func _test_damage_entry()->void:
 	_expect(target.take_unblocked_damage(15) == 3 and target.current_health == 0 and target.current_block == 2, "过量伤害返回实际损失，生命最低为0");
 
 
+## 验证普通武器与无视格挡武器的伤害差异，并检查装备费用和攻击机会防重。
 func _test_weapon_comparison()->void:
 	_expect(not WeaponDefinition.new().ignores_block, "默认武器继续受格挡抵消");
 	for ignores_block in [false, true]:
@@ -86,6 +95,7 @@ func _test_weapon_comparison()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证无视格挡攻击仍应用力量与减益倍率，预览、实伤和定义只读性一致。
 func _test_modifiers_and_preview()->void:
 	var definition:CardDefinition = _weapon();
 	definition.weapon_definition.base_attack = 7;
@@ -104,6 +114,7 @@ func _test_modifiers_and_preview()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证无视格挡只作用于该武器的独立攻击，不影响装备附加伤害或普通攻击牌。
 func _test_weapon_only()->void:
 	var definition:CardDefinition = _weapon();
 	var strike:CardDefinition = load("res://cards/data/strike.tres");
@@ -121,6 +132,7 @@ func _test_weapon_only()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证零点无视格挡攻击不改生命与格挡，但仍消耗机会和耐久并处理损坏。
 func _test_zero_damage()->void:
 	var definition:CardDefinition = _weapon();
 	definition.weapon_definition.base_attack = 0;
@@ -136,6 +148,7 @@ func _test_zero_damage()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证致命武器攻击保留目标格挡，完成耐久及损坏归档后只报告一次胜利。
 func _test_lethal_attack()->void:
 	var definition:CardDefinition = _weapon();
 	var controller:BattleController = _controller([definition]);
@@ -146,6 +159,7 @@ func _test_lethal_attack()->void:
 	state.enemy_state.current_health = 4;
 	state.enemy_state.gain_block(99);
 	var results:Array[bool] = [];
+	## 记录致命攻击结果，并立即检查目标格挡保留及武器损坏消耗已经完成。
 	controller.battle_finished.connect(func(victory:bool, _health:int, _max_health:int)->void:
 		results.append(victory);
 		_expect(state.enemy_state.current_health == 0 and state.enemy_state.current_block == 99, "致命攻击仍保留格挡");
@@ -157,6 +171,7 @@ func _test_lethal_attack()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证更换为普通武器后提示和实伤不残留上一把武器的无视格挡规则。
 func _test_replacement()->void:
 	var piercing:CardDefinition = _weapon();
 	var ordinary:CardDefinition = _weapon(false);

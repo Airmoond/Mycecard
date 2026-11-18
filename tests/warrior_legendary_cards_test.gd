@@ -1,14 +1,18 @@
 ## 四张正式传说卡的结算、武器回手、候选分组与普通奖励隔离。
 extends SceneTree
 
+## 本组检查覆盖的正式传说卡标识。
 const CARD_IDS:Array[String] = ["fortress", "eternity", "blood_feast", "endless_power"];
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行战士传说卡牌检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_catalog_and_rewards();
 	_test_fortress();
@@ -23,16 +27,19 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 按标识加载正式传说卡或基础卡定义。
 func _card(id:String)->CardDefinition:
 	return load("res://cards/data/%s.tres" % id);
 
 
+## 复制遭遇并配置测试行动，用指定牌组启动正式战斗。
 func _controller(cards:Array[CardDefinition])->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
@@ -69,6 +76,7 @@ func _put_in_hand(state:BattleState, id:String)->CardInstance:
 	return null;
 
 
+## 验证正式传说卡资源和构筑分组，并检查普通奖励排除传说卡且不污染源卡池。
 func _test_catalog_and_rewards()->void:
 	var character:CharacterDefinition = load("res://characters/data/warrior.tres");
 	var pool:Array[CardDefinition] = character.reward_card_pool;
@@ -112,6 +120,7 @@ func _test_catalog_and_rewards()->void:
 	main.queue_free();
 
 
+## 验证正式坚城的费用、能力去重、归档及跨回合格挡保留。
 func _test_fortress()->void:
 	var controller:BattleController = _controller([_card("fortress"), _card("fortress")]);
 	var state:BattleState = controller.battle_state;
@@ -126,6 +135,7 @@ func _test_fortress()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证正式永恒的固有、保留、损坏回手、重装和下一场状态重置。
 func _test_eternity()->void:
 	var deck:Array[CardDefinition] = [_card("eternity"), _card("war_god_blessing")];
 	for index in range(8):
@@ -156,6 +166,7 @@ func _test_eternity()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证正式永恒在满手时损坏进入弃牌堆。
 func _test_eternity_full_hand()->void:
 	var deck:Array[CardDefinition] = [_card("eternity")];
 	for index in range(12):
@@ -171,6 +182,7 @@ func _test_eternity_full_hand()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证正式鲜血狂宴按实际失血回血，并在胜利报告前完成消耗归档。
 func _test_blood_feast()->void:
 	var controller:BattleController = _controller([_card("blood_feast")]);
 	var state:BattleState = controller.battle_state;
@@ -179,6 +191,7 @@ func _test_blood_feast()->void:
 	state.enemy_state.gain_block(3);
 	var card:CardInstance = state.hand[0];
 	var reported_health:Array[int] = [];
+	## 记录结果生命，并在通知当场验证正式鲜血狂宴已经完成治疗与消耗。
 	controller.battle_finished.connect(func(victory:bool, health:int, _max_health:int)->void:
 		reported_health.append(health);
 		_expect(victory and state.exhaust_pile.has(card), "鲜血狂宴先治疗和消耗归档，再报告胜利");
@@ -188,6 +201,7 @@ func _test_blood_feast()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证正式无尽之力不触发自身、回能叠加及回合结束清零。
 func _test_endless_power()->void:
 	var controller:BattleController = _controller([_card("endless_power"), _card("endless_power"), _card("strike"), _card("eternity")]);
 	var state:BattleState = controller.battle_state;
@@ -205,6 +219,7 @@ func _test_endless_power()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证传说卡在候选与手牌卡面上的完整文案、元数据和伤害占位符替换。
 func _test_card_text()->void:
 	var views:Array[Control] = [];
 	for id in CARD_IDS:

@@ -1,16 +1,20 @@
 ## 正常退出先清理驻留音频与输入；重复请求和迟到播放不能重新激活服务。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(condition:bool, message:String)->void:
 	if not condition:
 		failures += 1
 		push_error(message)
 
+## 运行应用有序退出与驻留音频释放检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	var main:Node = load("res://main.tscn").instantiate()
 	root.add_child(main)

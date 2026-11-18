@@ -4,47 +4,72 @@ class_name BattleController
 extends Node
 
 signal battle_finished(victory:bool, remaining_player_health:int, remaining_player_max_health:int)
+## 当前控制器持有的战斗规则会话，准备成功后才替换旧会话。
 var session:BattleSession
+## 负责本场动画、音效和实际结果反馈的表现节点。
 var presentation:BattlePresentation
+## 是否已向流程层报告本场结果，防止重复结算通知。
 var _battle_result_reported:bool = false
+## 下一次准备战斗时传入会话的唯一战斗标识。
 var _battle_id:String = ""
+## 下一次准备战斗时传入会话的所属地图节点标识。
 var _node_id:String = ""
+## 下一次战斗使用的随机源；为空时沿用会话自行创建的随机源。
 var _rng:RandomNumberGenerator
+## 是否正在同步执行规则命令；期间的表现事件先进入缓存。
 var _executing:bool = false
+## 当前命令执行期间产生、尚未展示的实际事件，按发生顺序保存。
 var _events:Array[BattleEvent] = []
+## 拥有此控制器的战斗视图。
 @onready var battle_view:BattleView = get_parent() as BattleView
 
+## 当前会话的战斗状态；尚未准备会话时为 [code]null[/code]。
 var battle_state:BattleState:
 	get: return session.battle_state if session != null else null
+## 当前会话的同步行为队列；尚未准备会话时为 [code]null[/code]。
 var action_queue:ActionQueue:
 	get: return session.action_queue if session != null else null
+## 当前会话使用的藏品定义；没有会话或未选择藏品时为 [code]null[/code]。
 var selected_collection:CollectionDefinition:
 	get: return session.selected_collection if session != null else null
+## 转发战斗视图的玩家控件引用，供表现及既有调用者定位。
 var player_view:CombatantView:
 	get: return battle_view.player_view
+## 转发战斗视图的敌人控件引用，供表现及既有调用者定位。
 var enemy_view:CombatantView:
 	get: return battle_view.enemy_view
+## 战斗视图的能量显示控件，也是能量事件的表现锚点。
 var energy_label:Label:
 	get: return battle_view.energy_label
+## 战斗视图的抽牌堆数量与查看按钮。
 var draw_pile_label:Button:
 	get: return battle_view.draw_pile_label
+## 战斗视图的弃牌堆数量与查看按钮。
 var discard_pile_label:Button:
 	get: return battle_view.discard_pile_label
+## 战斗视图的消耗牌堆数量与查看按钮。
 var exhaust_pile_label:Button:
 	get: return battle_view.exhaust_pile_label
+## 战斗视图的装备信息控件，也是武器事件的表现锚点。
 var weapon_label:Label:
 	get: return battle_view.weapon_label
+## 战斗视图持有的增量手牌组件，控制器通过它制作独立出牌快照。
 var hand_area:HandView:
 	get: return battle_view.hand_area
+## 战斗视图的结束回合按钮，不直接保存规则状态。
 var end_turn_button:Button:
 	get: return battle_view.end_turn_button
+## 战斗视图的只读藏品查看入口。
 var collection_button:Button:
 	get: return battle_view.collection_button
+## 转发当前战斗视图的藏品查看器引用，保留既有检查入口。
 var _collection_inspector:CollectionInspector:
 	get: return battle_view._collection_inspector
+## 转发当前战斗视图的牌堆查看器引用，保留既有检查入口。
 var _card_inspector:CardInspector:
 	get: return battle_view._card_inspector
 
+## 创建战斗表现节点，并将视图的操作意图与界面反馈连接到对应处理方法。
 func _ready()->void:
 	presentation = BattlePresentation.new()
 	add_child(presentation)
@@ -53,11 +78,13 @@ func _ready()->void:
 	battle_view.end_turn_requested.connect(_on_end_turn_button_pressed)
 	battle_view.ui_feedback.connect(presentation.play_feedback)
 
+## 保存战斗身份、所属地图节点和可选随机源，供下一次准备战斗使用。
 func configure_context(battle_id:String, node_id:String, rng:RandomNumberGenerator = null)->void:
 	_battle_id = battle_id
 	_node_id = node_id
 	_rng = rng
 
+## 为战斗视图和表现层设置共享音频及浮层服务。
 func configure_services(audio:GameAudioManager, overlay:OverlayHost)->void:
 	battle_view.configure_overlay(overlay)
 	presentation.configure_services(audio, overlay)
@@ -80,6 +107,9 @@ func prepare_battle(encounter:EncounterDefinition, player:CombatantDefinition, d
 	battle_view.bind_session(session)
 	return true
 
+## 激活已准备但尚未开始的会话，展示首回合实际结果并刷新视图。
+##
+## 缺少会话或会话已经激活时返回 [code]false[/code]。
 func activate_battle()->bool:
 	if session == null or session.is_active():
 		return false
@@ -91,15 +121,19 @@ func activate_battle()->bool:
 	_refresh_battle_view()
 	return accepted
 
+## 依次准备并激活战斗，返回两步是否均成功；准备失败时不激活会话。
 func start_battle(encounter:EncounterDefinition, player:CombatantDefinition, deck:Array[CardDefinition], health:int, max_health:int, collection:CollectionDefinition = null)->bool:
 	return prepare_battle(encounter, player, deck, health, max_health, collection) and activate_battle()
 
+## 返回当前战斗规则会话；尚未准备战斗时为 [code]null[/code]。
 func get_battle_session()->BattleSession:
 	return session
 
+## 返回当前会话已生成的结果；没有会话或战斗尚未结束时为 [code]null[/code]。
 func get_battle_result()->BattleResult:
 	return session.get_result() if session != null else null
 
+## 验证出牌请求并提前制作卡面快照；接受后播放出牌动画，再展示实际结果和刷新状态。
 func _on_card_selected(card:CardInstance)->void:
 	if not is_inside_tree() or session == null or _has_inspector():
 		return
@@ -121,6 +155,7 @@ func _on_card_selected(card:CardInstance)->void:
 	_flush_actual_results()
 	_refresh_battle_view()
 
+## 在页面有效且输入未被浮层阻挡时提交武器攻击，再展示实际结果并刷新视图。
 func _on_weapon_attack_requested()->void:
 	if not is_inside_tree() or session == null or _has_inspector():
 		return
@@ -130,6 +165,7 @@ func _on_weapon_attack_requested()->void:
 	_flush_actual_results()
 	_refresh_battle_view()
 
+## 提交结束回合请求；可结束时播放反馈，并在同步结算后刷新战斗显示。
 func _on_end_turn_button_pressed()->void:
 	if not is_inside_tree() or session == null or _has_inspector():
 		return
@@ -141,6 +177,7 @@ func _on_end_turn_button_pressed()->void:
 	_flush_actual_results()
 	_refresh_battle_view()
 
+## 接收模型的实际事件；命令执行中先缓存，其他时间立即交给表现层。
 func _on_actual_result(event:BattleEvent)->void:
 	if _battle_result_reported:
 		return
@@ -149,11 +186,13 @@ func _on_actual_result(event:BattleEvent)->void:
 	else:
 		_present_actual_result(event)
 
+## 按接收顺序展示缓存的实际事件，然后清空缓存。
 func _flush_actual_results()->void:
 	for event:BattleEvent in _events:
 		_present_actual_result(event)
 	_events.clear()
 
+## 按事件目标选择角色、能量或武器的显示区域，并交给表现层展示。
 func _present_actual_result(event:BattleEvent)->void:
 	var anchor:Control
 	match event.target_id:
@@ -163,6 +202,7 @@ func _present_actual_result(event:BattleEvent)->void:
 		_: anchor = weapon_label
 	presentation.present_event(event, anchor.get_global_rect())
 
+## 刷新战斗显示；首次发现结果时关闭查看器、播放终局反馈并发出结束信号。
 func _refresh_battle_view()->void:
 	if session == null:
 		return
@@ -176,6 +216,7 @@ func _refresh_battle_view()->void:
 	presentation.finish(result.victory)
 	battle_finished.emit(result.victory, result.player_health, result.player_max_health)
 
+## 请求会话检查胜负并刷新视图，返回是否已产生结果；没有会话时返回 [code]false[/code]。
 func _check_battle_result()->bool:
 	if session == null:
 		return false
@@ -183,12 +224,15 @@ func _check_battle_result()->bool:
 	_refresh_battle_view()
 	return finished
 
+## 返回当前没有输入阻挡且会话允许打出指定卡牌的状态。
 func _card_is_playable(card:CardInstance)->bool:
 	return session != null and not _has_inspector() and session.can_play_card(card)
 
+## 转发会话的卡牌效果前置条件检查；没有会话时返回 [code]false[/code]。
 func _meets_effect_requirements(card:CardInstance)->bool:
 	return session != null and session._meets_effect_requirements(card)
 
+## 将指定卡牌的效果交给当前会话入队，返回是否全部成功入队。
 func _queue_card_effect(card:CardInstance)->bool:
 	return session._queue_card_effect(card)
 
@@ -198,27 +242,35 @@ func _start_player_turn()->void:
 		session._start_player_turn()
 		_refresh_battle_view()
 
+## 返回当前会话的敌人意图文本；保留的 [param _action] 参数不参与计算。
 func _build_enemy_intent_text(_action:EnemyActionDefinition)->String:
 	return session.enemy_intent_text()
 
+## 返回战斗视图是否因查看器或共享模态窗口而阻挡输入。
 func _has_inspector()->bool:
 	return battle_view.input_is_blocked()
 
+## 返回战斗视图是否持有有效的藏品查看器。
 func _has_collection_inspector()->bool:
 	return battle_view._has_collection_inspector()
 
+## 返回当前战斗视图是否允许打开只读查看器。
 func _can_inspect()->bool:
 	return battle_view._can_inspect()
 
+## 返回当前战斗视图是否允许查看藏品。
 func _can_inspect_collection()->bool:
 	return battle_view._can_inspect_collection()
 
+## 将藏品按钮请求转发给战斗视图处理。
 func _on_collection_button_pressed()->void:
 	battle_view._on_collection_button_pressed()
 
+## 将指定牌堆的浏览请求转发给战斗视图处理。
 func _on_pile_button_pressed(pile_name:String)->void:
 	battle_view._on_pile_button_pressed(pile_name)
 
+## 退出场景树时释放当前会话的事件连接并停止接受战斗命令。
 func _exit_tree()->void:
 	if session != null:
 		session.dispose()

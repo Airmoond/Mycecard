@@ -6,22 +6,38 @@ signal actual_result(event:BattleEvent)
 signal state_changed
 signal battle_finished(result:BattleResult)
 
+## 本场战斗的唯一运行时状态，准备成功后赋值。
 var battle_state:BattleState
+## 按效果顺序同步执行的行为队列。
 var action_queue:ActionQueue = ActionQueue.new()
+## 本场应用的只读藏品定义，可以为 [code]null[/code]。
 var selected_collection:CollectionDefinition
+## 外部配置的本场战斗标识，用于事件归属与整局结果防重。
 var battle_id:String = ""
+## 本场战斗所属的地图节点标识。
 var node_id:String = ""
+## 本场洗牌使用的随机源，可由整局会话共享传入。
 var _rng:RandomNumberGenerator = RandomNumberGenerator.new()
+## 已经生成的单场结果；为空表示尚未归档胜负。
 var _result:BattleResult
+## 是否已执行激活步骤；战斗结束后仍保持激活标记，释放时清除。
 var _active:bool = false
+## 是否已经释放会话，释放后拒绝玩家操作。
 var _disposed:bool = false
+## 是否正在执行同步命令，用于拒绝重入操作与结果检查。
 var _command_active:bool = false
+## 本场已记录的实际事件序号，每次准备成功后重置。
 var _sequence:int = 0
+## 后续实际事件的逻辑来源，区分玩家、敌人和战斗初始化。
 var _event_source:StringName = &"battle"
+## 供下一次准备战斗使用的外部战斗标识。
 var _configured_battle_id:String = ""
+## 供下一次准备战斗使用的地图节点标识。
 var _configured_node_id:String = ""
+## 供下一次准备战斗使用的可选随机源；仅在准备成功后替换当前随机源。
 var _configured_rng:RandomNumberGenerator
 
+## 随机化会话自有的随机源；外部可在准备战斗前另行配置共享随机源。
 func _init()->void:
 	_rng.randomize()
 
@@ -31,6 +47,9 @@ func configure_context(identity:String, owner_node_id:String, rng:RandomNumberGe
 	_configured_node_id = owner_node_id
 	_configured_rng = rng
 
+## 验证遭遇、玩家、牌组和起始生命，并在全部构建成功后替换本场状态。
+##
+## 准备成功返回 [code]true[/code]，但不开始回合或抽牌。验证失败或命令正在执行时返回 [code]false[/code]。
 func prepare(
 	encounter:EncounterDefinition,
 	player_definition:CombatantDefinition,
@@ -112,6 +131,9 @@ func prepare(
 	_bind_actual_events()
 	return true
 
+## 激活已准备的战斗，应用开局藏品并启动首个玩家回合，然后发出状态变化信号。
+##
+## 未准备、已激活、已释放或已有结果时返回 [code]false[/code]。
 func activate()->bool:
 	if battle_state == null or _active or _disposed or _result != null:
 		return false
@@ -125,18 +147,23 @@ func activate()->bool:
 	state_changed.emit()
 	return true
 
+## 依次准备并激活战斗，返回两步是否均成功；适用于无需分离准备与展示的调用者。
 func start_battle(encounter:EncounterDefinition, player:CombatantDefinition, deck:Array[CardDefinition], health:int, max_health:int, collection:CollectionDefinition = null)->bool:
 	return prepare(encounter, player, deck, health, max_health, collection) and activate()
 
+## 返回已生成的本场结果；尚未生成结果时为 [code]null[/code]。
 func get_result()->BattleResult:
 	return _result
 
+## 返回会话是否已激活且尚未被释放；战斗胜负应通过结果另行判断。
 func is_active()->bool:
 	return _active
 
+## 返回当前战斗随机源的种子。
 func random_seed()->int:
 	return _rng.seed
 
+## 返回玩家操作被拒绝的首个原因代码；空 [StringName] 表示当前允许操作。
 func player_operation_failure()->StringName:
 	if battle_state == null or not _active or _disposed:
 		return &"not_started"
@@ -148,6 +175,7 @@ func player_operation_failure()->StringName:
 		return &"not_player_turn"
 	return &""
 
+## 返回指定卡牌不能打出的首个原因代码，涵盖操作阶段、手牌身份、费用和效果前置条件。
 func card_play_failure(card:CardInstance)->StringName:
 	var failure:StringName = player_operation_failure()
 	if failure != &"":
@@ -163,9 +191,11 @@ func card_play_failure(card:CardInstance)->StringName:
 		return &"max_health_cost"
 	return &""
 
+## 返回指定卡牌当前是否可打出；只检查条件，不支付费用或执行效果。
 func can_play_card(card:CardInstance)->bool:
 	return card_play_failure(card) == &""
 
+## 返回武器攻击被拒绝的首个原因代码；空 [StringName] 表示允许攻击。
 func weapon_attack_failure()->StringName:
 	var failure:StringName = player_operation_failure()
 	if failure != &"":
@@ -176,21 +206,29 @@ func weapon_attack_failure()->StringName:
 		return &"weapon_spent"
 	return &""
 
+## 返回当前是否允许使用已装备武器进行本回合的攻击。
 func can_attack_with_weapon()->bool:
 	return weapon_attack_failure() == &""
 
+## 返回当前玩家操作阶段是否允许结束回合。
 func can_end_turn()->bool:
 	return player_operation_failure() == &""
 
+## 返回根据本场状态计算伤害预览后的卡牌描述，不修改卡牌或角色。
 func card_description(card:CardInstance)->String:
 	return BattleDisplay.card_description(battle_state, card)
 
+## 返回本场敌人当前行动的意图文本。
 func enemy_intent_text()->String:
 	return BattleDisplay.enemy_intent_text(battle_state)
 
+## 返回当前装备武器的伤害预览和攻击后效果说明。
 func weapon_attack_tooltip()->String:
 	return BattleDisplay.weapon_attack_tooltip(battle_state)
 
+## 接受合法出牌请求，同步支付费用、执行效果并归档卡牌。
+##
+## 请求被拒绝时返回 [code]false[/code]。接受后返回 [code]true[/code]；若队列执行失败，已生效的费用与效果保留，卡牌维持结算中状态。
 func play_card(card:CardInstance)->bool:
 	if not can_play_card(card):
 		return false
@@ -212,6 +250,7 @@ func play_card(card:CardInstance)->bool:
 	state_changed.emit()
 	return true
 
+## 尝试执行武器攻击；成功后记录攻击事件、检查胜负并通知状态变化，返回请求是否被接受。
 func attack_with_weapon()->bool:
 	if not can_attack_with_weapon():
 		return false
@@ -226,6 +265,9 @@ func attack_with_weapon()->bool:
 		state_changed.emit()
 	return accepted
 
+## 尝试结束玩家回合，清理回合效果、弃牌并同步执行敌人回合。
+##
+## 拒绝操作时返回 [code]false[/code]；若真实胜负已经产生，则只提交结果，不再推进敌人行动。
 func end_turn()->bool:
 	# 兼容外部状态验证：真实胜负已产生时只提交结果，不再推进敌人。
 	if _active and not _disposed and not _command_active and battle_state.resolving_card == null and _result == null:
@@ -243,6 +285,7 @@ func end_turn()->bool:
 	state_changed.emit()
 	return true
 
+## 检查当前真实状态并返回是否已有战斗结果；命令执行中不进行新的结果检查。
 func check_battle_result()->bool:
 	if _disposed:
 		return _result != null
@@ -253,6 +296,7 @@ func check_battle_result()->bool:
 		state_changed.emit()
 	return finished
 
+## 校验胜负与真实状态一致后生成并发出本场结果；已有结果时不重复发送。
 func _finish(victory:bool)->void:
 	if battle_state == null or _result != null:
 		return
@@ -269,11 +313,13 @@ func _finish(victory:bool)->void:
 	_result.player_max_health = battle_state.player_state.max_health
 	battle_finished.emit(_result)
 
+## 连接当前玩家、敌人和战斗状态的实际结果信号，并绑定来源实例身份。
 func _bind_actual_events()->void:
 	battle_state.player_state.presentation_result.connect(_on_combatant_result.bind(&"player", battle_state.player_state.get_instance_id()))
 	battle_state.enemy_state.presentation_result.connect(_on_combatant_result.bind(&"enemy", battle_state.enemy_state.get_instance_id()))
 	battle_state.presentation_result.connect(_on_state_result.bind(battle_state.get_instance_id()))
 
+## 断开当前状态对象到会话的实际结果连接。
 func _disconnect_actual_events()->void:
 	if battle_state == null:
 		return
@@ -285,6 +331,7 @@ func _disconnect_actual_events()->void:
 	if battle_state.presentation_result.is_connected(handler):
 		battle_state.presentation_result.disconnect(handler)
 
+## 校验角色实例仍属于当前战斗后，将实际结果记录为带目标的战斗事件。
 func _on_combatant_result(kind:StringName, amount:int, target:StringName, source_instance_id:int)->void:
 	if battle_state == null or _result != null:
 		return
@@ -292,11 +339,13 @@ func _on_combatant_result(kind:StringName, amount:int, target:StringName, source
 	if current.get_instance_id() == source_instance_id:
 		_record(kind, amount, target)
 
+## 只接收当前战斗状态实例的实际结果，并将目标归为能量或武器区域。
 func _on_state_result(kind:StringName, amount:int, source_instance_id:int)->void:
 	if battle_state == null or _result != null or battle_state.get_instance_id() != source_instance_id:
 		return
 	_record(kind, amount, &"energy" if kind == &"energy" else &"weapon")
 
+## 为实际结果分配递增序号，附加战斗、来源及目标标识，然后发出事件信号。
 func _record(kind:StringName, amount:int, target:StringName)->void:
 	_sequence += 1
 	var event:BattleEvent = BattleEvent.new()
@@ -308,6 +357,7 @@ func _record(kind:StringName, amount:int, target:StringName)->void:
 	event.amount = amount
 	actual_result.emit(event)
 
+## 停止接受新操作并断开模型事件；未在执行命令时同时清空待执行队列。
 func dispose()->void:
 	_disposed = true
 	_active = false
@@ -315,6 +365,7 @@ func dispose()->void:
 	if not _command_active:
 		action_queue.clear_actions()
 
+## 检查武器强化所需装备与整张牌的最大生命费用，返回是否满足条件。
 func _meets_effect_requirements(card:CardInstance)->bool:
 	var max_health_cost:int = 0;
 	for effect in card.definition.effects:
@@ -324,6 +375,7 @@ func _meets_effect_requirements(card:CardInstance)->bool:
 			max_health_cost += effect.amount * effect.repeat_count;
 	return battle_state.player_state.max_health > max_health_cost;
 
+## 根据有效定义创建独立卡牌实例；定义为空或初始化失败时返回 [code]null[/code]。
 func _create_card_instance(definition:CardDefinition)->CardInstance:
 	if definition == null:#没有卡牌定义，就无法确定名称、费用和效果数值
 		push_error("卡牌定义为空，无法创建卡牌实例");
@@ -336,6 +388,7 @@ func _create_card_instance(definition:CardDefinition)->CardInstance:
 
 	return new_card_instance;#只有完整初始化后才交给调用者
 
+## 按输入顺序为每个定义创建独立卡牌实例；输入为空或任意实例失败时返回空数组。
 func _create_deck_from_definitions(
 	deck_definitions:Array[CardDefinition]
 )->Array[CardInstance]:
@@ -354,9 +407,11 @@ func _create_deck_from_definitions(
 
 	return new_deck;#成功时元素数量与deck_definitions一致，并保留输入顺序
 
+## 将卡牌效果按玩家为行动者、敌人为对手的上下文加入队列。
 func _queue_card_effect(card:CardInstance)->bool:
 	return _queue_effect_list(card.definition.effects, battle_state.player_state, battle_state.enemy_state);
 
+## 按配置顺序安排全部效果；任一效果入队失败时清空队列并返回 [code]false[/code]。
 func _queue_effect_list(
 	effects:Array[CombatEffectDefinition],
 	actor_state:CombatantState,
@@ -368,6 +423,7 @@ func _queue_effect_list(
 			return false;
 	return true;
 
+## 根据目标类型和重复次数，将单项效果翻译为基础队列操作；任一段入队失败时返回 [code]false[/code]。
 func _queue_single_effect(
 	effect:CombatEffectDefinition,
 	actor_state:CombatantState,
@@ -416,6 +472,9 @@ func _queue_single_effect(
 
 	return true;#当前效果的全部重复次数均成功加入队列
 
+## 从准备或敌人回合阶段开始新玩家回合，刷新状态并依次结算能力、藏品格挡和抽牌。
+##
+## 已有胜负或回合开始效果致死时停止推进；同一玩家回合不会重复刷新。
 func _start_player_turn()->void:
 	_event_source = &"player"
 	if battle_state == null:
@@ -460,6 +519,7 @@ func _start_player_turn()->void:
 	battle_state.current_phase = BattleState.BattlePhase.PLAYER_TURN;
 
 
+## 在敌人回合依次结算回合开始能力和当前行动，再衰减状态、推进意图并开始玩家回合。
 func _run_enemy_turn()->void:
 	if battle_state == null:
 		push_error("尚未创建战斗状态，无法执行敌人回合");
@@ -503,6 +563,7 @@ func _run_enemy_turn()->void:
 
 	_start_player_turn();#玩家回合刷新界面时会显示推进后的新current_action
 
+## 返回是否应停止战斗推进；已有结果直接返回 [code]true[/code]，新胜负优先按玩家失败判定。
 func _check_battle_result()->bool:
 	if battle_state == null:#缺少状态时无法判断任何真实胜负
 		push_error("尚未创建战斗状态，无法检查战斗结果");#报告战斗检查被过早调用

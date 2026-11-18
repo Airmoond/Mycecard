@@ -1,18 +1,22 @@
 ## 分支拓扑、随机结果稳定、选路、真实奖励与生命衔接、胜败重开及窗口布局。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0
 ## 第五阶段固定内容回归；第六阶段随机类型在 phase6_run_state/flow_test 验证。
 const DEFAULT_RUN:String = "res://tests/fixtures/phase5_run.tres"
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(condition:bool, message:String)->void:
 	if not condition:
 		failures += 1
 		push_error(message)
 
+## 用指定全局随机种子创建固定内容分支冒险，并完成三轮构筑。
 func drafted_state(value:int)->RunState:
 	seed(value)
 	var state:RunState = RunState.new()
@@ -22,6 +26,7 @@ func drafted_state(value:int)->RunState:
 		expect(state.choose_starting_card(options[0]), "构筑提交合法候选")
 	return state
 
+## 运行分支地图检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_structure_and_sampling()
 	_test_progression()
@@ -34,6 +39,7 @@ func _run()->void:
 	print("分支地图检查完成，失败数：%d" % failures)
 	quit(0 if failures == 0 else 1)
 
+## 验证五层分支拓扑、同路线敌人去重、随机绑定稳定性及无效连接拒绝。
 func _test_structure_and_sampling()->void:
 	var definition:RunDefinition = load(DEFAULT_RUN)
 	var map:MapDefinition = definition.map_definition
@@ -76,6 +82,7 @@ func _test_structure_and_sampling()->void:
 			2: invalid_map.get_node_by_id("route_c_rest").next_node_ids = []
 		expect(invalid_map.is_invalid(), "拒绝跨路线、环路和死路")
 
+## 验证开始节点、选线锁定、逐层推进、休整及 Boss 胜利，并检查重开清理。
 func _test_progression()->void:
 	var state:RunState = drafted_state(901)
 	state.current_health = 20
@@ -94,6 +101,7 @@ func _test_progression()->void:
 	expect(state.completed_node_ids == ["start", "route_b_1", "route_b_2", "route_b_rest", "final_boss"] and not state.is_invalid(), "胜利无需完成其余六节点")
 	expect(state.run_state_init(load(DEFAULT_RUN)) and state.selected_route_id.is_empty() and state.completed_node_ids.is_empty() and state.available_node_ids == ["start"] and state.status == RunState.RunStatus.DRAFTING, "重新初始化清除路线和进度")
 
+## 验证不同窗口尺寸下节点及连线不叠加、不重叠，且实际名称与路线锁定正确。
 func _test_view()->void:
 	var state:RunState = drafted_state(905)
 	var bindings:Dictionary = state.node_encounters.duplicate()
@@ -130,6 +138,7 @@ func _test_view()->void:
 	map.queue_free()
 	await process_frame
 
+## 沿指定路线运行正式页面流程，并可在指定节点模拟失败，检查奖励、生命衔接及重开。
 func _test_flow(route:String, defeat_node:String)->void:
 	seed(940100 + route.unicode_at(0) + defeat_node.length())
 	var main:Node = load("res://main.tscn").instantiate()

@@ -1,24 +1,30 @@
 ## 真实牌组和牌堆、重复实例、只读输入隔离、滚动布局与窗口生命周期。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(condition:bool, message:String)->void:
 	if not condition:
 		failures += 1
 		push_error(message)
 
+## 按标识加载正式卡牌定义。
 func card(id:String)->CardDefinition:
 	return load("res://cards/data/%s.tres" % id)
 
+## 等待三个处理帧，使延迟布局和排队释放完成。
 func frames()->void:
 	await process_frame
 	await process_frame
 	await process_frame
 
+## 按对象身份及重复次数比较两组卡牌是否包含相同成员，不要求排列顺序相同。
 func same_cards(left:Array, right:Array)->bool:
 	var counts:Dictionary = {}
 	for value in left:
@@ -33,6 +39,7 @@ func same_cards(left:Array, right:Array)->bool:
 			return false
 	return true
 
+## 复制战斗关键状态与牌区信息，用于检查只读浏览期间没有改变规则或顺序。
 func snapshot(state:BattleState)->Dictionary:
 	var weapons:Array = []
 	var costs:Array = []
@@ -55,12 +62,14 @@ func snapshot(state:BattleState)->Dictionary:
 		"weapon_attack":state.weapon_attack_available, "costs":costs, "weapons":weapons,
 	}
 
+## 向指定卡牌查看器传入 Esc 按下事件，复用其真实键盘关闭处理。
 func escape(inspector:CardInspector)->void:
 	var event:InputEventKey = InputEventKey.new()
 	event.keycode = KEY_ESCAPE
 	event.pressed = true
 	inspector._unhandled_key_input(event)
 
+## 复制正式遭遇并构建安全敌人行动，供反复浏览和回合推进测试使用。
 func safe_encounter()->EncounterDefinition:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate()
 	encounter.enemy_definition = encounter.enemy_definition.duplicate()
@@ -78,6 +87,7 @@ func safe_encounter()->EncounterDefinition:
 	encounter.enemy_definition.action_pattern = [action]
 	return encounter
 
+## 构建包含固有武器、消耗牌、能力牌及基础卡的浏览测试牌组。
 func battle_deck()->Array[CardDefinition]:
 	var definitions:Array[CardDefinition] = []
 	for id in ["eternity", "ancient_ritual", "strength_power"]:
@@ -90,6 +100,7 @@ func battle_deck()->Array[CardDefinition]:
 		definitions.append(card("defend"))
 	return definitions
 
+## 运行牌组与牌堆只读查看检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	await test_shared_view()
 	await test_map()
@@ -98,6 +109,7 @@ func _run()->void:
 	print("内容查看检查完成，失败数：%d" % failures)
 	quit(0 if failures == 0 else 1)
 
+## 验证定义与实例浏览、重复卡、临时武器数据、长列表滚动、空态及关闭释放。
 func test_shared_view()->void:
 	var inspector:CardInspector = load("res://ui/inspect/card_inspector.tscn").instantiate()
 	var definitions:Array[CardDefinition] = [card("strike"), card("eternity"), card("strike"), card("defend")]
@@ -149,6 +161,7 @@ func test_shared_view()->void:
 	await frames()
 	expect(not is_instance_valid(inspector), "Esc关闭并释放查看窗口")
 
+## 验证地图牌组读取真实拥有列表、浏览输入隔离、奖励更新及页面退出清理。
 func test_map()->void:
 	root.size = Vector2i(1024, 600)
 	var main:Node = load("res://main.tscn").instantiate()
@@ -203,6 +216,7 @@ func test_map()->void:
 	await frames()
 	expect(not is_instance_valid(inspector), "页面结束释放所属查看窗口")
 
+## 验证各真实牌堆的只读浏览、当前费用、输入锁定，以及换战斗和终局清理。
 func test_battle()->void:
 	var page:Control = load("res://battle/battle.tscn").instantiate()
 	root.add_child(page)

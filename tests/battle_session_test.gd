@@ -1,32 +1,41 @@
 ## 直接使用RefCounted会话验证真实结算、查询、反馈、随机隔离与准备/激活。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0
+## 纯会话测试共用的正式遭遇定义，只读使用。
 var _encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres")
+## 纯会话测试共用的玩家基础定义，只读使用。
 var _player:CombatantDefinition = load("res://combatants/players/data/player.tres")
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(value:bool, message:String)->void:
 	if not value:
 		_failures += 1
 		push_error(message)
 
+## 按稳定卡牌标识加载正式卡牌定义。
 func _card(id:String)->CardDefinition:
 	return load("res://cards/data/%s.tres" % id)
 
+## 创建使用指定种子的独立随机源。
 func _rng(seed_value:int)->RandomNumberGenerator:
 	var rng:RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.seed = seed_value
 	return rng
 
+## 创建带指定身份和固定随机种子的纯规则战斗会话，使用给定牌组启动战斗。
 func _session(deck:Array[CardDefinition], identity:String = "pure")->BattleSession:
 	var session:BattleSession = BattleSession.new()
 	session.configure_context(identity, "node-a", _rng(4242))
 	_expect(session.start_battle(_encounter, _player, deck, 50, 50), "无场景会话能够启动")
 	return session
 
+## 运行独立战斗会话检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	var node_count:int = root.get_child_count()
 	_test_prepare_activate()
@@ -43,12 +52,14 @@ func _run()->void:
 		print("BattleSession检查失败：%d" % _failures)
 	quit(0 if _failures == 0 else 1)
 
+## 验证准备不抽牌或消耗随机流，激活只能执行一次，释放后拒绝迟到操作。
 func _test_prepare_activate()->void:
 	var session:BattleSession = BattleSession.new()
 	var rng:RandomNumberGenerator = _rng(9191)
 	session.configure_context("prepare-id", "map-id", rng)
 	var rng_state:int = rng.state
 	var signals:Array[BattleEvent] = []
+	## 收集实际事件，用于验证准备阶段没有反馈而激活后产生真实结果。
 	session.actual_result.connect(func(event:BattleEvent)->void: signals.append(event))
 	_expect(session.prepare(_encounter, _player, [_card("strike"), _card("defend")], 37, 43), "合法配置可以准备")
 	_expect(session.battle_state.current_phase == BattleState.BattlePhase.SETUP and session.battle_state.hand.is_empty(), "准备不开始回合或抽牌")
@@ -78,6 +89,7 @@ func _test_prepare_activate()->void:
 	session.dispose()
 	_expect(not session.activate() and not session.can_end_turn() and not session.end_turn(), "释放会话不能由迟到操作再次激活或推进")
 
+## 验证可用性查询与提交一致，并核对逐段实际事件及出牌后的牌区守恒。
 func _test_queries_and_actual_events()->void:
 	var session:BattleSession = _session([_card("double_strike"), _card("defend")])
 	var state:BattleState = session.battle_state
@@ -94,6 +106,7 @@ func _test_queries_and_actual_events()->void:
 	state.current_available_energy = 3
 	var events:Array[BattleEvent] = []
 	var reentry:Array[bool] = []
+	## 记录实际事件，并在命中回调中尝试重入操作以验证命令执行保护。
 	var handler:Callable = func(event:BattleEvent)->void:
 		events.append(event)
 		if event.kind == &"strike_hit":
@@ -117,6 +130,7 @@ func _test_queries_and_actual_events()->void:
 	session.actual_result.disconnect(handler)
 	session.dispose()
 
+## 验证纯会话在致死结果通知前完成消耗归档，且中断失血后的效果。
 func _test_fatal_archive()->void:
 	var strike:CardDefinition = _card("strike").duplicate()
 	strike.exhausts_on_play = true
@@ -128,6 +142,7 @@ func _test_fatal_archive()->void:
 	_expect(session.start_battle(encounter, _player, [strike], 50, 50), "致死案例能够启动")
 	var card:CardInstance = session.battle_state.hand[0]
 	var results:Array[BattleResult] = []
+	## 记录结构化结果，并在信号当场验证致命消耗牌已完成归档。
 	var handler:Callable = func(result:BattleResult)->void:
 		results.append(result)
 		_expect(session.battle_state.resolving_card == null and session.battle_state.exhaust_pile.has(card), "会话结果信号前致命消耗牌已归档")
@@ -151,6 +166,7 @@ func _test_fatal_archive()->void:
 	_expect(not fatal.get_result().victory and fatal.get_result().player_health == 0 and fatal.battle_state.player_state.current_block == 0, "失血致死不执行后续格挡")
 	fatal.dispose()
 
+## 验证纯规则会话可组合武器、强化及持续能力，不依赖场景控件。
 func _test_weapon_and_power()->void:
 	var session:BattleSession = _session([_card("eternity"), _card("war_god_blessing"), _card("blood_cloak")])
 	var weapon:CardInstance
@@ -172,6 +188,7 @@ func _test_weapon_and_power()->void:
 	_expect(session.battle_state.player_state.current_block >= 5 and not session.battle_state.is_invalid_battle(), "能力回合开始触发且牌区守恒")
 	session.dispose()
 
+## 提取当前回合、角色、能量、手牌和牌堆数量，用于比较真实战斗轨迹。
 func _snapshot(state:BattleState)->Dictionary:
 	var hand:Array[String] = []
 	for card:CardInstance in state.hand:
@@ -180,6 +197,7 @@ func _snapshot(state:BattleState)->Dictionary:
 		"max":state.player_state.max_health, "block":state.player_state.current_block, "enemy_hp":state.enemy_state.current_health,
 		"energy":state.current_available_energy, "hand":hand, "draw":state.draw_pile.size(), "discard":state.discard_pile.size()}
 
+## 用指定种子运行纯会话战斗并返回逐步快照；可插入全局随机调用以检查随机流隔离。
 func _trace(seed_value:int, global_noise:bool)->Array:
 	var rng:RandomNumberGenerator = _rng(seed_value)
 	var session:BattleSession = BattleSession.new()

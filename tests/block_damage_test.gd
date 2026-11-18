@@ -1,13 +1,16 @@
 ## 按当前格挡造成伤害：结算时取值、状态修正、预览与回合清理。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行按当前格挡造成伤害检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_strength_and_modifiers();
 	_test_zero_block_and_cost();
@@ -21,12 +24,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 创建以行动者当前格挡为基础值、作用于对手的伤害效果。
 func _shield_effect()->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = CombatEffectDefinition.EffectType.DAMAGE;
@@ -35,6 +40,7 @@ func _shield_effect()->CombatEffectDefinition:
 	return effect;
 
 
+## 复制基础卡牌并配置为按当前格挡造成伤害的独立测试定义。
 func _shield_card()->CardDefinition:
 	var definition:CardDefinition = load("res://cards/data/strike.tres").duplicate();
 	definition.card_id = "test_shield_attack";
@@ -44,6 +50,7 @@ func _shield_card()->CardDefinition:
 	return definition;
 
 
+## 根据指定类型、数值和目标创建测试效果定义。
 func _effect(type:CombatEffectDefinition.EffectType, amount:int, target:CombatEffectDefinition.TargetType)->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = type;
@@ -52,6 +59,7 @@ func _effect(type:CombatEffectDefinition.EffectType, amount:int, target:CombatEf
 	return effect;
 
 
+## 复制遭遇并按需替换敌人效果，挂载正式战斗页面后使用指定牌组启动测试。
 func _controller(cards:Array[CardDefinition], enemy_effects:Array[CombatEffectDefinition] = [])->BattleController:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();
@@ -69,6 +77,7 @@ func _controller(cards:Array[CardDefinition], enemy_effects:Array[CombatEffectDe
 	return controller;
 
 
+## 按卡牌定义引用查找手牌控件；没有匹配项时返回 [code]null[/code]。
 func _view(controller:BattleController, definition:CardDefinition)->CardView:
 	for child in controller.hand_area.get_children():
 		if child is CardView and child.card_instance.definition == definition:
@@ -76,6 +85,7 @@ func _view(controller:BattleController, definition:CardDefinition)->CardView:
 	return null;
 
 
+## 验证当前格挡与力量、虚弱和易伤组合时，伤害预览与实际结算一致。
 func _test_strength_and_modifiers()->void:
 	for with_statuses in [false, true]:
 		var definition:CardDefinition = _shield_card();
@@ -97,6 +107,7 @@ func _test_strength_and_modifiers()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证零格挡仍可出牌并支付费用，而费用不足不会造成伤害或移牌。
 func _test_zero_block_and_cost()->void:
 	for strength in [0, 2]:
 		var definition:CardDefinition = _shield_card();
@@ -119,6 +130,7 @@ func _test_zero_block_and_cost()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证同张牌前序获得的格挡只影响后续伤害，预览本身不修改真实状态。
 func _test_effect_order()->void:
 	var definition:CardDefinition = _shield_card();
 	var block:CombatEffectDefinition = _effect(CombatEffectDefinition.EffectType.BLOCK, 3, CombatEffectDefinition.TargetType.SELF);
@@ -137,6 +149,7 @@ func _test_effect_order()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证伤害执行时读取格挡，重复攻击逐段抵消目标格挡且不消耗自身格挡。
 func _test_execution_time_and_repeats()->void:
 	var actor:CombatantState = CombatantState.new();
 	var target:CombatantState = CombatantState.new();
@@ -160,6 +173,7 @@ func _test_execution_time_and_repeats()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证下一回合的格挡伤害读取正常清理或能力保留后的实际格挡。
 func _test_retained_block()->void:
 	for retains_block in [false, true]:
 		var definition:CardDefinition = _shield_card();
@@ -176,6 +190,7 @@ func _test_retained_block()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证敌人意图考虑回合开始格挡清理及行动内增益，并与实际伤害一致。
 func _test_enemy_preview()->void:
 	for retains_block in [false, true]:
 		var controller:BattleController = _controller([load("res://cards/data/defend.tres")], [
@@ -193,6 +208,7 @@ func _test_enemy_preview()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证动态格挡来源不改变非攻击类别，战斗外缺少上下文时显示 [code]X[/code]。
 func _test_non_attack_and_reward()->void:
 	var definition:CardDefinition = _shield_card();
 	definition.effects[0].is_attack_damage = false;

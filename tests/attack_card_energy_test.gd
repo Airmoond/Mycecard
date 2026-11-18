@@ -1,13 +1,16 @@
 ## 无尽之力：先付费后触发已有回能，每张攻击牌一次，注册、叠加与回合到期。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行攻击牌回能检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_activation_and_stacking();
 	_test_card_type_and_weapon();
@@ -21,12 +24,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 创建独立的零费消耗攻击牌定义，用于注册一层后续攻击牌回能。
 func _buff()->CardDefinition:
 	var definition:CardDefinition = load("res://cards/data/strike.tres").duplicate();
 	definition.card_id = "test_endless_power";
@@ -41,6 +46,7 @@ func _buff()->CardDefinition:
 	return definition;
 
 
+## 创建并挂载正式战斗页面，以指定牌组启动测试战斗并返回控制器。
 func _controller(cards:Array[CardDefinition])->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
@@ -49,6 +55,7 @@ func _controller(cards:Array[CardDefinition])->BattleController:
 	return controller;
 
 
+## 按定义引用在手牌中查找测试卡并请求出牌；找不到时记录失败。
 func _play(controller:BattleController, definition:CardDefinition)->void:
 	for card in controller.battle_state.hand:
 		if card.definition == definition:
@@ -57,6 +64,7 @@ func _play(controller:BattleController, definition:CardDefinition)->void:
 	_expect(false, "测试卡应在手牌中");
 
 
+## 验证回能不触发自身、已有层数先触发再叠加，以及费用、伤害和归档。
 func _test_activation_and_stacking()->void:
 	var first:CardDefinition = _buff();
 	var second:CardDefinition = _buff();
@@ -74,6 +82,7 @@ func _test_activation_and_stacking()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证回能按攻击牌次数触发，不按伤害段数触发，也不由技能或武器攻击触发。
 func _test_card_type_and_weapon()->void:
 	var buff:CardDefinition = _buff();
 	var multihit:CardDefinition = load("res://cards/data/strike.tres").duplicate(true);
@@ -106,6 +115,7 @@ func _test_card_type_and_weapon()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证先支付费用再回能，且不足费用或重复提交不能预支、重复获得能量。
 func _test_payment_and_timing()->void:
 	var buff:CardDefinition = _buff();
 	var strike:CardDefinition = load("res://cards/data/strike.tres");
@@ -128,6 +138,7 @@ func _test_payment_and_timing()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证前序致死失血中断后续效果，但不撤回已经完成的回能。
 func _test_health_loss_interruption()->void:
 	var loss:CombatEffectDefinition = CombatEffectDefinition.new();
 	loss.effect_type = CombatEffectDefinition.EffectType.LOSE_HEALTH;
@@ -149,6 +160,7 @@ func _test_health_loss_interruption()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证致命攻击在胜利通知前完成回能与卡牌归档，结果只报告一次。
 func _test_lethal_attack()->void:
 	var buff:CardDefinition = _buff();
 	var strike:CardDefinition = load("res://cards/data/strike.tres");
@@ -157,6 +169,7 @@ func _test_lethal_attack()->void:
 	_play(controller, buff);
 	state.enemy_state.current_health = 1;
 	var results:Array[bool] = [];
+	## 结果回调记录胜败，并在通知当场验证回能及卡牌归档已经完成。
 	controller.battle_finished.connect(func(victory:bool, _health:int, _max_health:int)->void:
 		results.append(victory);
 		_expect(victory and state.current_available_energy == 3 and state.discard_pile.size() == 1 and state.resolving_card == null, "致命攻击在胜利报告前完成回能与归档");
@@ -167,6 +180,7 @@ func _test_lethal_attack()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证攻击牌回能在敌人行动前失效，并清除下一回合的额度与提示。
 func _test_expiration()->void:
 	for enemy_kills in [false, true]:
 		var buff:CardDefinition = _buff();
@@ -176,6 +190,7 @@ func _test_expiration()->void:
 		_play(controller, buff);
 		if enemy_kills:
 			state.player_state.current_health = 1;
+			## 失败回调验证进入敌人行动前已清除攻击牌回能额度。
 			controller.battle_finished.connect(func(_victory:bool, _health:int, _max_health:int)->void:
 				_expect(state.attack_card_energy_this_turn == 0, "在敌人行动前失效，即使未进入下一玩家回合");
 			);
@@ -187,6 +202,7 @@ func _test_expiration()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证重新开始战斗会清空回能和消耗记录，新效果仍不触发自身。
 func _test_new_battle()->void:
 	var buff:CardDefinition = _buff();
 	var controller:BattleController = _controller([buff]);

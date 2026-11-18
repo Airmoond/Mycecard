@@ -4,8 +4,11 @@ extends Resource
 
 enum PowerType { RETAIN_BLOCK, TURN_START_HEALTH_FOR_BLOCK }
 
+## 持续能力的规则类型，决定去重方式及触发时机。
 @export var power_type:PowerType = PowerType.RETAIN_BLOCK;
+## 角色状态及敌人意图中显示的能力名称。
 @export var display_name:String;
+## 能力的完整效果说明。
 @export_multiline var description:String;
 
 

@@ -21,14 +21,17 @@ func queue_damage_effect(attacker:CombatantState, target:CombatantState, effect:
 	return _enqueue_action(AttackDamageResolver.apply_effect.bind(attacker, target, effect));
 
 
+## 将增加力量的操作加入队列，并返回是否成功入队；不会立即修改目标状态。
 func queue_gain_strength(target:CombatantState, amount:int)->bool:
 	return _enqueue_action(target.gain_strength.bind(amount));
 
 
+## 将施加虚弱的操作加入队列。[param from_enemy] 决定首次施加后是否跳过当轮递减。
 func queue_weak(target:CombatantState, turns:int, from_enemy:bool)->bool:
 	return _enqueue_action(target.apply_weak.bind(turns, from_enemy));
 
 
+## 将施加易伤的操作加入队列。[param from_enemy] 决定首次施加后是否跳过当轮递减。
 func queue_vulnerable(target:CombatantState, turns:int, from_enemy:bool)->bool:
 	return _enqueue_action(target.apply_vulnerable.bind(turns, from_enemy));
 

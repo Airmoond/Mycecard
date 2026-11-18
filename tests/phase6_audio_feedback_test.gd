@@ -1,16 +1,20 @@
 ## 声音资产、淡化/静音/去重与实际效果采集；检查复合效果不能被净变化覆盖。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(condition:bool, message:String)->void:
 	if not condition:
 		failures += 1
 		push_error(message)
 
+## 运行音频混音与实际战斗反馈检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	var manager:GameAudioManager = GameAudioManager.new()
 	root.add_child(manager)
@@ -66,6 +70,7 @@ func _run()->void:
 	print("第六阶段音频与表现检查完成，失败数：%d" % failures)
 	quit(0 if failures == 0 else 1)
 
+## 使用真实声池和音乐检查音效抢占及满音量叠加时的主输出限制。
 func _test_mix_headroom(manager:GameAudioManager)->void:
 	var capture:AudioEffectCapture = AudioEffectCapture.new()
 	capture.buffer_length = 0.5
@@ -91,6 +96,7 @@ func _test_mix_headroom(manager:GameAudioManager)->void:
 	manager.set_sfx_volume(0.0)
 	await create_timer(0.15).timeout
 
+## 验证伤害、格挡、回血及扣费回能分别报告实际结果，不被净变化合并丢失。
 func _test_actual_results()->void:
 	var attacker:CombatantState = CombatantState.new()
 	attacker.combatant_init("玩家", 50)
@@ -99,7 +105,9 @@ func _test_actual_results()->void:
 	target.combatant_init("敌人", 30)
 	target.current_block = 4
 	var results:Array[StringName] = []
+	## 按发生顺序收集目标的实际反馈类型，避免以净生命变化替代逐段结果。
 	target.presentation_result.connect(func(kind:StringName, _amount:int)->void: results.append(kind))
+	## 按发生顺序收集行动者的实际反馈类型，核对吸血治疗独立报告。
 	attacker.presentation_result.connect(func(kind:StringName, _amount:int)->void: results.append(kind))
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new()
 	effect.amount = 10
@@ -124,12 +132,14 @@ func _test_actual_results()->void:
 	var state:BattleState = BattleState.new()
 	state.current_available_energy = 2
 	var energy:Array[int] = []
+	## 分别记录扣费与回能数值，验证净变化为零时仍保留两个实际事件。
 	state.presentation_result.connect(func(kind:StringName, amount:int)->void:
 		if kind == &"energy": energy.append(amount))
 	state.spend_energy(1)
 	state.gain_energy(1)
 	expect(energy == [-1, 1] and state.current_available_energy == 2, "扣费与回能分别采集，净零变化不隐藏实际支付")
 
+## 验证出牌残影采用缩放后的真实矩形，且重用控制器时清理旧反馈与记录。
 func _test_scaled_afterimage()->void:
 	# 1600设计画布在1280窗口中的0.8缩放；卡牌本地尺寸仍180×252。
 	var holder:Control = Control.new()
@@ -162,6 +172,7 @@ func _test_scaled_afterimage()->void:
 	presenter.queue_free()
 	await process_frame
 
+## 验证同步致死结算不等待动画，页面销毁清理本场表现而跨页短提示归应用所有。
 func _test_battle_lifecycle(manager:GameAudioManager)->void:
 	var host:OverlayHost = OverlayHost.new()
 	root.add_child(host)
@@ -177,6 +188,7 @@ func _test_battle_lifecycle(manager:GameAudioManager)->void:
 	expect(controller.start_battle(encounter, load("res://combatants/players/data/player.tres"), deck, 50, 50), "反馈生命周期场景应正常启动")
 	await process_frame
 	var count:int = manager.accepted_sfx.size()
+	## 在同步终局通知中释放战斗页面，用于检查残影和音效的生命周期隔离。
 	controller.battle_finished.connect(func(_win:bool, _hp:int, _maximum:int)->void: page.queue_free())
 	controller._on_card_selected(controller.battle_state.hand[0])
 	expect(controller.battle_state.current_phase == BattleState.BattlePhase.FINISHED, "致死同步完成不等待残影或音效")

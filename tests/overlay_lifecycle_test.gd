@@ -1,22 +1,27 @@
 ## 应用浮层、输入阻挡、所有权与已提交规则的显示失败恢复。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(condition:bool, message:String)->void:
 	if not condition:
 		failures += 1
 		push_error(message)
 
+## 向共享浮层传入 Esc 按下事件，执行真实的顶层窗口关闭选择。
 func escape(host:OverlayHost)->void:
 	var event:InputEventKey = InputEventKey.new()
 	event.keycode = KEY_ESCAPE
 	event.pressed = true
 	host._input(event)
 
+## 运行共享浮层生命周期检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	await _test_owned_overlays()
 	await _test_settings_and_recovery()
@@ -25,6 +30,7 @@ func _run()->void:
 	print("浮层生命周期与恢复检查完成，失败数：%d" % failures)
 	quit(0 if failures == 0 else 1)
 
+## 验证反复悬停、模态登记与关闭不累积退出连接，拥有者退出时释放窗口及输入锁。
 func _test_owned_overlays()->void:
 	var host:OverlayHost = OverlayHost.new()
 	root.add_child(host)
@@ -53,6 +59,7 @@ func _test_owned_overlays()->void:
 	host.queue_free()
 	await process_frame
 
+## 验证声音设置输入、模态层级、跨页保留及显示失败后的重试不重复提交业务收益。
 func _test_settings_and_recovery()->void:
 	var main:Node = load("res://main.tscn").instantiate()
 	root.add_child(main)

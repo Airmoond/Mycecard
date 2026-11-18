@@ -1,6 +1,7 @@
 ## 仅用未参与调参的种子检验定稿正式资源；不修改数字或自动再训练。
 extends "res://综合数值模型/运行战斗评估.gd"
 
+## 在隔离副本中使用独立验证种子评估定稿敌人，保存胜率、目标区间判断与代表轨迹，不重新调参。
 func _run()->void:
 	if not preload("res://tools/history_guard.gd").require_sandbox():
 		quit(2)

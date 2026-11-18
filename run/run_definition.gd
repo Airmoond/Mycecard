@@ -2,16 +2,22 @@
 class_name RunDefinition
 extends Resource
 
+## 开局构筑各轮依次选择的稀有度，数组顺序即选牌顺序。
 const DRAFT_RARITIES:Array[int] = [
 	CardDefinition.CardRarity.LEGENDARY,
 	CardDefinition.CardRarity.EPIC,
 	CardDefinition.CardRarity.RARE
 ];
 
+## 此冒险配置的稳定标识。
 @export var run_id:String
+## 本局可选角色配置，提供战斗角色、初始牌组和奖励卡池。
 @export var character_definition:CharacterDefinition
+## 本局使用的只读地图拓扑和节点配置。
 @export var map_definition:MapDefinition
+## 每轮普通战斗奖励展示的不同卡牌数量。
 @export var reward_option_count:int = 3
+## 每场普通战斗胜利后可以领取或跳过奖励的轮数。
 @export var reward_selection_count:int = 3
 
 ## 随机战斗节点使用的候选池；固定遭遇地图可不配置。
@@ -22,9 +28,11 @@ const DRAFT_RARITIES:Array[int] = [
 @export var collection_pool:Array[CollectionDefinition] = []
 @export var collection_option_count:int = 3
 
+## 随机路线位置可绑定的不期而遇内容池。
 @export var unexpected_encounter_pool:Array[UnexpectedEncounterDefinition] = []
 
 
+## 检查冒险配置、地图、构筑与奖励卡池及随机内容池；发现首个错误时报告并返回 [code]true[/code]。
 func is_invalid()->bool:
 	if run_id.is_empty():
 		push_error("冒险 ID 不能为空");
@@ -86,6 +94,7 @@ func is_invalid()->bool:
 	return false;
 
 
+## 检查藏品池的三选一配置、资源唯一性及唯一开始节点；空藏品池视为有效。
 func _collection_pool_is_invalid()->bool:
 	if collection_pool.is_empty():
 		return false;
@@ -115,6 +124,7 @@ func _collection_pool_is_invalid()->bool:
 	return false;
 
 
+## 检查遭遇池的最小数量、定义有效性及遭遇和敌人标识唯一性；发现错误时报告并返回 [code]true[/code]。
 func _encounter_pool_is_invalid(pool:Array[EncounterDefinition], minimum:int, label:String)->bool:
 	if pool.size() < minimum:
 		push_error("%s随机池至少需要 %d 种敌人" % [label, minimum]);

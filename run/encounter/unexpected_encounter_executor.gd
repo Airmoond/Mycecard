@@ -2,6 +2,9 @@
 class_name UnexpectedEncounterExecutor
 extends RefCounted
 
+## 为当前内容的每个获得卡牌选项抽取只读候选，并返回按选项标识索引的只读字典。
+##
+## 任一选项候选不足时返回空字典；不将候选写入局内状态。
 static func prepare_candidates(state:RunState, rng:RandomNumberGenerator = null)->Dictionary:
 	var content:UnexpectedEncounterDefinition = state.get_unexpected_encounter(state.current_node_id);
 	var choices:Dictionary = {};
@@ -16,6 +19,7 @@ static func prepare_candidates(state:RunState, rng:RandomNumberGenerator = null)
 	choices.make_read_only();
 	return choices;
 
+## 返回当前可选择事件的选项文本、可用性和输入类型；阶段或内容不匹配时返回空数组。
 static func get_option_view_data(state:RunState)->Array[Dictionary]:
 	var data:Array[Dictionary] = [];
 	if state == null or state.status != RunState.RunStatus.CHOOSING_UNEXPECTED:
@@ -31,6 +35,7 @@ static func get_option_view_data(state:RunState)->Array[Dictionary]:
 	data.make_read_only();
 	return data;
 
+## 检查当前阶段、防重记录、生命支付能力、牌组数量及已保存候选，返回选项是否可用。
 static func is_option_enabled(state:RunState, option:UnexpectedEncounterOptionDefinition)->bool:
 	if state == null or option == null or state.status != RunState.RunStatus.CHOOSING_UNEXPECTED or state.unexpected_results.has(state.current_node_id):
 		return false;
@@ -42,6 +47,7 @@ static func is_option_enabled(state:RunState, option:UnexpectedEncounterOptionDe
 		return get_candidates(state, option.option_id).size() == option.candidate_count;
 	return true;
 
+## 返回指定选项的已保存候选，或移除操作使用的只读牌组副本；不重新抽样。
 static func get_candidates(state:RunState, option_id:String)->Array[CardDefinition]:
 	var empty:Array[CardDefinition] = [];
 	if state == null:
@@ -58,6 +64,9 @@ static func get_candidates(state:RunState, option_id:String)->Array[CardDefiniti
 		return state.unexpected_option_candidates.get(state.current_node_id, {}).get(option_id, empty);
 	return empty;
 
+## 验证选项及卡牌选择并返回只读支付与收益方案，不修改局内状态。
+##
+## 无效请求返回空字典；移除操作同时核对卡牌引用和牌组下标。
 static func evaluate(state:RunState, option_id:String, card:CardDefinition = null, deck_index:int = -1)->Dictionary:
 	if state == null or state.status != RunState.RunStatus.CHOOSING_UNEXPECTED or state.unexpected_results.has(state.current_node_id):
 		return {};
@@ -88,6 +97,7 @@ static func evaluate(state:RunState, option_id:String, card:CardDefinition = nul
 	result.make_read_only();
 	return result;
 
+## 为当前已提交结果补充文案模板和卡牌名称，返回只读显示数据；没有结果时返回空字典。
 static func get_result_view_data(state:RunState)->Dictionary:
 	if state == null or not state.unexpected_results.has(state.current_node_id):
 		return {};

@@ -2,12 +2,16 @@
 extends Node
 
 const AUDIO_SETTINGS_SCENE:PackedScene = preload("res://ui/audio_settings.tscn")
+## 命令行用户参数前缀，用于指定独立启动检查等待的帧数。
 const SMOKE_ARGUMENT:String = "--smoke-quit-after-frames="
+## 是否已经开始应用关闭流程，用于拒绝重复退出请求。
 var _closing:bool = false
 
+## 为页面容器应用共享主题，使页面进入场景树时即可继承外观。
 func _enter_tree()->void:
 	$page_container.theme = FantasyTheme.build_theme()
 
+## 接管窗口退出请求、装配声音设置，并处理可选的独立启动验收退出参数。
 func _ready()->void:
 	get_tree().auto_accept_quit = false
 	var settings:AudioSettings = AUDIO_SETTINGS_SCENE.instantiate()
@@ -20,6 +24,7 @@ func _ready()->void:
 			_smoke_exit.call_deferred(frames)
 			break
 
+## 收到窗口关闭通知时请求有序退出应用。
 func _notification(what:int)->void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		request_quit()
@@ -39,6 +44,7 @@ func prepare_shutdown()->bool:
 	get_window().gui_disable_input = true
 	return true
 
+## 开始有序关闭并等待音频播放实例释放；超时时报告错误并以失败状态退出。
 func request_quit()->void:
 	if not prepare_shutdown():
 		return
@@ -49,6 +55,7 @@ func request_quit()->void:
 	print("Mycecard orderly shutdown complete")
 	get_tree().quit()
 
+## 等待指定帧数后走正常退出流程；已经开始关闭时提前返回。
 func _smoke_exit(frames:int)->void:
 	for frame_index in range(frames):
 		if _closing:

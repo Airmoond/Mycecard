@@ -2,13 +2,16 @@
 ## 延长测试玩家生命以观察完整机制；不改变正式资源或依赖校准后的敌人生命。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行新增普通敌人行动机制检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_bulwark_cycle();
 	_test_hex_timing();
@@ -18,12 +21,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 验证指定普通敌人遭遇，并用高生命测试玩家启动正式战斗观察连续行动；失败返回 [code]null[/code]。
 func _controller(enemy_id:String)->BattleController:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/%s_encounter.tres" % enemy_id);
 	_expect(encounter != null and not encounter.is_invalid(), "新敌人遭遇应完整合法");
@@ -43,6 +48,7 @@ func _controller(enemy_id:String)->BattleController:
 	return controller;
 
 
+## 复制敌人基础字段和有序行动效果，用于检查战斗不改写正式资源。
 func _definition_snapshot(enemy:EnemyDefinition)->Dictionary:
 	var actions:Array = [];
 	for action in enemy.action_pattern:
@@ -53,11 +59,13 @@ func _definition_snapshot(enemy:EnemyDefinition)->Dictionary:
 	return {"id":enemy.combatant_id, "health":enemy.max_health, "actions":actions};
 
 
+## 检查当前敌人意图包含指定的真实单段伤害。
 func _expect_damage_intent(controller:BattleController, damage:int)->void:
 	var intent:String = controller._build_enemy_intent_text(controller.battle_state.enemy_state.current_action);
 	_expect(intent.contains("%d点伤害" % damage), "敌人意图应预览本次真实单段伤害：%d" % damage);
 
 
+## 按指定效果类型汇总行动数值，并计入重复次数。
 func _action_amount(action:EnemyActionDefinition, effect_type:CombatEffectDefinition.EffectType)->int:
 	var total:int = 0;
 	for effect in action.effects:
@@ -66,6 +74,7 @@ func _action_amount(action:EnemyActionDefinition, effect_type:CombatEffectDefini
 	return total;
 
 
+## 验证哨卫前三回合防守、第四回合重击的固定循环及资源只读性。
 func _test_bulwark_cycle()->void:
 	var controller:BattleController = _controller("bulwark_sentinel");
 	if controller == null:
@@ -107,6 +116,7 @@ func _test_bulwark_cycle()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证侍徒交替施加虚弱与易伤的攻击顺序、持续时间和静态资源隔离。
 func _test_hex_timing()->void:
 	var controller:BattleController = _controller("hexbound_acolyte");
 	if controller == null:
@@ -143,6 +153,7 @@ func _test_hex_timing()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证蛮兵每次攻击前增长力量且持续累加，新战斗恢复初始状态。
 func _test_unlimited_strength_and_reset()->void:
 	var controller:BattleController = _controller("ragebound_brute");
 	if controller == null:

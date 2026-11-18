@@ -1,13 +1,16 @@
 ## 血祭：最大生命支付、当前生命夹取、治疗上限及完整冒险中的生命延续。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行最大生命费用检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_card_health_and_view();
 	_test_payment_requirements();
@@ -21,12 +24,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 创建独立的减最大生命并获得格挡的测试卡定义。
 func _card()->CardDefinition:
 	var definition:CardDefinition = load("res://cards/data/defend.tres").duplicate();
 	definition.card_id = "test_blood_sacrifice";
@@ -44,6 +49,7 @@ func _card()->CardDefinition:
 	return definition;
 
 
+## 挂载正式战斗页面，以指定当前生命、最大生命和单张测试卡启动战斗。
 func _controller(card:CardDefinition, health:int, max_health:int)->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
@@ -52,6 +58,7 @@ func _controller(card:CardDefinition, health:int, max_health:int)->BattleControl
 	return controller;
 
 
+## 验证减生命上限只夹取超出部分的当前生命，不抵消格挡，显示与静态资源保持正确。
 func _test_card_health_and_view()->void:
 	for health in [30, 50]:
 		var controller:BattleController = _controller(_card(), health, 50);
@@ -71,6 +78,7 @@ func _test_card_health_and_view()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证能量和最大生命必须足额支付，不足时无扣费、移牌或部分效果。
 func _test_payment_requirements()->void:
 	for values in [[1, 3], [2, 0], [2, 3]]:
 		var controller:BattleController = _controller(_card(), values[0], values[0]);
@@ -87,6 +95,7 @@ func _test_payment_requirements()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证按整张牌的累计最大生命费用检查可支付性，再按效果顺序逐项支付。
 func _test_repeated_cost()->void:
 	# repeat_count与多个减上限效果都必须计入整张牌的支付需求。
 	for max_health in [3, 4]:
@@ -105,6 +114,7 @@ func _test_repeated_cost()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证前序直接失血致死后中断减上限和格挡，但正常归档卡牌。
 func _test_health_loss_interruption()->void:
 	var definition:CardDefinition = _card();
 	var loss:CombatEffectDefinition = CombatEffectDefinition.new();
@@ -118,6 +128,7 @@ func _test_health_loss_interruption()->void:
 	controller.get_parent().queue_free();
 
 
+## 运行正式冒险，验证变化后的当前与最大生命跨战斗、治疗和终局延续，且不污染角色定义。
 func _test_run_persistence(boss_victory:bool)->void:
 	var main:Node = load("res://main.tscn").instantiate();
 	root.add_child(main);

@@ -1,13 +1,16 @@
 ## 力量的实际出牌、攻击与预览检查；测试资源不加入正式卡池。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行力量与攻击伤害检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_power_and_lifetime();
 	_test_multihit();
@@ -20,12 +23,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 创建增加两点力量的测试效果。
 func _strength_effect()->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = CombatEffectDefinition.EffectType.GAIN_STRENGTH;
@@ -33,6 +38,7 @@ func _strength_effect()->CombatEffectDefinition:
 	return effect;
 
 
+## 创建增加力量的独立能力牌定义，用于验证支付、归档和持续时间。
 func _power()->CardDefinition:
 	var definition:CardDefinition = load("res://cards/data/defend.tres").duplicate();
 	definition.card_id = "test_strength";
@@ -43,6 +49,7 @@ func _power()->CardDefinition:
 	return definition;
 
 
+## 用指定牌组及可选遭遇挂载正式战斗页面，返回已启动的控制器。
 func _controller(definitions:Array[CardDefinition], encounter:EncounterDefinition = null)->BattleController:
 	if encounter == null:
 		encounter = load("res://battle/encounters/data/cave_crawler_encounter.tres");
@@ -53,6 +60,7 @@ func _controller(definitions:Array[CardDefinition], encounter:EncounterDefinitio
 	return controller;
 
 
+## 按定义引用查找手牌实例；未找到时返回 [code]null[/code]。
 func _in_hand(controller:BattleController, definition:CardDefinition)->CardInstance:
 	for card in controller.battle_state.hand:
 		if card.definition == definition:
@@ -60,6 +68,7 @@ func _in_hand(controller:BattleController, definition:CardDefinition)->CardInsta
 	return null;
 
 
+## 验证力量的支付前置、重复叠加、能力牌归档及新战斗清理。
 func _test_power_and_lifetime()->void:
 	var power:CardDefinition = _power();
 	var controller:BattleController = _controller([power, power]);
@@ -81,6 +90,7 @@ func _test_power_and_lifetime()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证力量逐段加到攻击伤害中，并保持静态卡牌数值不变。
 func _test_multihit()->void:
 	var definition:CardDefinition = load("res://cards/data/double_strike.tres");
 	var controller:BattleController = _controller([definition]);
@@ -93,6 +103,7 @@ func _test_multihit()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证攻击执行时读取力量，先增益与后增益产生不同伤害。
 func _test_effect_order()->void:
 	for strength_first in [true, false]:
 		var definition:CardDefinition = _power();
@@ -109,6 +120,7 @@ func _test_effect_order()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证力量不修正非攻击伤害或直接失血，二者各自保持格挡规则。
 func _test_non_attack_and_health_loss()->void:
 	var definition:CardDefinition = _power();
 	var damage:CombatEffectDefinition = CombatEffectDefinition.new();
@@ -131,6 +143,7 @@ func _test_non_attack_and_health_loss()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证武器预览与实伤读取角色力量，回手重装不将力量写入武器攻击力。
 func _test_weapon_strength()->void:
 	for base_attack in [0, 3]:
 		var definition:CardDefinition = _power();
@@ -155,6 +168,7 @@ func _test_weapon_strength()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证敌人意图考虑行动内先获得的力量，后续行动继续读取累计力量。
 func _test_enemy_strength_preview()->void:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/cave_crawler_encounter.tres").duplicate();
 	encounter.enemy_definition = encounter.enemy_definition.duplicate();

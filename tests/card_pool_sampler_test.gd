@@ -1,13 +1,16 @@
 ## 卡池筛选、无放回抽样、静态资源保护与实际奖励流程接入。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行卡池筛选与奖励抽样检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_rarity_groups();
 	_test_reward_candidates();
@@ -20,6 +23,7 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
@@ -39,6 +43,7 @@ func _pool(counts:Array[int])->Array[CardDefinition]:
 	return pool;
 
 
+## 检查候选数量及卡牌标识唯一性，失败时累计测试错误。
 func _expect_unique(options:Array[CardDefinition], count:int)->void:
 	_expect(options.size() == count, "候选数量应完整");
 	var ids:Dictionary = {};
@@ -47,6 +52,7 @@ func _expect_unique(options:Array[CardDefinition], count:int)->void:
 		ids[card.card_id] = true;
 
 
+## 验证按指定稀有度抽样且保留定义引用，并检查固定样本能产生不同组合。
 func _test_rarity_groups()->void:
 	var pool:Array[CardDefinition] = _pool([2, 4, 4, 4]);
 	for rarity in [CardDefinition.CardRarity.RARE, CardDefinition.CardRarity.EPIC, CardDefinition.CardRarity.LEGENDARY]:
@@ -66,6 +72,7 @@ func _test_rarity_groups()->void:
 	_expect(selections.size() > 1, "相同卡池多次抽取应能得到不同候选组合");
 
 
+## 验证普通奖励合并允许稀有度筛选，并排除传说卡。
 func _test_reward_candidates()->void:
 	var pool:Array[CardDefinition] = _pool([4, 1, 1, 4]);
 	var candidates:Array[CardDefinition] = CardPoolSampler.filter_pool(pool, CardPoolSampler.REWARD_RARITIES);
@@ -78,6 +85,7 @@ func _test_reward_candidates()->void:
 	_expect(CardPoolSampler.filter_pool(all_legendary, CardPoolSampler.REWARD_RARITIES).is_empty(), "全传说卡池没有普通奖励候选");
 
 
+## 验证抽样及修改返回数组不改变源卡池的顺序、引用和卡牌字段。
 func _test_source_unchanged()->void:
 	var pool:Array[CardDefinition] = _pool([2, 3, 3, 3]);
 	var original:Array[CardDefinition] = pool.duplicate();
@@ -95,6 +103,7 @@ func _test_source_unchanged()->void:
 		_expect(pool[index].card_id == original_ids[index] and pool[index].rarity == original_rarities[index], "抽样不改写卡牌字段");
 
 
+## 验证筛选后候选不足时返回空数组，并由配置验证拒绝容量不足的奖励池。
 func _test_insufficient_candidates()->void:
 	var pool:Array[CardDefinition] = _pool([0, 1, 1, 4]);
 	print("以下两条配置错误为预期：非传说候选只有2张，不能展示3张。");
@@ -109,6 +118,7 @@ func _test_insufficient_candidates()->void:
 	_expect(not load("res://run/data/default_run.tres").is_invalid(), "现有正式冒险仍可运行");
 
 
+## 通过正式奖励控件运行全部奖励轮次，检查真实加牌、节点完成和源卡池保护。
 func _test_reward_flow()->void:
 	var main:Node = load("res://main.tscn").instantiate();
 	var flow:GameFlowController = main.get_node("game_flow_controller");

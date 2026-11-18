@@ -2,6 +2,7 @@
 class_name BattleDisplay
 extends RefCounted
 
+## 根据当前双方状态预览卡牌伤害并填入描述，不修改真实状态；缺少状态或卡牌时返回空字符串。
 static func card_description(state:BattleState, card:CardInstance)->String:
 	if state == null or card == null:
 		return ""
@@ -9,6 +10,7 @@ static func card_description(state:BattleState, card:CardInstance)->String:
 		card.definition.effects, state.player_state, state.enemy_state, state.player_state.current_block)
 	return card.definition.format_description(damage_values)
 
+## 将操作拒绝代码转换为显示文本；未识别的代码使用通用提示。
 static func failure_text(code:StringName)->String:
 	match code:
 		&"not_enough_energy": return "能量不足"
@@ -17,6 +19,7 @@ static func failure_text(code:StringName)->String:
 		&"not_in_hand": return "卡牌已离开手牌"
 		_: return "当前不能执行该操作"
 
+## 返回装备武器的预计伤害及攻击后效果说明；未装备武器或缺少状态时返回空字符串。
 static func weapon_attack_tooltip(state:BattleState)->String:
 	if state == null or state.equipped_weapon == null:
 		return ""
@@ -33,6 +36,9 @@ static func weapon_attack_tooltip(state:BattleState)->String:
 			text += "（本回合禁止抽牌）"
 	return text
 
+## 按敌人当前行动的效果顺序生成意图文本，并考虑回合开始的格挡变化。
+##
+## 缺少状态或遇到不支持的效果时返回空字符串。
 static func enemy_intent_text(battle_state:BattleState)->String:
 	if battle_state == null:
 		return ""

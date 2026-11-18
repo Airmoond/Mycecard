@@ -2,13 +2,16 @@
 ## 运行方式：Godot --headless --path <项目目录> --script res://tests/weapon_data_test.gd
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行武器状态与牌区流转检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	var definition:CardDefinition = _weapon_card_definition();
 	_expect(not definition.is_invalid(), "仅装备、没有附加效果的武器定义应合法");
@@ -52,12 +55,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 创建带独立武器定义的测试卡，用于装备、耐久和损坏流转检查。
 func _weapon_card_definition()->CardDefinition:
 	var weapon_definition:WeaponDefinition = WeaponDefinition.new();
 	weapon_definition.base_attack = 3;
@@ -73,6 +78,7 @@ func _weapon_card_definition()->CardDefinition:
 	return definition;
 
 
+## 根据指定卡牌定义初始化独立实例，并记录初始化是否成功。
 func _instance(definition:CardDefinition)->CardInstance:
 	var card:CardInstance = CardInstance.new();
 	_expect(card.card_instance_init(definition), "卡牌实例应能正确初始化");
@@ -92,6 +98,7 @@ func _controller(definitions:Array[CardDefinition])->BattleController:
 	return controller;
 
 
+## 按定义引用查找控制器当前手牌；未找到时返回 [code]null[/code]。
 func _in_hand(controller:BattleController, definition:CardDefinition)->CardInstance:
 	for card in controller.battle_state.hand:
 		if card.definition == definition:
@@ -99,6 +106,7 @@ func _in_hand(controller:BattleController, definition:CardDefinition)->CardInsta
 	return null;
 
 
+## 验证无附加效果武器的费用、装备归属与新战斗装备位重置。
 func _test_plain_weapon_equipment()->void:
 	var definition:CardDefinition = _weapon_card_definition();
 	var controller:BattleController = _controller([definition]);
@@ -118,6 +126,7 @@ func _test_plain_weapon_equipment()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证换装支付前置、旧武器损坏回收及重装，始终保持实例与牌数正确。
 func _test_replacement_and_re_equip()->void:
 	var returning:CardDefinition = _weapon_card_definition();
 	var ordinary:CardDefinition = _weapon_card_definition();
@@ -174,6 +183,7 @@ func _test_full_hand_replacement()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证装备附加效果致死时，先完成装备归属再报告一次胜利。
 func _test_lethal_equipment_effect()->void:
 	var definition:CardDefinition = _weapon_card_definition();
 	var strike:CardDefinition = load("res://cards/data/strike.tres");
@@ -183,6 +193,7 @@ func _test_lethal_equipment_effect()->void:
 	var card:CardInstance = state.hand[0];
 	state.enemy_state.current_health = 1;
 	var results:Array[bool] = [];
+	## 验证装备附加效果致命时，结果通知前武器已进入装备位。
 	controller.battle_finished.connect(func(victory:bool, _health:int, _max_health:int)->void:
 		results.append(victory);
 		_expect(state.equipped_weapon == card and state.resolving_card == null, "结果信号发出前武器必须已进入装备位");
@@ -193,6 +204,7 @@ func _test_lethal_equipment_effect()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证武器攻击机会属于角色回合，不因换装刷新，重复请求不重复攻击。
 func _test_attack_opportunity()->void:
 	var first:CardDefinition = _weapon_card_definition();
 	var second:CardDefinition = _weapon_card_definition();
@@ -226,6 +238,7 @@ func _test_attack_opportunity()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证最后耐久损坏回手及重装保留原实例，不额外恢复本回合攻击机会。
 func _test_attack_return_and_re_equip()->void:
 	var controller:BattleController = _controller([_weapon_card_definition()]);
 	var state:BattleState = controller.battle_state;
@@ -245,6 +258,7 @@ func _test_attack_return_and_re_equip()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证满手时武器攻击仍可用，损坏回收转入弃牌堆且不丢牌。
 func _test_full_hand_attack_break()->void:
 	var weapon_definition:CardDefinition = _weapon_card_definition();
 	var filler:CardDefinition = load("res://cards/data/defend.tres").duplicate();
@@ -271,6 +285,7 @@ func _test_full_hand_attack_break()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证格挡和零伤害不免除攻击机会或耐久消耗，损坏后正确归档。
 func _test_blocked_and_zero_damage()->void:
 	var definition:CardDefinition = _weapon_card_definition();
 	definition.weapon_definition.break_destination = WeaponDefinition.BreakDestination.EXHAUST;
@@ -293,6 +308,7 @@ func _test_blocked_and_zero_damage()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证致命攻击先完成损坏、消耗或回手，再发出一次结果通知。
 func _test_lethal_weapon_attack()->void:
 	for destination in [WeaponDefinition.BreakDestination.EXHAUST, WeaponDefinition.BreakDestination.RETURN_TO_HAND]:
 		var definition:CardDefinition = _weapon_card_definition();
@@ -304,6 +320,7 @@ func _test_lethal_weapon_attack()->void:
 		controller._on_card_selected(card);
 		state.enemy_state.current_health = 1;
 		var results:Array[bool] = [];
+		## 结果通知当场核对武器耐久归零，并按损坏规则完成消耗或回手。
 		controller.battle_finished.connect(func(victory:bool, _health:int, _max_health:int)->void:
 			results.append(victory);
 			_expect(state.equipped_weapon == null and card.weapon.current_durability == 0, "致命攻击发出结果前必须完成损坏");
@@ -334,6 +351,7 @@ func _enhancement_definition()->CardDefinition:
 	return definition;
 
 
+## 验证强化要求实际装备及足够能量，拒绝时不扣费、不移牌。
 func _test_enhancement_requirements()->void:
 	var enhancement:CardDefinition = _enhancement_definition();
 	var weapon_definition:CardDefinition = _weapon_card_definition();
@@ -354,6 +372,7 @@ func _test_enhancement_requirements()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证强化同时增加攻击、最大耐久和当前耐久，不将受损武器直接修满。
 func _test_enhancement_durability()->void:
 	for starting_durability in [1, 3]:
 		var enhancement:CardDefinition = _enhancement_definition();
@@ -382,6 +401,7 @@ func _test_enhancement_durability()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证重复强化逐次叠加，但来源卡只支付一次并归档一次。
 func _test_repeated_enhancement()->void:
 	var enhancement:CardDefinition = _enhancement_definition();
 	enhancement.effects[0].repeat_count = 2;
@@ -397,6 +417,7 @@ func _test_repeated_enhancement()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证本场强化经换装回手保留，下一场创建的全新实例恢复基础数值。
 func _test_enhancement_persistence()->void:
 	var enhancement:CardDefinition = _enhancement_definition();
 	var returning:CardDefinition = _weapon_card_definition();

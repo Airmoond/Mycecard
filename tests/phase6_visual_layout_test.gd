@@ -1,20 +1,25 @@
 ## 实际布局验证：十张手牌、武器入口、稳定悬停输入区和独立出牌快照。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	run.call_deferred()
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(value:bool, message:String)->void:
 	if not value:
 		failures += 1
 		push_error(message)
 
+## 等待四个处理帧，使缩放、手牌布局及延迟释放完成。
 func frames()->void:
 	for index in range(4):
 		await process_frame
 
+## 检查保存的编辑器战场预览及运行时十张手牌、武器入口、悬停区域和独立出牌快照的布局。
 func run()->void:
 	# 不进入场景树，检查编辑器读取的保存布局，不依赖运行时适配。
 	var preview:Control = load("res://battle/battle.tscn").instantiate()

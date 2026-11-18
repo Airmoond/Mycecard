@@ -1,6 +1,9 @@
 ## Historical numeric outputs may only be written in an explicit isolated source copy.
 extends RefCounted
 
+## 验证当前工程是否为工具创建且具有匹配标记的隔离实验副本。
+##
+## 验证失败时返回 [code]false[/code]，供调用者拒绝覆盖冻结的历史数值结果。
 static func require_sandbox() -> bool:
 	var project: String = ProjectSettings.globalize_path("res://").trim_suffix("/").replace("\\", "/")
 	var configured: String = OS.get_environment("MYCECARD_EXPERIMENT_SANDBOX").replace("\\", "/").trim_suffix("/")

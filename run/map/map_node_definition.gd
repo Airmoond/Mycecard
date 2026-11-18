@@ -6,10 +6,15 @@ extends Resource
 ## 保持旧资源中的三种枚举数值，START 追加在末尾。
 enum NodeType { BATTLE, REST, BOSS, START, ROUTE_SLOT, UNEXPECTED }
 
+## 地图内唯一的节点标识，用于连接和局内进度记录。
 @export var node_id:String
+## 没有绑定敌人或不期而遇内容时使用的节点显示名称。
 @export var display_name:String
+## 静态节点类型；随机路线位置在局内另行绑定实际类型。
 @export var node_type:NodeType
+## 节点在地图设计坐标系中的二维位置。
 @export var map_position:Vector2
+## 完成此节点后可开放的后继节点标识。
 @export var next_node_ids:Array[String] = []
 
 ## 同一支线的三个节点使用相同 ID；开始和最终 Boss 留空。
@@ -21,10 +26,12 @@ enum NodeType { BATTLE, REST, BOSS, START, ROUTE_SLOT, UNEXPECTED }
 @export var heal_amount:int = 0
 
 
+## 返回静态节点类型是否为普通战斗或 Boss；随机位置的实际类型由局内状态查询。
 func requires_encounter()->bool:
 	return node_type in [NodeType.BATTLE, NodeType.BOSS];
 
 
+## 检查节点标识、显示名称、坐标、后继及类型专属配置；发现首个错误时报告并返回 [code]true[/code]。
 func is_invalid()->bool:
 	if node_id.is_empty() or display_name.is_empty():
 		push_error("地图节点 ID 和显示名称不能为空");

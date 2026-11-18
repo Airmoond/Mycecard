@@ -1,13 +1,16 @@
 ## 藏品与正式战斗共用伤害、回合开始队列和输入入口。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行藏品战斗效果检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_starting_strength();
 	_test_strength_weapon_and_statuses();
@@ -22,16 +25,19 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 按标识加载正式卡牌定义。
 func _card(card_id:String)->CardDefinition:
 	return load("res://cards/data/%s.tres" % card_id);
 
 
+## 按标识加载正式藏品定义。
 func _collection(collection_id:String)->CollectionDefinition:
 	return load("res://collections/data/%s.tres" % collection_id);
 
@@ -53,6 +59,7 @@ func _safe_encounter(boss:bool = false)->EncounterDefinition:
 	return encounter;
 
 
+## 挂载正式战斗页面，使用指定牌组、可选藏品及安全遭遇启动测试。
 func _controller(cards:Array[CardDefinition], collection:CollectionDefinition = null, boss:bool = false)->BattleController:
 	var page:Control = load("res://battle/battle.tscn").instantiate();
 	root.add_child(page);
@@ -61,6 +68,7 @@ func _controller(cards:Array[CardDefinition], collection:CollectionDefinition = 
 	return controller;
 
 
+## 验证开局力量每场只领取一次，多段伤害受益且不写回共享资源。
 func _test_starting_strength()->void:
 	for boss in [false, true]:
 		var fang:CollectionDefinition = _collection("copper_fang");
@@ -80,6 +88,7 @@ func _test_starting_strength()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证藏品力量与武器、虚弱和易伤共用伤害计算，不永久强化武器定义。
 func _test_strength_weapon_and_statuses()->void:
 	var controller:BattleController = _controller([_card("bloodthirsty_sword")], _collection("copper_fang"));
 	var state:BattleState = controller.battle_state;
@@ -94,6 +103,7 @@ func _test_strength_weapon_and_statuses()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证限回合藏品按各玩家回合触发，不能重复开始同一回合刷取格挡。
 func _test_early_block()->void:
 	for boss in [false, true]:
 		var shield:CollectionDefinition = _collection("oathguard_emblem");
@@ -113,6 +123,7 @@ func _test_early_block()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证藏品格挡与保留格挡、盾牌猛击组合时的结算及牌区守恒。
 func _test_retained_block_and_shield_slam()->void:
 	var controller:BattleController = _controller([_card("fortress"), _card("shield_slam")], _collection("oathguard_emblem"));
 	var state:BattleState = controller.battle_state;
@@ -130,6 +141,7 @@ func _test_retained_block_and_shield_slam()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证回合开始失血致死后中断藏品格挡与抽牌，并停止查看入口。
 func _test_lethal_turn_start()->void:
 	var controller:BattleController = _controller([_card("blood_cloak"), _card("defend"), _card("defend")], _collection("oathguard_emblem"));
 	var state:BattleState = controller.battle_state;
@@ -138,6 +150,7 @@ func _test_lethal_turn_start()->void:
 			controller._on_card_selected(card);
 	state.player_state.current_health = 1;
 	var results:Array[bool] = [];
+	## 记录胜败结果，用于核对藏品与回合开始致死的单次结算。
 	controller.battle_finished.connect(func(victory:bool, _health:int, _max_health:int)->void: results.append(victory));
 	controller._on_end_turn_button_pressed();
 	controller._on_end_turn_button_pressed();
@@ -148,6 +161,7 @@ func _test_lethal_turn_start()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证战后治疗不在战斗控制器内执行，旧无藏品启动入口仍可使用。
 func _test_no_battle_heal_and_legacy_entry()->void:
 	for boss in [false, true]:
 		var controller:BattleController = _controller([_card("strike")], _collection("ember_chalice"), boss);
@@ -161,6 +175,7 @@ func _test_no_battle_heal_and_legacy_entry()->void:
 		controller.get_parent().queue_free();
 
 
+## 验证战斗藏品查看的单窗口限制、背景输入隔离、关闭恢复和换战斗清理。
 func _test_inspector()->void:
 	var fang:CollectionDefinition = _collection("copper_fang");
 	var controller:BattleController = _controller([_card("eternity"), _card("strike")], fang);

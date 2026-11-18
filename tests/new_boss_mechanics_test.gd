@@ -2,13 +2,16 @@
 ## 玩家仅持有不打出的防御牌，以1000血观察连续12次正式敌人行动。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行新增 Boss 行动机制检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_iron_crown_cycle();
 	_test_calamity_timing();
@@ -18,12 +21,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 检查指定 Boss 遭遇并以高生命测试玩家启动正式战斗，便于观察连续行动；失败时返回 [code]null[/code]。
 func _controller(enemy_id:String)->BattleController:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/%s_encounter.tres" % enemy_id);
 	_expect(encounter != null and not encounter.is_invalid(), "新Boss遭遇应完整合法：%s" % enemy_id);
@@ -43,6 +48,7 @@ func _controller(enemy_id:String)->BattleController:
 	return controller;
 
 
+## 复制敌人标识、生命、行动及效果数值，供执行前后检查共享资源未被修改。
 func _definition_snapshot(enemy:EnemyDefinition)->Dictionary:
 	var actions:Array = [];
 	for action in enemy.action_pattern:
@@ -53,6 +59,7 @@ func _definition_snapshot(enemy:EnemyDefinition)->Dictionary:
 	return {"id":enemy.combatant_id, "health":enemy.max_health, "actions":actions};
 
 
+## 提取双方生命、格挡、力量、减益和当前意图下标，用于检查预览无副作用。
 func _state_snapshot(state:BattleState)->Array:
 	return [
 		state.player_state.current_health, state.player_state.current_block,
@@ -63,6 +70,7 @@ func _state_snapshot(state:BattleState)->Array:
 	];
 
 
+## 按指定效果类型合计行动中的数值，并计入各项重复次数。
 func _action_amount(action:EnemyActionDefinition, effect_type:int)->int:
 	var total:int = 0;
 	for effect in action.effects:
@@ -71,6 +79,7 @@ func _action_amount(action:EnemyActionDefinition, effect_type:int)->int:
 	return total;
 
 
+## 按行动配置顺序返回全部效果类型。
 func _effect_types(action:EnemyActionDefinition)->Array[int]:
 	var types:Array[int] = [];
 	for effect in action.effects:
@@ -78,6 +87,7 @@ func _effect_types(action:EnemyActionDefinition)->Array[int]:
 	return types;
 
 
+## 检查 Boss 四步固定循环、目标和首行动价值，并拒绝依靠力量成长的配置。
 func _expect_fixed_boss(enemy:EnemyDefinition)->bool:
 	_expect(enemy.action_pattern.size() == 4, "新Boss应严格按四步固定行动循环");
 	if enemy.action_pattern.size() != 4:
@@ -95,6 +105,7 @@ func _expect_fixed_boss(enemy:EnemyDefinition)->bool:
 	return true;
 
 
+## 核对当前意图的逐段数值与次数，并确认生成意图没有修改角色状态。
 func _expect_intent(controller:BattleController)->void:
 	var state:BattleState = controller.battle_state;
 	var before:Array = _state_snapshot(state);
@@ -115,6 +126,7 @@ func _expect_intent(controller:BattleController)->void:
 	_expect(_state_snapshot(state) == before, "意图预览不得提前施加伤害、格挡或减益");
 
 
+## 验证铁冠暴君的四步攻防循环、真实三段攻击及正式资源隔离。
 func _test_iron_crown_cycle()->void:
 	var controller:BattleController = _controller("ironcrown_tyrant");
 	if controller == null:
@@ -159,6 +171,7 @@ func _test_iron_crown_cycle()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证灾厄祭司先施加减益再攻击的顺序，以及减益持续与消退时机。
 func _test_calamity_timing()->void:
 	var controller:BattleController = _controller("calamity_hierophant");
 	if controller == null:
@@ -200,6 +213,7 @@ func _test_calamity_timing()->void:
 	controller.get_parent().queue_free();
 
 
+## 验证多段攻击对每段独立向下取整，不使用合计伤害取整且不修改正式定义。
 func _test_multi_hit_rounding()->void:
 	var controller:BattleController = _controller("ironcrown_tyrant");
 	if controller == null:

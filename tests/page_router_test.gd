@@ -3,16 +3,20 @@ extends SceneTree
 const MENU:PackedScene = preload("res://run/screens/main_menu.tscn");
 const MENU_SCRIPT:Script = preload("res://run/screens/main_menu.gd");
 const ERROR_SCENE:PackedScene = preload("res://ui/navigation/navigation_error.tscn");
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var failures:int = 0;
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	call_deferred("_run");
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func expect(condition:bool, message:String)->void:
 	if not condition:
 		failures += 1;
 		push_error(message);
 
+## 运行页面准备、提交与失败恢复检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	var container:Control = Control.new();
 	container.size = Vector2(1024, 600);
@@ -21,6 +25,7 @@ func _run()->void:
 	root.add_child(router);
 	router.configure(container);
 	var commits:Array[Dictionary] = [];
+	## 保存每次页面提交的新旧引用，用于核对通知次数与切换身份。
 	router.page_committed.connect(func(previous:Control, current:Control)->void: commits.append({"previous": previous, "current": current}));
 	var initial:MainMenu = router.prepare(MENU, MENU_SCRIPT) as MainMenu;
 	expect(initial != null and initial.is_node_ready() and not initial.is_visible_in_tree() and not initial.can_process(), "候选已ready但准备阶段隐藏且禁止处理输入");
@@ -37,6 +42,7 @@ func _run()->void:
 	expect(router.prepare(wrong, MENU_SCRIPT) == null, "同为Control但缺少具体脚本的页面应拒绝");
 	expect(router.current_page == initial and router.generation == generation and initial.is_inside_tree(), "类型错误保留原页面及生成号");
 	var failed_ref:Array[WeakRef] = [];
+	## 保存候选弱引用并明确拒绝初始化，用于检查失败页面释放与旧页保留。
 	var failed:Control = router.prepare(MENU, MENU_SCRIPT, func(page:Control)->bool:
 		failed_ref.append(weakref(page));
 		return false;
@@ -44,26 +50,33 @@ func _run()->void:
 	expect(failed == null and router.current_page == initial and router.generation == generation, "setup返回false不替换或释放旧页面");
 	await process_frame;
 	expect(failed_ref[0].get_ref() == null, "准备失败的临时页面释放完成");
+	## 只有候选已准备、隐藏且无法处理输入时才接受初始化。
 	var prepared:MainMenu = router.prepare(MENU, MENU_SCRIPT, func(page:Control)->bool:
 		return page.is_node_ready() and not page.is_visible_in_tree() and not page.can_process();
 	) as MainMenu;
 	expect(prepared != null and router.current_page == initial and not router.is_current(prepared), "初始化期间输入仍受禁用且旧页持续有效");
 	await process_frame;
 	var accepted:Array[int] = [0];
+	## 仅在旧菜单仍被路由识别为当前来源时累计开始请求。
 	initial.start_requested.connect(func()->void:
 		if router.is_current(initial):
 			accepted[0] += 1;
 	);
+	## 仅在新菜单已被路由识别为当前来源时累计开始请求。
 	prepared.start_requested.connect(func()->void:
 		if router.is_current(prepared):
 			accepted[0] += 1;
 	);
 	var contender:MainMenu = router.prepare(MENU, MENU_SCRIPT) as MainMenu;
 	var incoming_lifecycle:Array[int] = [0, 0, 0];
+	## 累计候选重新入树次数，用于证明提交时没有重新挂载。
 	prepared.tree_entered.connect(func()->void: incoming_lifecycle[0] += 1);
+	## 累计候选退出次数，用于证明提交未提前触发其清理。
 	prepared.tree_exiting.connect(func()->void: incoming_lifecycle[1] += 1);
+	## 累计候选再次准备次数，用于检查提交不重复触发生命周期。
 	prepared.ready.connect(func()->void: incoming_lifecycle[2] += 1);
 	var exit_callbacks:Array[int] = [0];
+	## 在旧页退出回调中检查身份已更新，并尝试迟到信号和重入提交以验证拒绝路径。
 	initial.tree_exiting.connect(func()->void:
 		exit_callbacks[0] += 1;
 		expect(not router.is_current(initial) and not router.is_current(prepared), "退出回调期间旧页与尚未提交完成的新页都不能报告操作");
@@ -101,12 +114,15 @@ func _run()->void:
 	print("PageRouter检查完成，失败数：%d" % failures);
 	quit(1 if failures else 0);
 
+## 验证导航错误页只报告重试或返回意图，并在最小窗口内完整显示遮罩、按钮和面板。
 func _test_navigation_error(container:Control)->void:
 	var view:Control = ERROR_SCENE.instantiate();
 	container.add_child(view);
 	await process_frame;
 	var events:Array[String] = [];
+	## 记录导航错误页发出的重试意图。
 	view.retry_requested.connect(func()->void: events.append("retry"));
+	## 记录导航错误页发出的返回菜单意图。
 	view.menu_requested.connect(func()->void: events.append("menu"));
 	var retry:Button = view.get_node("center/panel/layout/retry_button");
 	var menu:Button = view.get_node("center/panel/layout/menu_button");

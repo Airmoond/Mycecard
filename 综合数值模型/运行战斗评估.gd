@@ -1,19 +1,30 @@
 ## 用独立BattleSession评估真实规则，不加载战斗场景。历史复算只能在受保护副本执行。
 extends SceneTree
 
+## 从评估参数文件读取的样本数、种子、策略运行上限及敏感性网格。
 var params:Dictionary
+## 数值实验复用的纯规则战斗会话，不加载战斗场景。
 var controller:BattleSession
+## 用于基础牌组、卡池和玩家属性的正式角色定义，只读使用。
 var character:CharacterDefinition = load("res://characters/data/warrior.tres")
+## 按稳定标识索引的基础与奖励卡牌定义。
 var cards:Dictionary = {}
+## 本次实验累计的逐场结果及回合轨迹。
 var raw:Array = []
+## 本次综合评估累计的历史与分支路线结果。
 var routes:Array = []
+## 无法初始化、未支持效果或未正常结束等异常的累计次数。
 var failures:int = 0
+## 脚本及资源相对路径到来源指纹的映射，随实验结果一起保存。
 var source_hashes:Dictionary = {}
+## 当前选牌步骤的敌人伤害预览缓存；负数表示下一次查询需重新计算。
 var _incoming_cache:int = -1
 
+## 延迟开始评估，使场景树完成初始化后执行实验入口。
 func _initialize()->void:
 	_run.call_deferred()
 
+## 递归记录指定目录中脚本与资源的 SHA-256 来源指纹，供实验输出追溯。
 func _hash_sources(path:String)->void:
 	for child in DirAccess.get_directories_at(path):
 		_hash_sources(path.path_join(child))
@@ -22,6 +33,7 @@ func _hash_sources(path:String)->void:
 			var file:String = path.path_join(child)
 			source_hashes[file.trim_prefix("res://")] = FileAccess.get_sha256(file)
 
+## 按角色起始牌组条目的数量展开定义列表，保留同种牌的多个引用。
 func _base_deck()->Array[CardDefinition]:
 	var deck:Array[CardDefinition] = []
 	for entry in character.starting_deck_entries:
@@ -29,12 +41,14 @@ func _base_deck()->Array[CardDefinition]:
 			deck.append(entry.card_definition)
 	return deck
 
+## 按牌组顺序提取卡牌稳定标识，用于记录实验输入。
 func _deck_ids(deck:Array[CardDefinition])->Array[String]:
 	var result:Array[String] = []
 	for card in deck:
 		result.append(card.card_id)
 	return result
 
+## 返回当前敌人行动各伤害段的预览合计；同一次选牌评估期间复用缓存。
 func _incoming()->int:
 	if _incoming_cache >= 0:
 		return _incoming_cache
@@ -47,6 +61,9 @@ func _incoming()->int:
 	_incoming_cache = damage
 	return damage
 
+## 根据当前状态估计候选卡的伤害、防御、长期增益和费用收益，返回贪心选牌分数。
+##
+## 会致死的失血牌被赋予低分；已有装备时策略不主动换武器。
 func _score(card:CardInstance)->float:
 	var state:BattleState = controller.battle_state
 	var p:CombatantState = state.player_state
@@ -117,6 +134,7 @@ func _score(card:CardInstance)->float:
 			return -1.0 # 保留现有武器，策略不主动换装；局限在报告中说明。
 	return score / maxf(1.0, cost)
 
+## 估计当前武器攻击的有效伤害分数，致命攻击给予高分；没有武器或攻击机会时返回负分。
 func _weapon_score()->float:
 	var state:BattleState = controller.battle_state
 	if state.equipped_weapon == null or not state.weapon_attack_available:
@@ -127,6 +145,7 @@ func _weapon_score()->float:
 		damage = maxi(0, damage - state.enemy_state.current_block)
 	return 1000.0 if damage >= state.enemy_state.current_health else damage / 6.0 + 0.05
 
+## 复制指定正式遭遇及敌人定义，仅在副本上设置测试生命上限。
 func _make_encounter(enemy_id:String, enemy_hp:int)->EncounterDefinition:
 	var encounter:EncounterDefinition = load("res://battle/encounters/data/%s_encounter.tres" % enemy_id).duplicate()
 	var enemy:EnemyDefinition = encounter.enemy_definition.duplicate()
@@ -134,6 +153,9 @@ func _make_encounter(enemy_id:String, enemy_hp:int)->EncounterDefinition:
 	encounter.enemy_definition = enemy
 	return encounter
 
+## 使用指定战斗种子运行真实规则会话，按贪心策略操作并返回逐回合记录及汇总，同时追加到原始样本列表。
+##
+## 受回合和单回合操作上限约束；初始化失败返回空字典，未正常结束的样本累计为异常。
 func _battle(group:String, label:String, deck:Array[CardDefinition], enemy_id:String, hp:int, max_hp:int, enemy_hp:int, random_seed:int, bound_encounter:EncounterDefinition = null, collection:CollectionDefinition = null)->Dictionary:
 	var battle_rng:RandomNumberGenerator = RandomNumberGenerator.new()
 	battle_rng.seed = random_seed
@@ -203,6 +225,7 @@ func _battle(group:String, label:String, deck:Array[CardDefinition], enemy_id:St
 	raw.append(result)
 	return result
 
+## 按指定全局种子生成基础牌加三种稀有度各一张的开局牌组，每组选择抽取候选的第一张。
 func _draft(random_seed:int)->Array[CardDefinition]:
 	seed(random_seed)
 	var deck:Array[CardDefinition] = _base_deck()
@@ -211,6 +234,7 @@ func _draft(random_seed:int)->Array[CardDefinition]:
 		deck.append(candidates[0]) # 中立选择候选第一张，避免把特定选牌偏好当作所有玩家。
 	return deck
 
+## 读取评估参数、收集来源指纹、创建纯规则战斗会话并建立卡牌标识索引。
 func _setup_evaluator()->void:
 	params = JSON.parse_string(FileAccess.get_file_as_string("res://综合数值模型/评估参数.json"))
 	for folder in ["battle", "cards", "combatants", "characters", "run", "collections", "综合数值模型"]:
@@ -223,6 +247,7 @@ func _setup_evaluator()->void:
 	for card in character.reward_card_pool:
 		cards[card.card_id] = card
 
+## 运行一次普通战斗、一次奖励和休整后接 Boss 的历史对照路线，返回跨战斗生命及路线记录。
 func _historical_route(random_seed:int, heal:int)->Dictionary:
 	# 控制参照保留旧拓扑与旧敌人，恢复量只取一次休整，不累加未经过的支线。
 	var deck:Array[CardDefinition] = _draft(random_seed)
@@ -253,6 +278,9 @@ func _historical_route(random_seed:int, heal:int)->Dictionary:
 	route["remaining_max_health"] = max_hp
 	return route
 
+## 运行固定内容分支地图的一条完整路线，复用实际遭遇绑定、奖励和可选藏品规则。
+##
+## 仅支持每战一轮奖励的该实验配置；可显式传入用于诊断的起始牌组。
 func _branch_route(definition:RunDefinition, random_seed:int, route_id:String, collection:CollectionDefinition = null, starting_deck:Array[CardDefinition] = [])->Dictionary:
 	# 地图先按独立种子生成并保存，再按同一开局种子抽牌；不依赖进入节点时再随机。
 	assert(definition.reward_selection_count == 1)
@@ -338,6 +366,7 @@ func _branch_route(definition:RunDefinition, random_seed:int, route_id:String, c
 	assert(not run_state.is_invalid())
 	return route
 
+## 仅在有效隔离副本中运行单卡、牌组、生命敏感性和路线评估，写入原始数据后释放会话并退出。
 func _run()->void:
 	if not preload("res://tools/history_guard.gd").require_sandbox():
 		quit(2)

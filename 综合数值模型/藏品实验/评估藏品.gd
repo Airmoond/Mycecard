@@ -1,9 +1,11 @@
 ## 正式随机分支路线上的四组配对；藏品结算复用正式控制器与 RunState。
 extends "res://综合数值模型/运行战斗评估.gd"
 
+## 藏品配对实验的牌组标签、样本种子、路线及藏品分组配置。
 var settings:Dictionary
 
 
+## 根据实验标签构建基础诊断、参考或指定种子的随机合法开局牌组。
 func _experiment_deck(label:String, random_seed:int)->Array[CardDefinition]:
 	if label == "随机合法开局9张":
 		return _draft(random_seed)
@@ -14,6 +16,7 @@ func _experiment_deck(label:String, random_seed:int)->Array[CardDefinition]:
 	return deck
 
 
+## 在隔离副本中对相同种子、牌组和路线运行无藏品及各藏品配对，保存实际路线和战斗结果。
 func _run()->void:
 	if not preload("res://tools/history_guard.gd").require_sandbox():
 		quit(2)

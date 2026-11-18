@@ -1,13 +1,16 @@
 ## 验证手牌伤害、状态变化后的刷新、效果顺序与奖励基础文案。
 extends SceneTree
 
+## 本次检查累计的失败次数，用于汇总和设置进程退出状态。
 var _failures:int = 0;
 
 
+## 延迟运行检查，使场景树完成初始化后再创建测试场景。
 func _initialize()->void:
 	_run.call_deferred();
 
 
+## 运行卡牌伤害预览检查，输出汇总并以失败数决定进程退出状态。
 func _run()->void:
 	_test_base_descriptions();
 	_test_hand_refresh_and_execution();
@@ -19,12 +22,14 @@ func _run()->void:
 	quit(0 if _failures == 0 else 1);
 
 
+## 条件不成立时累计失败次数并报告指定消息；不立即中止后续检查。
 func _expect(condition:bool, message:String)->void:
 	if not condition:
 		_failures += 1;
 		push_error(message);
 
 
+## 按指定类型、数值和目标创建伤害预览使用的测试效果。
 func _effect(type:CombatEffectDefinition.EffectType, amount:int, target:CombatEffectDefinition.TargetType)->CombatEffectDefinition:
 	var effect:CombatEffectDefinition = CombatEffectDefinition.new();
 	effect.effect_type = type;
@@ -33,12 +38,14 @@ func _effect(type:CombatEffectDefinition.EffectType, amount:int, target:CombatEf
 	return effect;
 
 
+## 创建最大生命为 50 的独立角色状态，用于无场景伤害预览。
 func _combatant()->CombatantState:
 	var state:CombatantState = CombatantState.new();
 	state.combatant_init("预览测试", 50);
 	return state;
 
 
+## 按定义引用查找对应手牌控件；找不到时返回 [code]null[/code]。
 func _view(controller:BattleController, definition:CardDefinition)->CardView:
 	for child in controller.hand_area.get_children():
 		if child is CardView and child.card_instance.definition == definition:
@@ -46,6 +53,7 @@ func _view(controller:BattleController, definition:CardDefinition)->CardView:
 	return null;
 
 
+## 验证正式卡牌基础描述完整替换伤害占位符，普通文本保持不变。
 func _test_base_descriptions()->void:
 	var expected:Dictionary = {
 		"strike": "造成6点伤害",
@@ -60,6 +68,7 @@ func _test_base_descriptions()->void:
 	_expect(defend.format_description() == defend.description, "无伤害占位符的文案不变");
 
 
+## 验证状态变化后手牌自动更新伤害预览，多段实际伤害一致且不修改共享资源。
 func _test_hand_refresh_and_execution()->void:
 	var strike:CardDefinition = load("res://cards/data/strike.tres");
 	var double_strike:CardDefinition = load("res://cards/data/double_strike.tres");
@@ -86,6 +95,7 @@ func _test_hand_refresh_and_execution()->void:
 	page.queue_free();
 
 
+## 验证伤害占位符按效果下标及先后状态变化计算，反复预览不施加真实效果。
 func _test_effect_order()->void:
 	var actor:CombatantState = _combatant();
 	var target:CombatantState = _combatant();
@@ -104,6 +114,7 @@ func _test_effect_order()->void:
 	_expect(AttackDamageResolver.preview_effect_damage(definition.effects, actor, target, actor.current_block) == damages, "反复刷新不能叠加真实效果");
 
 
+## 验证攻击者和目标状态各自参与正确的伤害修正，非攻击伤害不应用攻击倍率。
 func _test_target_and_damage_category()->void:
 	var actor:CombatantState = _combatant();
 	var target:CombatantState = _combatant();
@@ -122,6 +133,7 @@ func _test_target_and_damage_category()->void:
 	_expect(AttackDamageResolver.preview_effect_damage(effects, actor, target, actor.current_block) == [9, 6, 6, 0, 0, 6], "易伤读取目标，虚弱和力量读取攻击者；非攻击伤害不受修正");
 
 
+## 验证奖励卡使用基础伤害描述，不泄露战斗临时修正或保留占位符。
 func _test_reward_description()->void:
 	var view:CardChoiceView = load("res://ui/cards/card_choice_view.tscn").instantiate();
 	root.add_child(view);

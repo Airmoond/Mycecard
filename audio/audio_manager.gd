@@ -5,39 +5,69 @@ extends Node
 signal sfx_accepted(sound_id:StringName, event_id:String)
 signal music_changed(state:StringName)
 
+## 启动时预加载的短音效标识列表，每项对应同名音效资源。
 const SFX_IDS:Array[StringName] = [&"ui_confirm", &"ui_invalid", &"card_play", &"strike_hit", &"block_gain", &"block_hit", &"weapon_break", &"heal_gain", &"end_turn", &"victory", &"defeat"]
+## 音乐轨道交叉淡化的持续时间，单位为秒。
 const CROSSFADE_SECONDS:float = 0.8
+## 可同时播放短音效的声部数量；声池满时按优先级决定是否抢占。
 const VOICE_COUNT:int = 8
 
+## 音乐的线性音量，取值范围为 [code]0.0[/code] 到 [code]1.0[/code]。
 var music_volume:float = 0.65
+## 音效总线的线性音量，取值范围为 [code]0.0[/code] 到 [code]1.0[/code]。
 var sfx_volume:float = 0.80
+## 是否单独静音音乐总线。
 var music_muted:bool = false
+## 是否单独静音音效总线；启用后拒绝新的音效播放请求。
 var sfx_muted:bool = false
+## 是否同时静音音乐和音效，不覆盖各自的静音偏好。
 var master_muted:bool = false
+## 当前请求的音乐状态：[code]exploration[/code]、[code]combat[/code] 或 [code]silence[/code]。
 var current_music_state:StringName = &"silence"
 ## 保留有限的真实播放记录，便于检查重复回调与实际结果触发。
 var accepted_sfx:Array[Dictionary] = []
+## 按音乐状态索引的驻留播放器。
 var _music:Dictionary = {}
+## 按音效标识索引的已加载音频资源。
 var _streams:Dictionary = {}
+## 用于播放短音效的固定播放器池。
 var _voices:Array[AudioStreamPlayer] = []
+## 各声部当前音效的抢占优先级，下标与 [member _voices] 一致。
 var _priorities:Array[int] = []
+## 各声部当前播放的音效标识，用于限制并发界面音效。
 var _voice_ids:Array[StringName] = []
+## 各音乐轨道当前的交叉淡化线性增益。
 var _gains:Dictionary = {&"exploration":0.0, &"combat":0.0}
+## 本次音乐交叉淡化开始时各轨道的增益快照。
 var _from_gains:Dictionary = {&"exploration":0.0, &"combat":0.0}
+## 各音乐轨道的目标淡化增益。
 var _targets:Dictionary = {&"exploration":0.0, &"combat":0.0}
+## 各轨道淡出停止时的播放位置，单位为秒，用于下次续播。
 var _positions:Dictionary = {&"exploration":0.0, &"combat":0.0}
+## 本次音乐交叉淡化已经过的秒数。
 var _fade_elapsed:float = CROSSFADE_SECONDS
+## 已经接受的非空事件标识，用于拒绝同一结果的重复音效。
 var _seen_events:Dictionary = {}
+## 尚未结束的音乐压低请求；每项保存剩余秒数与目标线性增益。
 var _duck_requests:Array[Dictionary] = []
+## 当前音乐压低增益，与用户音乐音量相乘。
 var _duck_gain:float = 1.0
+## 当前音乐压低插值的目标增益。
 var _duck_target_gain:float = 1.0
+## 当前音乐压低插值开始时的增益。
 var _duck_from_gain:float = 1.0
+## 当前音乐压低插值已经过的秒数。
 var _duck_elapsed:float = 0.30
+## 上次接受无效操作音效的毫秒时间，用于限制连续提示。
 var _last_invalid_ms:int = -1000
+## 本管理器自行添加的主总线限制器；关闭时只移除这一实例。
 var _master_limiter:AudioEffectHardLimiter
+## 是否已经开始关闭；启用后不再接受新的播放请求。
 var _shutdown:bool = false
+## 实际播放实例的弱引用，包括已停止但尚未由引擎释放的实例。
 var _active_playbacks:Array[WeakRef] = []
 
+## 创建音乐轨道、短音效声池和所需总线，并应用当前音量及静音设置。
 func _ready()->void:
 	if _shutdown:
 		return
@@ -146,6 +176,7 @@ func play_sfx(sound_id:StringName, event_id:String = "", priority:int = -1)->boo
 	sfx_accepted.emit(sound_id, event_id)
 	return true
 
+## 返回音效的默认抢占优先级；终局提示高于战斗反馈，界面音效最低。
 func _priority(sound_id:StringName)->int:
 	if sound_id in [&"victory", &"defeat"]:
 		return 4
@@ -153,6 +184,7 @@ func _priority(sound_id:StringName)->int:
 		return 3
 	return 0 if String(sound_id).begins_with("ui_") else 2
 
+## 按经过的秒数更新音乐交叉淡化和临时压低增益，并停止已淡出的轨道。
 func _process(delta:float)->void:
 	_fade_elapsed = minf(CROSSFADE_SECONDS, _fade_elapsed + delta)
 	var progress:float = _fade_elapsed / CROSSFADE_SECONDS
@@ -180,6 +212,7 @@ func _process(delta:float)->void:
 	_duck_gain = lerpf(_duck_from_gain, _duck_target_gain, _duck_elapsed / duck_seconds)
 	_update_volumes()
 
+## 将音乐轨道增益、音乐压低和用户音量合成为分贝值，并更新音效总线音量。
 func _update_volumes()->void:
 	for track:StringName in _music:
 		var player:AudioStreamPlayer = _music[track]
@@ -188,36 +221,43 @@ func _update_volumes()->void:
 	if index >= 0:
 		AudioServer.set_bus_volume_db(index, linear_to_db(maxf(0.00001, sfx_volume)))
 
+## 根据音乐、音效和总静音标记更新对应音频总线的静音状态。
 func _apply_mutes()->void:
 	for pair:Array in [["Music", music_muted or master_muted], ["SFX", sfx_muted or master_muted]]:
 		var index:int = AudioServer.get_bus_index(pair[0])
 		if index >= 0:
 			AudioServer.set_bus_mute(index, pair[1])
 
+## 将音乐音量限制在 [code]0.0[/code] 到 [code]1.0[/code]，并立即更新混音。
 func set_music_volume(value:float)->void:
 	music_volume = clampf(value, 0.0, 1.0)
 	_update_volumes()
 
+## 将音效音量限制在 [code]0.0[/code] 到 [code]1.0[/code]，并立即更新混音。
 func set_sfx_volume(value:float)->void:
 	sfx_volume = clampf(value, 0.0, 1.0)
 	_update_volumes()
 
+## 设置音乐静音状态；总静音启用时音乐仍保持静音。
 func set_music_muted(value:bool)->void:
 	music_muted = value
 	_apply_mutes()
 
+## 设置音效静音状态，并在静音时撤销音效引起的音乐压低。
 func set_sfx_muted(value:bool)->void:
 	sfx_muted = value
 	if value:
 		_clear_duck()
 	_apply_mutes()
 
+## 设置音乐与音效的总静音状态，并在静音时撤销音乐压低。
 func set_master_muted(value:bool)->void:
 	master_muted = value
 	if value:
 		_clear_duck()
 	_apply_mutes()
 
+## 清除待结束的音乐压低请求，并将压低增益立即恢复为正常值。
 func _clear_duck()->void:
 	_duck_requests.clear()
 	_duck_gain = 1.0
@@ -233,6 +273,7 @@ func _track_playback(player:AudioStreamPlayer)->void:
 	if player.has_stream_playback():
 		_active_playbacks.append(weakref(player.get_stream_playback()))
 
+## 返回是否已请求关闭且所有跟踪的播放实例均已释放。
 func shutdown_complete()->bool:
 	if not _shutdown:
 		return false
@@ -273,5 +314,6 @@ func shutdown()->void:
 				AudioServer.remove_bus_effect(0, index)
 		_master_limiter = null
 
+## 退出场景树时停止音频并释放本管理器持有的播放资源。
 func _exit_tree()->void:
 	shutdown()
