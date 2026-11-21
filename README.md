@@ -24,11 +24,11 @@
 
 ## 开发
 
-工程工具使用 **Python 3.12.7**。按[环境配置](docs/current/environment.md)设置 `GODOT_BIN` 后，可以检查环境、运行回归和验证干净副本：
+工程工具使用 **Python 3.12.7**。按[环境配置](docs/current/environment.md)设置 `GODOT_BIN` 后，可以检查环境、导入资源和验证干净副本：
 
 ```powershell
 python tools/project.py doctor
-python tools/project.py test
+python tools/project.py import
 python tools/project.py clean-check
 ```
 
@@ -38,7 +38,7 @@ Windows 导出使用匹配版本的 Godot 导出模板：
 python tools/project.py release
 ```
 
-导出结果保存在 `release/refactor/<run>/`。测试分组、模板配置和发布参数见[开发与构建](docs/current/development.md)。
+导出结果保存在 `release/refactor/<run>/`。验证范围、模板配置和发布参数见[开发与构建](docs/current/development.md)。
 
 ## 项目结构
 
@@ -52,7 +52,7 @@ python tools/project.py release
 | `collections/` | 藏品定义、资源与图标 |
 | `ui/` | 共用控件、主题、页面导航和浮层 |
 | `assets/`、`audio/` | 按用途分类的美术、音乐及音效 |
-| `tests/`、`tools/` | 回归检查、构建工具和实验入口 |
+| `tools/` | 构建工具、实验入口与固定实验资源 |
 | `docs/` | 玩法、架构、内容编辑和开发说明 |
 | `卡牌标准模型/`、`敌人标准模型/`、`综合数值模型/` | 数值模型、历史基线和独立实验 |
 

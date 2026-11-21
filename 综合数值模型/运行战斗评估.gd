@@ -240,7 +240,7 @@ func _setup_evaluator()->void:
 	for folder in ["battle", "cards", "combatants", "characters", "run", "collections", "综合数值模型"]:
 		_hash_sources("res://" + folder)
 	controller = BattleSession.new()
-	for source:String in ["tests/fixtures/phase5_run.tres", "tests/fixtures/phase5_map.tres", "tools/history_guard.gd"]:
+	for source:String in ["tools/experiment_data/phase5_run.tres", "tools/experiment_data/phase5_map.tres", "tools/history_guard.gd"]:
 		source_hashes[source] = FileAccess.get_sha256("res://" + source)
 	for entry in character.starting_deck_entries:
 		cards[entry.card_definition.card_id] = entry.card_definition
@@ -399,7 +399,7 @@ func _run()->void:
 		print("已完成血量敏感性：玩家%d" % player_hp)
 		await process_frame
 	# 主基准显式保持无藏品，避免新必选状态改变历史比较的观察口径。
-	var definition:RunDefinition = load("res://tests/fixtures/phase5_run.tres").duplicate()
+	var definition:RunDefinition = load("res://tools/experiment_data/phase5_run.tres").duplicate()
 	definition.collection_pool = []
 	assert(not definition.is_invalid())
 	var route_ids:Array[String] = ["a", "b", "c"]

@@ -41,8 +41,8 @@
       "bytes": 19950
     },
     "综合数值模型/Boss实验/两种Boss设计.md": {
-      "sha256": "360ccc9809a23ecc74814ffd6d86c082b7e8e844d5dce6c7d73e3bc9af022fb7",
-      "bytes": 7225
+      "sha256": "96413a49902eae7504858e6100d76f9c9ce1c009ba714ac35ca428a13f9a3bdb",
+      "bytes": 7379
     },
     "综合数值模型/Boss实验/生命对照数据.json": {
       "sha256": "9f191ce796b09370124f4e33f4999dd8968a2d4b9e0b61470e54e9a6b57baaa9",
@@ -65,8 +65,8 @@
       "bytes": 6736292
     },
     "综合数值模型/新敌人实验/三种普通敌人设计.md": {
-      "sha256": "0dcc92c25be1559a0538e8f60ed98ee0a034614b0d793fb0a9a16fcdfa928099",
-      "bytes": 5929
+      "sha256": "6b041ea21e2e5196eeef66b0b17c8c4c9e78367619120f1aa2f734b60242f7ad",
+      "bytes": 6083
     },
     "综合数值模型/新敌人实验/新敌人评估数据.json": {
       "sha256": "281ba942aeb3fdf2d859afbc6dd4600262f4740fdeb3d47c345bee4dc4c69c09",
@@ -147,6 +147,20 @@
     "综合数值模型/评估参数.json": {
       "sha256": "a2415e7ff313f14884ee1dc878e846071e1f4fc1891378c5191281d6041bbbb9",
       "bytes": 640
+    }
+  },
+  "historical_document_link_relocation": {
+    "reference_commit": "ac661a5482c618e0198a9d0d9f04b1843171bcc2",
+    "change": "Retargeted old suite links to files at the recorded commit. Retained all report text and numeric evidence.",
+    "before": {
+      "综合数值模型/Boss实验/两种Boss设计.md": {
+        "sha256": "360ccc9809a23ecc74814ffd6d86c082b7e8e844d5dce6c7d73e3bc9af022fb7",
+        "bytes": 7225
+      },
+      "综合数值模型/新敌人实验/三种普通敌人设计.md": {
+        "sha256": "0dcc92c25be1559a0538e8f60ed98ee0a034614b0d793fb0a9a16fcdfa928099",
+        "bytes": 5929
+      }
     }
   },
   "source_status": {

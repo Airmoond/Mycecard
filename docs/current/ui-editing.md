@@ -29,6 +29,6 @@
 
 动画修改 [BattlePresentation](../../battle/presentation/battle_presentation.gd)，音量与混音修改 [GameAudioManager](../../audio/audio_manager.gd)，原始音效／BGM位于 [audio](../../audio/)。规则数值修改 `.tres` 或规则模块，不通过动画和显示文本修改。
 
-应用装配与窗口关闭入口为 [AppRoot](../../ui/app_root.gd)。关闭应用时统一调用正常退出接口，禁用界面输入、停止音频并等待播放实例释放。相关测试见 [app_shutdown_test.gd](../../tests/app_shutdown_test.gd)。
+应用装配与窗口关闭入口为 [AppRoot](../../ui/app_root.gd)。关闭应用时统一调用正常退出接口，禁用界面输入、停止音频并等待播放实例释放。
 
 界面检查覆盖1920×1080、1280×720和1024×600，核对原画、固定文字、长描述、分页和最上层窗口。布局测试之后，还需在实际 GPU 环境检查绘制、鼠标命中和 Esc 关闭顺序。

@@ -23,7 +23,7 @@ python tools/project.py experiment --scenario boss-validation
 
 ## 条件与来源
 
-主路线和藏品实验使用 [phase5_run.tres](../../tests/fixtures/phase5_run.tres) 与 [phase5_map.tres](../../tests/fixtures/phase5_map.tres)：两场普通战斗、休整、Boss，以及固定奖励策略。输出条件标记为 `phase5-conditions-current-code`，表示当前战斗实现运行这组固定条件。
+主路线和藏品实验使用 [phase5_run.tres](../../tools/experiment_data/phase5_run.tres) 与 [phase5_map.tres](../../tools/experiment_data/phase5_map.tres)：两场普通战斗、休整、Boss，以及固定奖励策略。输出条件标记为 `phase5-conditions-current-code`，表示当前战斗实现运行这组固定条件。
 
 这些条件与当前随机不期而遇地图不同。评估现有冒险数值时，需要另外明确路线、奖励跳过、加删卡和不期而遇选择策略，并保存独立结果。流程测试与数值评估分别覆盖状态正确性和策略表现。
 

@@ -23,7 +23,7 @@ func _run()->void:
 		return
 	settings = JSON.parse_string(FileAccess.get_file_as_string("res://综合数值模型/藏品实验/评估参数.json"))
 	_setup_evaluator()
-	var definition:RunDefinition = load("res://tests/fixtures/phase5_run.tres")
+	var definition:RunDefinition = load("res://tools/experiment_data/phase5_run.tres")
 	assert(not definition.is_invalid())
 	assert(definition.character_definition == character)
 	assert(definition.collection_pool.size() == 3 and definition.collection_option_count == 3)

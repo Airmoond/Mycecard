@@ -58,10 +58,4 @@ powershell -File audio/source/playback_audio.ps1 -FullLoops
 
 Windows试听脚本通过 SoundPlayer 播放文件并记录完成时间。未带 -FullLoops 时播放短声与轻量试听片段。
 
-运行时音频检查使用项目的统一测试入口：
-
-~~~powershell
-python tools/project.py test --match '^(phase6_audio_feedback|app_shutdown)_test[.]gd$'
-~~~
-
-循环长度、混音峰值和播放生命周期可自动检查；旋律、音色和默认响度仍需在实际播放设备上试听。
+音频素材工具可检查循环长度与混音峰值；旋律、音色和默认响度仍需在实际播放设备上试听。

@@ -159,7 +159,6 @@ ui/ <span class="dim">跨领域共用 UI 与应用服务</span>
 └─ app_root.gd · audio_settings.*
 assets/ <span class="dim">cards · combatants · backgrounds · ui</span>
 audio/ <span class="dim">声音服务、music · sfx · source</span>
-tests/ <span class="dim">游戏规则、流程、表现回归</span>
 tools/ <span class="dim">工程验证、实验、构建</span>
 docs/ <span class="dim">当前开发与架构说明</span>
 卡牌 / 敌人 / 综合数值模型/ <span class="dim">数值评估</span></div></div>
@@ -265,7 +264,7 @@ CardInstance A    CardInstance B</code></pre></div><div><span class="label">RUNT
  <ol class="numbered"><li><strong>规则先确定事实</strong><p>RunSession 接受 BattleResult，回写生命，记录已处理身份，应用普通胜利藏品治疗，保存 RewardState 与候选，进入 CHOOSING_REWARD。</p></li><li><strong>展示失败，不反向撤销事实</strong><p>Flow 展示导航错误浮层，提供重试或返回；状态仍是奖励选择。旧画面可能保留，但旧步骤回调不能再次生效。</p></li><li><strong>重试只重新展示当前状态</strong><p>读取现有候选和生命，不重复提交 BattleResult，不再次治疗，也不重抽卡牌。返回菜单成功时结束当前局。</p></li></ol>
  <h3>奖励和事件：候选先保存，确认才消耗</h3>
  <ul class="small"><li><strong>RewardState：</strong>保存所属节点、战斗、总轮数、当前轮、候选和提交记录；只有进入下一轮才抽样。当前配置是一轮。</li><li><strong>跳过：</strong>同样消耗当前奖励轮次，最后一轮完成后结束该普通战斗节点；不是一个只关窗口的 UI 行为。</li><li><strong>事件确认：</strong>验证选择属于既存候选、费用可付、删除索引有效，再在同步路径应用。关闭选牌子页不等于已经支付。</li></ul>
- <div class="source">依据：<a href="../../ui/navigation/page_router.gd">page_router.gd</a><a href="../../run/game_flow_controller.gd">game_flow_controller.gd</a><a href="../../run/model/reward_state.gd">reward_state.gd</a><a href="../../tests/run_session_test.gd">run_session_test.gd</a></div>
+ <div class="source">依据：<a href="../../ui/navigation/page_router.gd">page_router.gd</a><a href="../../run/game_flow_controller.gd">game_flow_controller.gd</a><a href="../../run/model/reward_state.gd">reward_state.gd</a></div>
 </section>
 
 <section class="section" id="presentation">
@@ -288,17 +287,13 @@ CardInstance A    CardInstance B</code></pre></div><div><span class="label">RUNT
 <section class="section" id="engineering">
  <div class="section-head"><span class="section-no">08</span><div><p class="eyebrow">Evidence & trade-offs</p><h2>架构价值，落到可验证的行为上</h2></div></div>
  <p class="intro">不能只说“解耦好、扩展强”。要举出独立运行、失败重试、实际事件、同名卡身份这些具体行为，再说明如何验证。</p>
- <div class="life-wrap"><table class="table"><thead><tr><th>风险 / 目标</th><th>验证入口举例</th><th>能证明什么</th></tr></thead><tbody><tr><td>战斗不依赖画面</td><td><code>battle_session_test.gd</code><br><code>battle_card_flow_test.gd</code></td><td>模型初始化、合法操作、牌区与结果；不靠手动点击才可测</td></tr><tr><td>预览和实际计算漂移</td><td><code>card_damage_preview_test.gd</code><br><code>damage_healing_test.gd</code></td><td>修正、顺序与实际生命损失等规则</td></tr><tr><td>切页重入、奖励重复提交</td><td><code>page_router_test.gd</code><br><code>run_session_test.gd</code></td><td>准备失败保留旧页、过期命令拒绝、重试不重复副作用</td></tr><tr><td>手牌节点或浮层遗留</td><td><code>hand_view_lifecycle_test.gd</code><br><code>overlay_lifecycle_test.gd</code></td><td>实例身份、旧连接清理、所有权和 Esc 层级</td></tr><tr><td>纯布局测试看不出实际绘制</td><td><code>phase6_visual_layout_test.gd</code><br>GPU 环境实际检查</td><td>几何范围与真实渲染互补；画面能打开不代表交互正确</td></tr><tr><td>发布和退出不同于编辑器运行</td><td><code>tools/project.py release</code><br><code>app_shutdown_test.gd</code></td><td>独立构建、启动和正常关闭路径</td></tr></tbody></table></div>
- <h3>统一工具入口，不把 Python 带进游戏运行时</h3>
- <p class="small"><code>tools/project.py</code> 管环境检查、导入、注册测试、干净副本、历史数据校验、数值实验和 Windows 发布。工具检查退出码、完成标记、预期错误次数与超时，不能把“进程没崩”当成通过。环境记录 Godot 4.6.1、Python 3.12.7；玩家运行导出的游戏不依赖 Python。</p>
- <p class="small">当前注册 43 个 Godot 检查和 14 项工具契约测试。数值实验从独立源码副本直接调用 BattleSession，避免另写一套简化战斗；历史数值实验有固定旧地图与策略条件，不能直接当作当前不期而遇版本的胜率证据。</p>
- <div class="note gold"><strong>测试状态和能力要分开讲</strong><p>43 / 14 是当前注册规模；其中新增一项内容目录回归。具体执行结果见目录整理记录。编辑器布局修复另有相关检查和实际编辑器绘制检查。</p></div>
- <h3>四个有理由的取舍</h3>
+ <p class="small"><code>tools/project.py</code> 管理环境检查、导入、干净源验证、历史数据校验、数值实验和 Windows 发布。发布工具从输出目录启动导出的游戏，检查正常退出和日志诊断。</p>
+ <p class="small">数值实验从独立源码副本运行，使用固定旧地图与策略。新的 GdUnit4 回归套件尚未接入。</p>
  <div class="two"><div><h4>① 选同步规则，不让动画主导时序</h4><p class="small">回合制、单敌人场景下，同步结算更容易验证和复现。代价是复杂“中途选择”“连锁响应”不能靠随便加一个 await 解决，需要暂停/恢复命令协议或更明确的阶段机。</p><h4>② 用 Resource，而非提前做通用编辑平台</h4><p class="small">复用 Godot Inspector 和资源序列化，内容与美术易接入。代价是资源类型、枚举编号和引用要保持兼容，模型仍依赖 Godot。</p></div><div><h4>③ 页面按需创建，服务常驻</h4><p class="small">减少页面间隐式引用，退出后局部对象容易释放。代价是需要候选快照、当前状态恢复和明确的 prepare / commit；不能靠页面节点本身存整局事实。</p><h4>④ 继续兼容已有入口</h4><p class="small">Controller 的旧方法转发和旧地图 REST 规则保留回归路径。代价是代码边界暂时不够纯；后续应迁移调用者、补同等证据后再删除，而不是直接改坏旧实验。</p></div></div>
  <h3>当前边界与下一步：按需求排序，而非追求框架感</h3>
  <div class="compare"><div><h4>已实现</h4><p>本地单局、单敌人、有配置的地图与内容、奖励可跳过、三个不期而遇、独立战斗模型、页面恢复、共用卡面、反馈与混音、验证和构建工具。</p></div><div><h4>尚未实现</h4><p>持久存档、联网同步、多敌人目标系统、完整回放、通用事务回滚、跨局成长与自动 CI。不要在面试中把这些说成已有能力。</p></div></div>
- <ol class="small"><li><strong>先收紧写入口：</strong>逐步隐藏公开可变集合，缩小 RunState；把旧测试迁到 Session 公共接口，再移除兼容转发。</li><li><strong>再建自动回归：</strong>把已有严格工具接入 CI；视觉 GPU 与平台发布检查保留明确运行环境，不伪装成纯无头测试即可覆盖。</li><li><strong>有产品需求再做新系统：</strong>存档需版本化快照、稳定 ID、迁移和 RNG 状态；多敌人需目标选择与目标 ID；回放需记录配置版本、命令序列和随机状态，而不只是存种子。</li></ol>
- <div class="source">依据：<a href="../../tools/checks.json">checks.json</a><a href="../../tools/project.py">project.py</a><a href="../current/development.md">开发与构建</a><a href="../current/numerical-baselines.md">数值实验说明</a></div>
+ <ol class="small"><li><strong>收紧写入口。</strong>逐步隐藏公开可变集合，缩小 RunState。</li><li><strong>接入自动化测试。</strong>通过 Session 公共接口覆盖业务规则和流程，发布包和视觉效果沿用各自的验证入口。</li><li><strong>有产品需求再做新系统。</strong>存档需版本化快照、稳定 ID、迁移和 RNG 状态。多敌人需目标选择与目标 ID。回放需记录配置版本、命令序列和随机状态。</li></ol>
+ <div class="source">依据：<a href="../../tools/project.py">project.py</a><a href="../current/development.md">开发与构建</a><a href="../current/numerical-baselines.md">数值实验说明</a></div>
 </section>
 
 <section class="section" id="interview">
@@ -356,7 +351,7 @@ CardInstance A    CardInstance B</code></pre></div><div><span class="label">RUNT
  <div class="reading"><span class="term">07 / 卡牌、费用、伤害具体改在哪里？</span><a href="../../battle/model/battle_state.gd">BattleState</a> · <a href="../../battle/actions/attack_damage_resolver.gd">AttackDamageResolver</a><p>看牌区移动与实例守恒；找到统一数值计算和效果顺序。</p></div>
  <div class="reading"><span class="term">08 / 画面为什么不控制结算？</span><a href="../../battle/presentation/battle_presentation.gd">BattlePresentation</a> · <a href="../../battle/view/hand_view.gd">HandView</a><p>跟一次事件和卡面快照；观察离手节点、清理与渲染刷新。</p></div>
  <div class="reading"><span class="term">09 / 内容怎样接入？</span><a href="../current/content-authoring.md">内容新增说明</a> · <a href="../../run/encounter/unexpected_encounter_executor.gd">事件执行器</a><p>对照三个 .tres 看机制组合；区分配置能力与新机制。</p></div>
- <div class="reading"><span class="term">10 / 如何找到验证证据？</span><a href="../../tools/checks.json">检查注册表</a> · <a href="../current/development.md">开发与构建</a><p>从目标行为定位测试；工具输出要同时看完成标记、错误和退出码。</p></div>
+ <div class="reading"><span class="term">10 / 如何找到验证证据？</span><a href="../current/development.md">开发与构建</a><p>发布包启动结果记录在构建清单，完整流程可在 Godot 中试玩验证。</p></div>
  </div>
  <h3>改动定位速查</h3>
  <div class="life-wrap"><table class="table"><thead><tr><th>想改什么</th><th>首选入口</th><th>不要误改</th></tr></thead><tbody><tr><td>开始界面的布局与标题</td><td><a href="../../run/screens/main_menu.tscn">run/screens/main_menu.tscn</a></td><td>main.tscn 是应用装配，不是菜单画布</td></tr><tr><td>地图底部提示</td><td><a href="../../run/map/map_view.tscn">map_view.tscn</a> 的 route_hint</td><td>动态生命 / 进度在 MapView，地图拓扑在 first_map.tres</td></tr><tr><td>卡面外观与手牌排列</td><td><a href="../../cards/card_face.tscn">card_face.tscn</a> / <a href="../../battle/view/hand_view.gd">HandView</a></td><td>不要改 CardDefinition 规则字段来修布局</td></tr><tr><td>伤害数值与卡牌机制</td><td>卡牌 .tres / CombatEffectDefinition / 规则模块</td><td>描述文字和飘字不是数值权威</td></tr><tr><td>奖励轮数、遭遇池</td><td><a href="../../run/data/default_run.tres">default_run.tres</a></td><td>先检查资源是否覆盖脚本默认值</td></tr><tr><td>动画 / 音效 / BGM</td><td>BattlePresentation / GameAudioManager / audio 资源</td><td>不把规则执行绑到 Tween 或音频完成信号</td></tr></tbody></table></div>

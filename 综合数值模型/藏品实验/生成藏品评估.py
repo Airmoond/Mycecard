@@ -32,7 +32,7 @@ def verify_sources(hashes):
         for path in (ROOT / folder).rglob("*")
         if path.is_file() and path.suffix in (".gd", ".tres")
     }
-    expected.update({"tests/fixtures/phase5_run.tres", "tests/fixtures/phase5_map.tres", "tools/history_guard.gd"})
+    expected.update({"tools/experiment_data/phase5_run.tres", "tools/experiment_data/phase5_map.tres", "tools/history_guard.gd"})
     assert set(hashes) == expected, "来源清单不完整或新增了未复算的规则／资源"
     for rel, digest in hashes.items():
         assert hashlib.sha256((ROOT / rel).read_bytes()).hexdigest() == digest, f"来源过期：{rel}"
@@ -41,7 +41,7 @@ def verify_sources(hashes):
 def configuration():
     """读取资源本身，避免将报告中的初值当作当前游戏配置。"""
     parser = load_module("collection_resource_parser", ROOT / "敌人标准模型/重新评估.py")
-    run, _, run_ext = parser.resource(ROOT / "tests/fixtures/phase5_run.tres")
+    run, _, run_ext = parser.resource(ROOT / "tools/experiment_data/phase5_run.tres")
     character, char_sub, char_ext = parser.resource(parser.external_path(run["character_definition"], run_ext))
     player = parser.resolve(character["combatant_definition"], char_sub, char_ext)
     basic = []

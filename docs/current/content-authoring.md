@@ -81,4 +81,4 @@
 
 ## 测试新增内容
 
-运行 `python tools/project.py test --group flow` 验证候选、地图和状态推进。规则行为可直接创建 RunSession／BattleSession 测试；布局、长文字或原画改动还需在 GPU 环境检查，入口见 [界面编辑](./ui-editing.md)。
+在 Godot 中开一局，检查候选、地图和状态推进。布局、长文字或原画改动还需在 GPU 环境检查，入口见 [界面编辑](./ui-editing.md)。

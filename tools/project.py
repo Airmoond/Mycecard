@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import argparse
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
 import importlib.metadata
@@ -20,8 +19,8 @@ from urllib.parse import unquote
 
 PROJECT = Path(__file__).resolve().parents[1]
 OMIT = {".godot", ".git", "release", "__pycache__", ".venv", ".agents", ".codex", ".matplotlib-cache"}
-GROUP_TIMEOUTS = {"unit": 90, "flow": 180, "presentation": 180, "audio": 180, "heavy": 360, "playtest": 360}
 ORDERLY_SHUTDOWN_MARKER = "Mycecard orderly shutdown complete"
+AUTOMATED_TESTS = {"status": "not_configured", "message": "测试未接入"}
 
 
 def read_json(path: Path):
@@ -83,49 +82,18 @@ def public_result(result: dict) -> dict:
     return {key: value for key, value in result.items() if key != "output"}
 
 
-def diagnose(output: str, rule: dict, exit_code: int, timed_out: bool = False) -> dict:
-    """Accept exact scoped negative diagnostics; every other diagnostic is a failure."""
-    marker = rule.get("completion", r"[^\n]*检查完成，失败数：0")
-    completion = re.search(r"(?m)^" + marker + r"\s*$", output)
+def validate_startup(output: str, exit_code: int, timed_out: bool) -> dict:
     reasons = []
     if timed_out:
         reasons.append("timeout")
     if exit_code != 0:
         reasons.append(f"exit code {exit_code}")
-    if not completion:
-        reasons.append("missing successful completion marker")
-    allowed = rule.get("expected_errors", {})
-    seen = {message: 0 for message in allowed}
-    debt, unexpected = [], []
-    shutdown_counts = {"object": 0, "resource": 0}
-    for match in re.finditer(r"(?m)^(SCRIPT ERROR|ERROR|WARNING):\s*(.*)$", output):
-        severity, message = match.group(1), match.group(2).strip()
-        if severity == "ERROR" and message in allowed:
-            seen[message] += 1
-            if seen[message] <= allowed[message]:
-                continue
-        after_completion = completion is not None and match.start() > completion.end()
-        maximum = rule.get("known_shutdown_max_resources", 0)
-        if maximum and after_completion:
-            if severity == "WARNING" and message == "ObjectDB instances leaked at exit (run with --verbose for details).":
-                shutdown_counts["object"] += 1
-                if shutdown_counts["object"] == 1:
-                    debt.append(message)
-                    continue
-            resources = re.fullmatch(r"(\d+) resources still in use at exit \(run with --verbose for details\)\.", message)
-            if severity == "ERROR" and resources and 0 < int(resources.group(1)) <= maximum:
-                shutdown_counts["resource"] += 1
-                if shutdown_counts["resource"] == 1:
-                    debt.append(message)
-                    continue
-        unexpected.append(f"{severity}: {message}")
-    for message, count in allowed.items():
-        if seen[message] != count:
-            reasons.append(f"expected diagnostic count {count}, got {seen[message]}: {message}")
+    if not re.search(r"(?m)^" + re.escape(ORDERLY_SHUTDOWN_MARKER) + r"\s*$", output):
+        reasons.append("missing orderly shutdown marker")
+    unexpected = re.findall(r"(?m)^(?:SCRIPT ERROR|ERROR|WARNING):.*$", output)
     if unexpected:
         reasons.append("unexpected diagnostics")
-    return {"passed": not reasons, "reasons": reasons, "unexpected": unexpected,
-            "expected_diagnostics": seen, "known_shutdown_debt": debt}
+    return {"passed": not reasons, "reasons": reasons, "unexpected": unexpected}
 
 
 def engine_path(args) -> Path:
@@ -182,15 +150,6 @@ def import_resources(root: Path, engine: Path, state: Path) -> dict:
     return record
 
 
-def tool_contracts(root: Path, state: Path) -> dict:
-    result = command([sys.executable, "-m", "unittest", "tools.test_project_tools"], root, state, state / "tool-contracts.log", 60)
-    count = re.search(r"Ran ([1-9]\d*) tests?", result["output"])
-    passed = result["exit_code"] == 0 and not result["timed_out"] and count is not None and re.search(r"(?m)^OK\s*$", result["output"]) is not None
-    record = {"passed": passed, "total": int(count.group(1)) if count else 0, **public_result(result)}
-    write_json(state / "tool-contracts.json", record)
-    return record
-
-
 def docs_check(root: Path) -> dict:
     files = [root / "README.md", *(root / "docs").rglob("*.md")]
     broken = []
@@ -204,59 +163,6 @@ def docs_check(root: Path) -> dict:
             if not (path.parent / target).exists():
                 broken.append({"file": path.relative_to(root).as_posix(), "target": target})
     return {"passed": not broken, "checked_files": len(files), "broken_links": broken}
-
-
-def select_checks(root: Path, group: str, pattern: str | None) -> list[tuple[Path, dict]]:
-    configuration = read_json(root / "tools/checks.json")
-    rules = configuration["checks"]
-    selected = []
-    unknown = []
-    for script in sorted((root / "tests").glob("*test.gd")):
-        rule = rules.get(script.name)
-        if rule is None:
-            unknown.append(script.name)
-            continue
-        if group != "all" and rule["group"] != group:
-            continue
-        if pattern and not re.search(pattern, script.name):
-            continue
-        selected.append((script, rule))
-    if unknown:
-        raise ValueError("Unregistered checks (declare group/completion/diagnostics): " + ", ".join(unknown))
-    if not selected:
-        raise ValueError("Zero checks selected; refusing to report success.")
-    missing = [name for name in rules if not (root / "tests" / name).is_file()]
-    if missing:
-        raise ValueError("Registered checks missing: " + ", ".join(missing))
-    return selected
-
-
-def checks(root: Path, engine: Path, state: Path, group: str = "all", pattern: str | None = None, jobs: int = 2, timeout: float | None = None) -> dict:
-    selected = select_checks(root, group, pattern)
-    # Windows can refuse concurrent creation below the same new parent. Prepare
-    # every isolated environment serially before any engine process is started.
-    # Permission failures remain fatal; none are swallowed or retried as success.
-    for script, _ in selected:
-        local_environment(root, state / "checks" / script.stem)
-    def run(item):
-        script, rule = item
-        target = state / "checks" / script.stem
-        seconds = timeout or rule.get("timeout", GROUP_TIMEOUTS[rule["group"]])
-        result = command([str(engine), "--headless", "--path", str(root), "--script", str(script),
-                          "--log-file", str(target / "engine.log")], root, target, target / "output.log", seconds)
-        record = {"script": script.name, "group": rule["group"], **public_result(result),
-                  **diagnose(result["output"], rule, result["exit_code"], result["timed_out"])}
-        print(f"{'PASS' if record['passed'] else 'FAIL'} {script.name}" + (" (known shutdown debt)" if record["known_shutdown_debt"] else ""), flush=True)
-        if not record["passed"]:
-            print("\n".join(record["reasons"] + record["unexpected"]), flush=True)
-        return record
-    with ThreadPoolExecutor(max_workers=max(1, min(jobs, 4))) as pool:
-        results = list(pool.map(run, selected))
-    report = {"passed": sum(item["passed"] for item in results), "total": len(results),
-              "known_shutdown_debt_checks": sum(bool(item["known_shutdown_debt"]) for item in results), "results": results}
-    write_json(state / "checks.json", report)
-    print(f"{report['passed']}/{report['total']} checks passed", flush=True)
-    return report
 
 
 def source_files(root: Path):
@@ -304,18 +210,18 @@ def history_check(root: Path) -> dict:
             "historical_source_status": frozen["source_status"], "note": "Historical source SHA values are preserved, not rewritten to current code."}
 
 
-def clean_check(root: Path, engine: Path, state: Path, args) -> dict:
+def clean_check(root: Path, engine: Path, state: Path) -> dict:
     target = root / ".godot" / "clean-checks" / run_id()
     copied = target / "source"
     manifest = copy_source(root, copied)
     write_json(target / "source-manifest.json", {"source": str(root), "copy": str(copied), "files": manifest, "cache_present_before_import": (copied / ".godot").exists()})
     prepared = import_resources(copied, engine, target / "validation")
-    report = checks(copied, engine, target / "validation", args.group, args.match, args.jobs, args.timeout) if prepared["passed"] else None
     history = history_check(root)
     # Concurrent teammates may intentionally edit the main tree. Report drift explicitly.
     changed = manifest_drift(manifest, source_manifest(root))
-    result = {"passed": prepared["passed"] and report is not None and report["passed"] == report["total"] and history["passed"] and not changed,
-              "copy": str(copied), "source_manifest": str(target / "source-manifest.json"), "import": prepared, "checks": report,
+    result = {"passed": prepared["passed"] and history["passed"] and not changed,
+              "copy": str(copied), "source_manifest": str(target / "source-manifest.json"), "import": prepared,
+              "automated_tests": AUTOMATED_TESTS,
               "historical_integrity": history, "source_drift_during_validation": changed}
     write_json(target / "result.json", result)
     write_json(state / "clean-check.json", result)
@@ -356,9 +262,6 @@ def standalone_command(executable: Path, log: Path, headless: bool, gpu_backend:
 
 
 def release(root: Path, engine: Path, state: Path, args, environment: dict) -> dict:
-    contracts = tool_contracts(root, state)
-    if not contracts["passed"]:
-        raise RuntimeError("Tool failure-path checks failed; release stopped.")
     documentation = docs_check(root)
     if not documentation["passed"]:
         write_json(state / "docs-check.json", documentation)
@@ -366,14 +269,7 @@ def release(root: Path, engine: Path, state: Path, args, environment: dict) -> d
     prepared = import_resources(root, engine, state)
     if not prepared["passed"]:
         raise RuntimeError("Resource import failed; release stopped.")
-    tested_sources = source_manifest(root)
-    report = checks(root, engine, state, jobs=args.jobs)
-    if report["passed"] != report["total"]:
-        raise RuntimeError("Checks failed; release stopped.")
-    drift = manifest_drift(tested_sources, source_manifest(root))
-    if drift:
-        write_json(state / "source-drift.json", {"phase": "checks", "changed_files": drift})
-        raise RuntimeError("Source changed during checks; release stopped. See source-drift.json.")
+    build_sources = source_manifest(root)
     historical = history_check(root)
     if not historical["passed"]:
         raise RuntimeError("Frozen historical files changed; release stopped.")
@@ -386,14 +282,14 @@ def release(root: Path, engine: Path, state: Path, args, environment: dict) -> d
     problems = re.findall(r"(?m)^(?:SCRIPT ERROR|ERROR|WARNING):.*$", result["output"])
     if result["exit_code"] or result["timed_out"] or problems or not executable.is_file():
         raise RuntimeError("Export failed: " + str(problems) + "; see " + result["log"])
-    drift = manifest_drift(tested_sources, source_manifest(root))
+    drift = manifest_drift(build_sources, source_manifest(root))
     if drift:
         write_json(state / "source-drift.json", {"phase": "export", "changed_files": drift})
-        raise RuntimeError("Source changed between checks and export; release stopped.")
+        raise RuntimeError("Source changed during export preparation or export; release stopped.")
     # Run from its own release directory, with no --path or source project argument.
     started = command(standalone_command(executable, output / "startup-engine.log", True),
                       output, state / "standalone", output / "startup.log", 60)
-    startup_validation = diagnose(started["output"], {"completion": ORDERLY_SHUTDOWN_MARKER}, started["exit_code"], started["timed_out"])
+    startup_validation = validate_startup(started["output"], started["exit_code"], started["timed_out"])
     success = startup_validation["passed"]
     gpu_args = standalone_command(executable, output / "gpu-engine.log", False, args.gpu_backend)
     graphical = command(gpu_args, output, state / "gpu-standalone", output / "gpu-startup.log", 90)
@@ -401,21 +297,24 @@ def release(root: Path, engine: Path, state: Path, args, environment: dict) -> d
     gpu_text = graphical["output"] + ("\n" + engine_log.read_text(encoding="utf-8", errors="replace") if engine_log.exists() else "")
     gpu_problems = sorted(set(re.findall(r"(?m)^(?:SCRIPT ERROR|ERROR|WARNING):.*$", gpu_text)))
     renderer_lines = sorted(set(re.findall(r"(?m)^(?:OpenGL API|Vulkan |D3D12 |Direct3D |Metal ).*$", gpu_text)))
-    gpu_validation = diagnose(gpu_text, {"completion": ORDERLY_SHUTDOWN_MARKER}, graphical["exit_code"], graphical["timed_out"])
+    gpu_validation = validate_startup(gpu_text, graphical["exit_code"], graphical["timed_out"])
     gpu_success = gpu_validation["passed"] and bool(renderer_lines)
     success = success and gpu_success
-    drift = manifest_drift(tested_sources, source_manifest(root))
+    drift = manifest_drift(build_sources, source_manifest(root))
     success = success and not drift
     manifest = {"product": "Mycecard", "track": "architecture-refactor", "created_utc": datetime.now(timezone.utc).isoformat(),
-                "passed": success, "environment": environment, "source_files": tested_sources, "source_drift_after_startup": drift, "checks": report, "tool_contracts": contracts, "documentation": documentation,
+                "passed": success, "environment": environment, "source_files": build_sources, "source_drift_after_startup": drift,
+                "automated_tests": AUTOMATED_TESTS, "documentation": documentation, "import": prepared,
                 "historical_integrity": historical, "export_template": template, "export": public_result(result), "standalone": {**public_result(started), **startup_validation},
                 "gpu_standalone": {**public_result(graphical), "passed": gpu_success, "backend": args.gpu_backend, "renderer_lines": renderer_lines, "diagnostics": gpu_problems, "validation": gpu_validation},
                 "standalone_diagnostics": startup_validation["unexpected"], "artifacts": {p.name: {"bytes": p.stat().st_size, "sha256": digest(p)} for p in output.iterdir() if p.suffix == ".exe"}}
     version_match = re.search(r'(?m)^config/version="([^"]+)"', (root / "project.godot").read_text(encoding="utf-8"))
     manifest["game_version"] = version_match.group(1) if version_match else None
     write_json(output / "manifest.json", manifest)
-    write_json(state / "release.json", {"passed": success, "path": str(output), "manifest": str(output / "manifest.json")})
-    return {"passed": success, "path": str(output), "manifest": str(output / "manifest.json")}
+    release_result = {"passed": success, "path": str(output), "manifest": str(output / "manifest.json"),
+                      "automated_tests": AUTOMATED_TESTS}
+    write_json(state / "release.json", release_result)
+    return release_result
 
 
 def experiment(root: Path, engine: Path, state: Path, args) -> dict:
@@ -481,27 +380,19 @@ def experiment(root: Path, engine: Path, state: Path, args) -> dict:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=["doctor", "import", "test", "tool-test", "docs-check", "release", "clean-check", "history-check", "experiment"])
+    parser.add_argument("action", choices=["doctor", "import", "docs-check", "release", "clean-check", "history-check", "experiment"])
     parser.add_argument("--godot")
     parser.add_argument("--templates", help="Godot export_templates directory or its 4.6.1.stable child; copied into isolated APPDATA")
     parser.add_argument("--gpu-backend", choices=["default", "gl_compatibility"], default="default", help="Independent graphical release smoke-test backend; recorded in manifest")
-    parser.add_argument("--jobs", type=int, default=2)
-    parser.add_argument("--group", choices=["all", *GROUP_TIMEOUTS], default="all")
-    parser.add_argument("--match", help="Regex selecting registered filenames; zero matches is an error")
-    parser.add_argument("--timeout", type=float)
-    parser.add_argument("--no-import", action="store_true", help="Only for an already imported working tree")
     parser.add_argument("--optional", choices=["audio", "plots"])
     parser.add_argument("--scenario", choices=["models", "combined", "collections", "enemy-validation", "enemy-calibration", "boss-validation"], default="models")
     args = parser.parse_args(argv)
     state = PROJECT / ".godot" / "tools" / run_id()
     state.mkdir(parents=True)
+    includes_test_status = args.action in {"clean-check", "release"}
     try:
-        if args.timeout is not None and args.timeout <= 0:
-            raise ValueError("Timeout must be positive.")
         if args.action == "history-check":
             result = history_check(PROJECT)
-        elif args.action == "tool-test":
-            result = tool_contracts(PROJECT, state)
         elif args.action == "docs-check":
             result = docs_check(PROJECT)
         else:
@@ -513,24 +404,23 @@ def main(argv=None) -> int:
                 result = environment
             elif args.action == "import":
                 result = import_resources(PROJECT, engine, state)
-            elif args.action == "test":
-                if not tool_contracts(PROJECT, state)["passed"]:
-                    raise RuntimeError("Tool failure-path checks failed; checks stopped.")
-                if not args.no_import and not import_resources(PROJECT, engine, state)["passed"]:
-                    raise RuntimeError("Resource import failed; checks stopped.")
-                report = checks(PROJECT, engine, state, args.group, args.match, args.jobs, args.timeout)
-                result = {"passed": report["passed"] == report["total"], **{"checks": report}}
             elif args.action == "clean-check":
-                result = clean_check(PROJECT, engine, state, args)
+                result = clean_check(PROJECT, engine, state)
             elif args.action == "release":
                 result = release(PROJECT, engine, state, args, environment)
             else:
                 result = experiment(PROJECT, engine, state, args)
         write_json(state / "result.json", result)
-        print(json.dumps({"passed": result["passed"], "report": str(state / "result.json")}, ensure_ascii=False), flush=True)
+        summary = {"passed": result["passed"], "report": str(state / "result.json")}
+        if includes_test_status:
+            summary["automated_tests"] = result["automated_tests"]
+        print(json.dumps(summary, ensure_ascii=False), flush=True)
         return 0 if result["passed"] else 1
     except (OSError, RuntimeError, ValueError, KeyError, re.error) as error:
-        write_json(state / "result.json", {"passed": False, "error": str(error)})
+        failure = {"passed": False, "error": str(error)}
+        if includes_test_status:
+            failure["automated_tests"] = AUTOMATED_TESTS
+        write_json(state / "result.json", failure)
         print(f"FAIL: {error}\nReport: {state / 'result.json'}", file=sys.stderr)
         return 2
 

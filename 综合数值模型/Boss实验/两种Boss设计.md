@@ -84,7 +84,7 @@ Boss首行动约1.3 E、允许最高2.6 E；每行动实际伤害/12＋新增格
 
 ## 检查记录
 
-2026-10-03：当前26份Godot回归全部通过，包含新增[Boss机制测试](../../tests/new_boss_mechanics_test.gd)与[Boss试炼入口测试](../../tests/new_boss_trial_test.gd)。检查真实意图、减益递减、逐段取整、旧盾清空、资源不被污染，以及3种牌组×2种入场生命×3种Boss的18场入口与重开隔离。
+2026-10-03：当前26份Godot回归全部通过，包含新增[Boss机制测试](https://github.com/Airmoond/Mycecard/blob/ac661a5482c618e0198a9d0d9f04b1843171bcc2/tests/new_boss_mechanics_test.gd)与[Boss试炼入口测试](https://github.com/Airmoond/Mycecard/blob/ac661a5482c618e0198a9d0d9f04b1843171bcc2/tests/new_boss_trial_test.gd)。检查真实意图、减益递减、逐段取整、旧盾清空、资源不被污染，以及3种牌组×2种入场生命×3种Boss的18场入口与重开隔离。
 
 本轮3072场Boss独立验证与3000场普通敌人复算分别保存来源核对和生命账目；完整随机分支路线的额外奖励与15血休整结果见[综合路线报告](../综合量化评估.md)，本表仍为无跨场奖励、休整和藏品的单场条件。设计已完成独立审查，人工试玩反馈继续进行。
 

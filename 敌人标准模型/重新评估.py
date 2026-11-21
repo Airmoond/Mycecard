@@ -81,7 +81,7 @@ def resolve(ref, sub, ext):
 
 
 def map_roles():
-    run, _, run_ext = resource(PROJECT / "tests/fixtures/phase5_run.tres")
+    run, _, run_ext = resource(PROJECT / "tools/experiment_data/phase5_run.tres")
     root, sub, ext = resource(external_path(run["map_definition"], run_ext))
     roles, bases = {}, {}
 

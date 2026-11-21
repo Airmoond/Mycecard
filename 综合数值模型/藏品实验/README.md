@@ -12,7 +12,7 @@
 python tools/project.py experiment --scenario collections
 ~~~
 
-工具先更新卡牌和敌人模型，再运行藏品路线与汇总。输入包括[评估参数](./评估参数.json)、[主战斗参数](../评估参数.json)、tests/fixtures/phase5_run.tres、牌组、藏品和敌人资源。
+工具先更新卡牌和敌人模型，再运行藏品路线与汇总。输入包括[评估参数](./评估参数.json)、[主战斗参数](../评估参数.json)、tools/experiment_data/phase5_run.tres、牌组、藏品和敌人资源。
 
 输出写在 .godot/experiments/<run>/source/综合数值模型/藏品实验：
 

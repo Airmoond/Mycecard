@@ -7,33 +7,10 @@
 ```powershell
 python tools/project.py doctor
 python tools/project.py import
-python tools/project.py test
-```
-
-[project.py](../../tools/project.py) 统一处理资源导入、测试、构建和数值实验。`test` 会导入资源、检查工具行为并运行全部已登记的 Godot 测试。[tests/run_all.py](../../tests/run_all.py) 提供同一测试入口。
-
-## 测试
-
-```powershell
-python tools/project.py test --group flow
-python tools/project.py test --match battle_session
-python tools/project.py test --group heavy --timeout 360
-python tools/project.py tool-test
 python tools/project.py docs-check
 ```
 
-| 分组 | 主要范围 | 默认超时 |
-| --- | --- | ---: |
-| unit | 战斗规则与局部模型 | 90秒 |
-| flow | 整局状态、页面路由与生命周期 | 180秒 |
-| presentation | 卡面、布局与视图 | 180秒 |
-| audio | 音频与表现反馈 | 180秒 |
-| heavy | 多场战斗与试炼 | 360秒 |
-| playtest | 完整整局流程 | 360秒 |
-
-单项超时可在 [checks.json](../../tools/checks.json) 中配置，`--timeout` 可覆盖本次运行的上限。`--jobs` 默认2，最多4；`--match` 按文件名正则筛选。已完成资源导入的工作目录可使用 `--no-import`。
-
-新增测试需登记分组、成功标记及预期错误。测试工具将非零退出、超时、缺少成功标记、未声明的 SCRIPT ERROR／ERROR／WARNING 判为失败；负向用例按完整错误文字和次数匹配。零匹配、漏登记和丢失的测试文件也会失败。每次运行的命令、耗时、退出码和日志保存在 `.godot/tools/` 的独立目录。
+[project.py](../../tools/project.py) 提供资源导入、文档检查、构建和数值实验入口。
 
 ## 干净源验证与 Windows 构建
 
@@ -42,11 +19,13 @@ python tools/project.py clean-check
 python tools/project.py release
 ```
 
-`clean-check` 创建不含导入缓存、Git 元数据、发布产物和虚拟环境的源副本，核对文件指纹，从零导入并运行测试。验证期间主树发生增删改会导致检查失败。
+`clean-check` 创建干净的源码副本，从零导入 Godot 资源，校验冻结的数值历史文件，并检测验证期间主树的文件变化。报告和日志保存在 `.godot/` 下的独立目录。
 
-`release` 检查工具、资源、测试和数值历史文件后，导出到 `release/refactor/<run>/Mycecard.exe`。构建目录中的 `manifest.json` 记录源码清单、工具与模板版本、产物 SHA、测试结果及独立启动结果；构建期间的源码变化会中止交付。
+`release` 检查文档链接、资源导入和数值历史文件，导出到 `release/refactor/<run>/Mycecard.exe`。构建清单记录源码和产物指纹、工具和模板版本，以及从发布目录执行的两次启动检查。
 
-发布程序从输出目录分别以 headless 和项目默认 GPU 后端启动。需要兼容渲染时可显式指定 `--gpu-backend gl_compatibility`，实际后端和设备写入 manifest。启动检查通过应用参数 `-- --smoke-quit-after-frames=120` 运行120帧，再调用正常退出接口；要求退出码0、完成标记完整且无意外诊断。窗口关闭与启动检查共用音频清理流程，详见 [项目架构](../architecture/架构与重构记录.md)。
+发布启动检查分别以无头模式和默认 GPU 后端运行程序，通过应用参数 `-- --smoke-quit-after-frames=120` 走正常退出流程。两次检查都要求退出码为零、日志出现正常退出标记，并且没有错误或警告。GPU 检查还要求记录渲染后端。可用 `--gpu-backend gl_compatibility` 指定兼容后端。
+
+GdUnit4 套件尚未接入。干净源验证和发布报告的 `automated_tests` 字段显示“测试未接入”。报告的 `passed` 字段对应实际运行的工程检查。
 
 界面改动还需在实际图形环境检查绘制和输入，音频改动需检查实际混音与播放。尺寸要求和编辑入口见 [界面编辑](./ui-editing.md)。
 

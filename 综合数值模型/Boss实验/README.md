@@ -55,6 +55,6 @@ python tools/project.py experiment --scenario boss-validation
 
 在Godot打开[Boss试炼.tscn](./Boss试炼.tscn)，按F6运行，选择三种构筑、50/50或35/50入场生命，再选择Boss。胜负后可返回；新战斗重新建立牌堆、力量、状态和武器，不继承跨场奖励或藏品。
 
-试炼复用正式界面、规则和卡牌实例，部分立绘仍是占位素材。相关机制与重置检查见[Boss机制测试](../../tests/new_boss_mechanics_test.gd)、[试炼测试](../../tests/new_boss_trial_test.gd)。
+试炼复用正式界面、规则和卡牌实例，部分立绘仍是占位素材。
 
 完整区间和来源见设计报告；历史边界见[数值基线](../../docs/current/numerical-baselines.md)。[普通敌人3,000场验证](../新敌人实验/README.md)与本目录分开统计。
