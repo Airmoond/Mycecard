@@ -114,7 +114,8 @@ def doctor(root: Path, engine: Path, state: Path, optional: str | None = None) -
     version = result["output"].strip().splitlines()[-1] if result["output"].strip() else ""
     python_version = platform.python_version()
     passed = result["exit_code"] == 0 and version.startswith(versions["godot"] + ".") and python_version == versions["python"]
-    details = {"godot": version, "python": python_version, "required_godot": versions["godot"], "required_python": versions["python"]}
+    details = {"godot": version, "python": python_version, "required_godot": versions["godot"],
+               "required_python": versions["python"], "exit_code": result["exit_code"]}
     if optional:
         packages = versions["optional_audio" if optional == "audio" else "optional_plots"]
         installed = {}
@@ -185,26 +186,49 @@ def test_project(root: Path, engine: Path, state: Path, directory: str) -> dict:
                 "automated_tests": {"status": "not_run", "message": "资源导入失败"}}
 
     reports = state / "gdunit"
+    # GdUnit4 6.2 treats a leading slash as relative to res://.
+    report_argument = "res://" + reports.relative_to(root).as_posix()
     engine_log = state / "gdunit-engine.log"
     # The vendored 6.2.0 runner requires the opt-in for headless execution.
     run = command([str(engine), "--headless", "--path", str(root), "--log-file", str(engine_log),
                    "--script", "res://" + GDUNIT_RUNNER, "-a", target, "-c", "--ignoreHeadlessMode",
-                   "-rd", reports.as_posix()], root, state, state / "gdunit.log", 240)
+                   "-rd", report_argument], root, state, state / "gdunit.log", 240)
     output = run["output"]
     if engine_log.is_file():
         output += "\n" + engine_log.read_text(encoding="utf-8", errors="replace")
     output = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", output)
-    diagnostics = sorted(set(re.findall(r"(?m)^(?:SCRIPT ERROR|ERROR|Parse Error):.*$", output)))
+    diagnostics = list(dict.fromkeys(re.findall(r"(?m)^[ \t]*(?:SCRIPT ERROR|ERROR|Parse Error):.*$", output)))
+    runner_messages = list(dict.fromkeys(re.findall(
+        r"(?m)^[ \t]*(?:Set write reports to |Open (?:XML|HTML) Report at: |Overall Summary:|"
+        r"No test cases found|Script errors were detected during test discovery|Abnormal exit with |"
+        r"Headless mode is not supported|(?:WARNING: )?Can't sav(?:e|ing) the result|TOOL TIMEOUT:).*$", output)))
+    failed_cases = list(dict.fromkeys(re.findall(
+        r"(?m)^[ \t]*(res://[^\r\n]+? > test_\w+(?::\d+)?)(?: \([^\r\n]*\))? FAILED\b", output)))
+    completed = re.search(r"(?m)^[ \t]*Executed test cases[ \t]*:[ \t]*\((\d+)/(\d+)\)", output)
+    executed = int(completed[1]) if completed else None
+    pre_run_failures = ("No test cases found", "Script errors were detected during test discovery", "Headless mode is not supported")
+    if executed is None and any(message.lstrip().startswith(pre_run_failures) for message in runner_messages):
+        executed = 0
     junit = reports / "report_1" / "results.xml"
     html = junit.with_name("index.html")
+    html_available = html.is_file() and html.stat().st_size > 0
     problems = []
     counts = None
     try:
         counts = gdunit_counts(junit)
     except (OSError, ElementTree.ParseError, ValueError, KeyError) as error:
         problems.append(f"Could not validate the JUnit report: {error}")
-    if not html.is_file() or not html.stat().st_size:
+    if counts is not None:
+        executed = counts["tests"] - counts["skipped"]
+    if not html_available:
         problems.append("Missing GdUnit4 HTML report.")
+    if not junit.is_file() or not html_available:
+        if executed:
+            problems.append(f"GdUnit4 executed {executed} tests, but reports were not written at the expected paths.")
+        elif executed == 0:
+            problems.append("GdUnit4 did not execute any tests. See the runner diagnostics.")
+        else:
+            problems.append("GdUnit4 did not confirm test completion. See the runner diagnostics.")
     if not counts or counts["tests"] == counts["skipped"]:
         problems.append("No executed tests in the JUnit report.")
     if counts and (counts["failures"] or counts["errors"]):
@@ -215,8 +239,28 @@ def test_project(root: Path, engine: Path, state: Path, directory: str) -> dict:
     return {"passed": passed, "exit_code": run["exit_code"] if run["exit_code"] > 0 else int(not passed),
             "test_dir": target, "import": prepared, "gdunit": public_result(run),
             "automated_tests": {"status": "passed" if passed else "failed", "counts": counts},
+            "tests_executed": executed, "report_directory": str(reports), "runner_messages": runner_messages,
+            "failed_cases": failed_cases,
             "junit": str(junit) if junit.is_file() else None, "html": str(html) if html.is_file() else None,
             "diagnostics": diagnostics, "problems": problems}
+
+
+def test_console_summary(result: dict) -> dict:
+    summary = {key: result[key] for key in ("test_dir", "exit_code", "junit", "html", "problems", "report_directory") if key in result}
+    summary["tests_executed"] = result.get("tests_executed", 0)
+    for stage in ("import", "gdunit"):
+        if stage in result:
+            summary[stage] = {key: result[stage][key] for key in ("exit_code", "timed_out", "log", "passed") if key in result[stage]}
+    if not result["passed"]:
+        messages = (result.get("import", {}).get("diagnostics", []) + result.get("diagnostics", [])
+                    + [f"Failed test: {case}" for case in result.get("failed_cases", [])]
+                    + result.get("runner_messages", []))
+        summary["diagnostics"] = [
+            "[redacted diagnostic]" if re.search(r"(?i)\b(?:password|token|secret|authorization|api[_ -]?key)\s*[:=]", line)
+            else re.sub(r"https?://\S+|\b(?:gh[pousr]_|github_pat_)[\w]+", "[redacted]", line)[:500]
+            for line in messages[:12]
+        ]
+    return summary
 
 
 def docs_check(root: Path) -> dict:
@@ -489,7 +533,8 @@ def main(argv=None) -> int:
         if includes_test_status:
             summary["automated_tests"] = result["automated_tests"]
         if args.action == "test":
-            summary.update({key: result[key] for key in ("test_dir", "exit_code", "junit", "html", "problems") if key in result})
+            summary["godot"] = {"version": environment["godot"], "exit_code": environment["exit_code"]}
+            summary.update(test_console_summary(result))
         print(json.dumps(summary, ensure_ascii=False), flush=True)
         if args.action == "test":
             return result["exit_code"]
