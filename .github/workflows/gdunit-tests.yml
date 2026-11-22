@@ -1,0 +1,66 @@
+name: GdUnit4 tests
+
+"on":
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Read project toolchain versions
+        id: versions
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+
+          versions = json.loads(Path("tools/environment.json").read_text(encoding="utf-8"))
+          for tool in ("python", "godot"):
+              print(f"{tool}={versions[tool]}")
+          PY
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ steps.versions.outputs.python }}
+
+      - name: Download Godot stable
+        env:
+          GODOT_VERSION: ${{ steps.versions.outputs.godot }}
+        run: |
+          install_dir="$RUNNER_TEMP/godot"
+          mkdir -p "$install_dir"
+          curl --fail --location --show-error --silent --retry 2 --max-time 120 \
+            "https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=$GODOT_VERSION" \
+            --output "$install_dir/godot.zip"
+          unzip -q "$install_dir/godot.zip" -d "$install_dir"
+          godot="$install_dir/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          chmod +x "$godot"
+          printf 'GODOT_BIN=%s\n' "$godot" >> "$GITHUB_ENV"
+
+      - name: Import project and run GdUnit4
+        run: python tools/project.py test
+
+      - name: Upload GdUnit4 reports and logs
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: gdunit4-results
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            .godot/tools/*/gdunit/
+            .godot/tools/*/gdunit*.log
+            .godot/tools/*/import*.log
+            .godot/tools/*/version.log
+            .godot/tools/*/result.json

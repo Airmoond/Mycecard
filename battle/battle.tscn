@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dvs15nk2hx2pk" path="res://battle/battle_controller.gd" id="3_controller"]
 [ext_resource type="Script" uid="uid://b113dbgfmj88a" path="res://battle/view/battle_view.gd" id="4_layout"]
 [ext_resource type="Script" uid="uid://do36m2yfrs56f" path="res://battle/view/hand_view.gd" id="5_hand"]
-[ext_resource type="Theme" path="res://ui/themes/fantasy_theme.tres" id="6_theme"]
+[ext_resource type="Theme" uid="uid://cmfe2jjqhrgfe" path="res://ui/themes/fantasy_theme.tres" id="6_theme"]
 
 [sub_resource type="StyleBoxFlat" id="Table"]
 bg_color = Color(0.2, 0.14, 0.09, 0.94)

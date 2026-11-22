@@ -2,6 +2,10 @@
 .godot/
 /android/
 
+# GdUnit4 editor reports and last-run selection
+/reports/
+/addons/gdUnit4/GdUnitRunner.cfg
+
 # Local export output
 /release/
 

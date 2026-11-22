@@ -288,7 +288,7 @@ CardInstance A    CardInstance B</code></pre></div><div><span class="label">RUNT
  <div class="section-head"><span class="section-no">08</span><div><p class="eyebrow">Evidence & trade-offs</p><h2>架构价值，落到可验证的行为上</h2></div></div>
  <p class="intro">不能只说“解耦好、扩展强”。要举出独立运行、失败重试、实际事件、同名卡身份这些具体行为，再说明如何验证。</p>
  <p class="small"><code>tools/project.py</code> 管理环境检查、导入、干净源验证、历史数据校验、数值实验和 Windows 发布。发布工具从输出目录启动导出的游戏，检查正常退出和日志诊断。</p>
- <p class="small">数值实验从独立源码副本运行，使用固定旧地图与策略。新的 GdUnit4 回归套件尚未接入。</p>
+ <p class="small">数值实验从独立源码副本运行，使用固定旧地图与策略。GdUnit4 回归套件可用 <code>python tools/project.py test</code> 在本地和 CI 运行。</p>
  <div class="two"><div><h4>① 选同步规则，不让动画主导时序</h4><p class="small">回合制、单敌人场景下，同步结算更容易验证和复现。代价是复杂“中途选择”“连锁响应”不能靠随便加一个 await 解决，需要暂停/恢复命令协议或更明确的阶段机。</p><h4>② 用 Resource，而非提前做通用编辑平台</h4><p class="small">复用 Godot Inspector 和资源序列化，内容与美术易接入。代价是资源类型、枚举编号和引用要保持兼容，模型仍依赖 Godot。</p></div><div><h4>③ 页面按需创建，服务常驻</h4><p class="small">减少页面间隐式引用，退出后局部对象容易释放。代价是需要候选快照、当前状态恢复和明确的 prepare / commit；不能靠页面节点本身存整局事实。</p><h4>④ 继续兼容已有入口</h4><p class="small">Controller 的旧方法转发和旧地图 REST 规则保留回归路径。代价是代码边界暂时不够纯；后续应迁移调用者、补同等证据后再删除，而不是直接改坏旧实验。</p></div></div>
  <h3>当前边界与下一步：按需求排序，而非追求框架感</h3>
  <div class="compare"><div><h4>已实现</h4><p>本地单局、单敌人、有配置的地图与内容、奖励可跳过、三个不期而遇、独立战斗模型、页面恢复、共用卡面、反馈与混音、验证和构建工具。</p></div><div><h4>尚未实现</h4><p>持久存档、联网同步、多敌人目标系统、完整回放、通用事务回滚、跨局成长与自动 CI。不要在面试中把这些说成已有能力。</p></div></div>

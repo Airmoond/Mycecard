@@ -1,4 +1,4 @@
-"""Local, dependency-free Mycecard import/check/release and isolated experiment entrypoint."""
+"""Local, dependency-free Mycecard import/test/release and isolated experiment entrypoint."""
 from __future__ import annotations
 
 import argparse
@@ -16,11 +16,13 @@ import sys
 import time
 import uuid
 from urllib.parse import unquote
+from xml.etree import ElementTree
 
 PROJECT = Path(__file__).resolve().parents[1]
 OMIT = {".godot", ".git", "release", "__pycache__", ".venv", ".agents", ".codex", ".matplotlib-cache"}
 ORDERLY_SHUTDOWN_MARKER = "Mycecard orderly shutdown complete"
-AUTOMATED_TESTS = {"status": "not_configured", "message": "测试未接入"}
+TESTS_NOT_RUN = {"status": "not_run", "message": "GdUnit4 测试未在本命令中执行"}
+GDUNIT_RUNNER = "addons/gdUnit4/bin/GdUnitCmdTool.gd"
 
 
 def read_json(path: Path):
@@ -150,6 +152,73 @@ def import_resources(root: Path, engine: Path, state: Path) -> dict:
     return record
 
 
+def gdunit_counts(report: Path) -> dict:
+    junit = ElementTree.parse(report).getroot()
+    if junit.tag != "testsuites":
+        raise ValueError("Expected a GdUnit4 JUnit testsuites report.")
+    suites = junit.findall("testsuite")
+    counts = {field: sum(int(suite.attrib[field]) for suite in suites)
+              for field in ("tests", "failures", "errors", "skipped", "flaky")}
+    if counts["tests"] != int(junit.attrib["tests"]) or min(counts.values()) < 0:
+        raise ValueError("Inconsistent GdUnit4 JUnit counts.")
+    cases = junit.findall("testsuite/testcase")
+    counts["passed"] = sum(not any(case.find(tag) is not None for tag in ("failure", "error", "skipped"))
+                           for case in cases)
+    if len(cases) != counts["tests"] or counts["passed"] != counts["tests"] - sum(
+        counts[field] for field in ("failures", "errors", "skipped")
+    ):
+        raise ValueError("Incomplete or inconsistent GdUnit4 JUnit cases.")
+    return counts
+
+
+def test_project(root: Path, engine: Path, state: Path, directory: str) -> dict:
+    selected = (root / directory.removeprefix("res://")).resolve()
+    if not selected.is_relative_to(root / "tests") or not selected.is_dir():
+        raise ValueError("--test-dir must be an existing directory inside res://tests.")
+    if not (root / GDUNIT_RUNNER).is_file():
+        raise ValueError(f"GdUnit4 runner missing: {GDUNIT_RUNNER}")
+
+    target = "res://" + selected.relative_to(root).as_posix()
+    prepared = import_resources(root, engine, state)
+    if not prepared["passed"]:
+        return {"passed": False, "exit_code": 1, "test_dir": target, "import": prepared,
+                "automated_tests": {"status": "not_run", "message": "资源导入失败"}}
+
+    reports = state / "gdunit"
+    engine_log = state / "gdunit-engine.log"
+    # The vendored 6.2.0 runner requires the opt-in for headless execution.
+    run = command([str(engine), "--headless", "--path", str(root), "--log-file", str(engine_log),
+                   "--script", "res://" + GDUNIT_RUNNER, "-a", target, "-c", "--ignoreHeadlessMode",
+                   "-rd", reports.as_posix()], root, state, state / "gdunit.log", 240)
+    output = run["output"]
+    if engine_log.is_file():
+        output += "\n" + engine_log.read_text(encoding="utf-8", errors="replace")
+    output = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", output)
+    diagnostics = sorted(set(re.findall(r"(?m)^(?:SCRIPT ERROR|ERROR|Parse Error):.*$", output)))
+    junit = reports / "report_1" / "results.xml"
+    html = junit.with_name("index.html")
+    problems = []
+    counts = None
+    try:
+        counts = gdunit_counts(junit)
+    except (OSError, ElementTree.ParseError, ValueError, KeyError) as error:
+        problems.append(f"Could not validate the JUnit report: {error}")
+    if not html.is_file() or not html.stat().st_size:
+        problems.append("Missing GdUnit4 HTML report.")
+    if not counts or counts["tests"] == counts["skipped"]:
+        problems.append("No executed tests in the JUnit report.")
+    if counts and (counts["failures"] or counts["errors"]):
+        problems.append("JUnit report contains test failures or errors.")
+    if diagnostics:
+        problems.append("Godot reported errors. See the execution logs.")
+    passed = run["exit_code"] == 0 and not run["timed_out"] and not problems
+    return {"passed": passed, "exit_code": run["exit_code"] if run["exit_code"] > 0 else int(not passed),
+            "test_dir": target, "import": prepared, "gdunit": public_result(run),
+            "automated_tests": {"status": "passed" if passed else "failed", "counts": counts},
+            "junit": str(junit) if junit.is_file() else None, "html": str(html) if html.is_file() else None,
+            "diagnostics": diagnostics, "problems": problems}
+
+
 def docs_check(root: Path) -> dict:
     files = [root / "README.md", *(root / "docs").rglob("*.md")]
     broken = []
@@ -221,7 +290,7 @@ def clean_check(root: Path, engine: Path, state: Path) -> dict:
     changed = manifest_drift(manifest, source_manifest(root))
     result = {"passed": prepared["passed"] and history["passed"] and not changed,
               "copy": str(copied), "source_manifest": str(target / "source-manifest.json"), "import": prepared,
-              "automated_tests": AUTOMATED_TESTS,
+              "automated_tests": TESTS_NOT_RUN,
               "historical_integrity": history, "source_drift_during_validation": changed}
     write_json(target / "result.json", result)
     write_json(state / "clean-check.json", result)
@@ -304,7 +373,7 @@ def release(root: Path, engine: Path, state: Path, args, environment: dict) -> d
     success = success and not drift
     manifest = {"product": "Mycecard", "track": "architecture-refactor", "created_utc": datetime.now(timezone.utc).isoformat(),
                 "passed": success, "environment": environment, "source_files": build_sources, "source_drift_after_startup": drift,
-                "automated_tests": AUTOMATED_TESTS, "documentation": documentation, "import": prepared,
+                "automated_tests": TESTS_NOT_RUN, "documentation": documentation, "import": prepared,
                 "historical_integrity": historical, "export_template": template, "export": public_result(result), "standalone": {**public_result(started), **startup_validation},
                 "gpu_standalone": {**public_result(graphical), "passed": gpu_success, "backend": args.gpu_backend, "renderer_lines": renderer_lines, "diagnostics": gpu_problems, "validation": gpu_validation},
                 "standalone_diagnostics": startup_validation["unexpected"], "artifacts": {p.name: {"bytes": p.stat().st_size, "sha256": digest(p)} for p in output.iterdir() if p.suffix == ".exe"}}
@@ -312,7 +381,7 @@ def release(root: Path, engine: Path, state: Path, args, environment: dict) -> d
     manifest["game_version"] = version_match.group(1) if version_match else None
     write_json(output / "manifest.json", manifest)
     release_result = {"passed": success, "path": str(output), "manifest": str(output / "manifest.json"),
-                      "automated_tests": AUTOMATED_TESTS}
+                      "automated_tests": TESTS_NOT_RUN}
     write_json(state / "release.json", release_result)
     return release_result
 
@@ -380,16 +449,19 @@ def experiment(root: Path, engine: Path, state: Path, args) -> dict:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=["doctor", "import", "docs-check", "release", "clean-check", "history-check", "experiment"])
+    parser.add_argument("action", choices=["doctor", "import", "test", "docs-check", "release", "clean-check", "history-check", "experiment"])
     parser.add_argument("--godot")
     parser.add_argument("--templates", help="Godot export_templates directory or its 4.6.1.stable child; copied into isolated APPDATA")
     parser.add_argument("--gpu-backend", choices=["default", "gl_compatibility"], default="default", help="Independent graphical release smoke-test backend; recorded in manifest")
     parser.add_argument("--optional", choices=["audio", "plots"])
+    parser.add_argument("--test-dir", help="Directory under res://tests for the test action (default: res://tests)")
     parser.add_argument("--scenario", choices=["models", "combined", "collections", "enemy-validation", "enemy-calibration", "boss-validation"], default="models")
     args = parser.parse_args(argv)
+    if args.test_dir is not None and args.action != "test":
+        parser.error("--test-dir requires the test action")
     state = PROJECT / ".godot" / "tools" / run_id()
     state.mkdir(parents=True)
-    includes_test_status = args.action in {"clean-check", "release"}
+    includes_test_status = args.action in {"test", "clean-check", "release"}
     try:
         if args.action == "history-check":
             result = history_check(PROJECT)
@@ -404,6 +476,8 @@ def main(argv=None) -> int:
                 result = environment
             elif args.action == "import":
                 result = import_resources(PROJECT, engine, state)
+            elif args.action == "test":
+                result = test_project(PROJECT, engine, state, args.test_dir or "res://tests")
             elif args.action == "clean-check":
                 result = clean_check(PROJECT, engine, state)
             elif args.action == "release":
@@ -414,12 +488,16 @@ def main(argv=None) -> int:
         summary = {"passed": result["passed"], "report": str(state / "result.json")}
         if includes_test_status:
             summary["automated_tests"] = result["automated_tests"]
+        if args.action == "test":
+            summary.update({key: result[key] for key in ("test_dir", "exit_code", "junit", "html", "problems") if key in result})
         print(json.dumps(summary, ensure_ascii=False), flush=True)
+        if args.action == "test":
+            return result["exit_code"]
         return 0 if result["passed"] else 1
     except (OSError, RuntimeError, ValueError, KeyError, re.error) as error:
         failure = {"passed": False, "error": str(error)}
         if includes_test_status:
-            failure["automated_tests"] = AUTOMATED_TESTS
+            failure["automated_tests"] = TESTS_NOT_RUN
         write_json(state / "result.json", failure)
         print(f"FAIL: {error}\nReport: {state / 'result.json'}", file=sys.stderr)
         return 2
